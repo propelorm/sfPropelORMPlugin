@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>sfPropel15Plugin</name>
+  <channel>plugins.symfony-project.org</channel>
+  <summary>Replaces symfony's core Propel plugin by the latest version of Propel, in branch 1.5.</summary>
+  <description>Bundles Propel 1.5 and replaces sfPropelPlugin in symfony 1.3 and 1.4.</description>
+  <lead>
+    <name>Francois Zaninotto</name>
+    <user>Francois Zaninotto</user>
+    <email>fzaninotto@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <date>##CURRENT_DATE##</date>
+  <version>
+    <release>##PLUGIN_VERSION##</release>
+    <api>##API_VERSION##</api>
+  </version>
+  <stability>
+    <release>##STABILITY##</release>
+    <api>##STABILITY##</api>
+  </stability>
+  <license uri="http://www.symfony-project.org/license">MIT license</license>
+  <notes>-</notes>
+  <contents>
+    ##CONTENTS##
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>symfony</name>
+        <channel>pear.symfony-project.com</channel>
+        <min>1.3.0</min>
+        <max>1.5.0</max>
+        <exclude>1.5.0</exclude>
+      </package>
+    </required>
+  </dependencies>
+  <phprelease></phprelease>
+  
+  <changelog>
+    <release>
+      <version>
+        <release>1.1.4</release>
+        <api>1.5.3</api>
+      </version>
+      <stability>
+       <release>stable</release>
+       <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-08-26</date>
+      <license>MIT</license>
+      <notes>
+        * Fixed package that prevented installation via command line
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>1.1.0</release>
+        <api>1.5.3</api>
+      </version>
+      <stability>
+       <release>stable</release>
+       <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-08-18</date>
+      <license>MIT</license>
+      <notes>
+      	* Upgraded bundled Propel lib to 1.5.3
+      	* Fixed issue with filters for boolean columns in Oracle (closes #8897) 
+      	* Using remove_fields options in optional form when embedding/merging a form
+      	* Made it possible to define mysql-specific table attributes for SQL generation (closes #8816)
+      	* Added max_additions options to mergeRelation() and embedRelation()
+      	* Fixed option remove_fields was ignored in sfFormPropel::mergeRelation()
+      	* Fixed mergeRelation() with latest changes in sfForm
+      	* Added support for vendor data in schema.yml columns (patch from Dan Tudor)
+        * Added a way to customize the new form in an embedded relation form 
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>1.0.0</release>
+        <api>1.5.1</api>
+      </version>
+      <stability>
+       <release>stable</release>
+       <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-05-25</date>
+      <license>MIT</license>
+      <notes>
+        * Added a mention in the installation instructions to rebuild the model 
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.9.3</release>
+        <api>1.5.1</api>
+      </version>
+      <stability>
+       <release>beta</release>
+       <api>beta</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-05-19</date>
+      <license>MIT</license>
+      <notes>
+        * Updated Propel externals to 1.5.1 stable
+        * Introducing Propel15Routes
+        * Fixed issue when combining single table inheritance with symfony i18n (closes #8480)
+        * Added sfFormPropelCollection
+        * Added sfFormPropel::embedRelation(), and the ability to edit, add and delete related objects from a main form
+        * Added the ability to set query_methods on routes
+        * Updated Documentation
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.9.2</release>
+        <api>1.5</api>
+      </version>
+      <stability>
+       <release>beta</release>
+       <api>beta</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-05-06</date>
+      <license>MIT</license>
+      <notes>
+        * Updated Propel externals to 1.5.0 stable
+        * Added detailed logs to propel:data-load task
+        * Refactored documentation - look in the 'docs' directory for a complete reference of the `generator.yml` syntax, the `schema.yml` syntax, and the custom form widgets and validators
+        * Updated Propel validators to use the new Query objects
+        * Updated CRUD generator to use the new Query objects
+        * Added Oracle custom column types handling in generator
+        * Allowing advanced form customization from generator.yml
+        * Added the ability to use "plain" type for form fields, just like in symfony 1.2 
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.9.0</release>
+        <api>1.5</api>
+      </version>
+      <stability>
+       <release>beta</release>
+       <api>beta</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-04-13</date>
+      <license>MIT</license>
+      <notes>
+        * Added new admin generator extensions using new query objects
+        * Updated Propel externals to 1.5 beta 2
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.5.4</release>
+        <api>1.5</api>
+      </version>
+      <stability>
+       <release>alpha</release>
+       <api>alpha</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2009-12-28</date>
+      <license>MIT</license>
+      <notes>
+        * Fixed a problem with the runtime configuration
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.5.5</release>
+        <api>1.5</api>
+      </version>
+      <stability>
+       <release>alpha</release>
+       <api>alpha</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2009-12-28</date>
+      <license>MIT</license>
+      <notes>
+        * Fixed double insertion of a constant by Propel and the PropelSymfonyBehavior
+      </notes>
+    </release>
+    <release>
+      <version>
+        <release>0.5.6</release>
+        <api>1.5</api>
+      </version>
+      <stability>
+       <release>alpha</release>
+       <api>alpha</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2009-12-30</date>
+      <license>MIT</license>
+      <notes>
+        * Fixed path to the symfony behaviors in propel.ini
+      </notes>
+    </release>
+
+  </changelog>
+  
+</package>
