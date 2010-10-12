@@ -51,7 +51,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     }
   }
 
-  protected function schemaToYML($checkSchema = self::CHECK_SCHEMA, $prefix = '')
+  protected function schemaToYML($checkSchema = self::CHECK_SCHEMA, $prefix = '', $verbose = false)
   {
     $finder = sfFinder::type('file')->name('*schema.xml')->prune('doctrine');
 
@@ -65,8 +65,11 @@ abstract class sfPropelBaseTask extends sfBaseTask
     foreach ($schemas as $schema)
     {
       $dbSchema->loadXML($schema);
-
-      $this->logSection('schema', sprintf('converting "%s" to YML', $schema));
+      
+      if ($verbose)
+      {
+        $this->logSection('schema', sprintf('  converting "%s" to YML', $schema), null, 'COMMENT');
+      }
 
       $localprefix = $prefix;
 
@@ -80,12 +83,15 @@ abstract class sfPropelBaseTask extends sfBaseTask
       $yml_file_name = str_replace('.xml', '.yml', basename($schema));
 
       $file = str_replace(basename($schema), $prefix.$yml_file_name,  $schema);
-      $this->logSection('schema', sprintf('putting %s', $file));
+      if ($verbose)
+      {
+        $this->logSection('schema', sprintf('  putting %s', $file), null, 'COMMENT');
+      }
       file_put_contents($file, $dbSchema->asYAML());
     }
   }
 
-  protected function schemaToXML($checkSchema = self::CHECK_SCHEMA, $prefix = '')
+  protected function schemaToXML($checkSchema = self::CHECK_SCHEMA, $prefix = '', $verbose = false)
   {
     $finder = sfFinder::type('file')->name('*schema.yml')->prune('doctrine');
     $dirs = array_merge(array(sfConfig::get('sf_config_dir')), $this->configuration->getPluginSubPaths('/config'));
@@ -123,7 +129,10 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
       foreach ($customSchemas as $customSchema)
       {
-        $this->logSection('schema', sprintf('found custom schema %s', $customSchema));
+        if ($verbose)
+        {
+          $this->logSection('schema', sprintf('  found custom schema %s', $customSchema), null, 'COMMENT');
+        }
 
         $customSchemaArray = sfYaml::load($customSchema);
         if (!isset($customSchemaArray['classes']))
@@ -136,7 +145,10 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
       $dbSchema->loadArray($schemaArray);
 
-      $this->logSection('schema', sprintf('converting "%s" to XML', $schema));
+      if ($verbose)
+      {
+        $this->logSection('schema', sprintf('  converting "%s" to XML', $schema), null, 'COMMENT');
+      }
 
       $localprefix = $prefix;
 
@@ -150,7 +162,10 @@ abstract class sfPropelBaseTask extends sfBaseTask
       $xml_file_name = str_replace('.yml', '.xml', basename($schema));
 
       $file = str_replace(basename($schema), $localprefix.$xml_file_name,  $schema);
-      $this->logSection('schema', sprintf('putting %s', $file));
+      if ($verbose)
+      {
+        $this->logSection('schema', sprintf('  putting %s', $file), null, 'COMMENT');
+      }
       file_put_contents($file, $dbSchema->asXML());
     }
   }
@@ -323,6 +338,109 @@ abstract class sfPropelBaseTask extends sfBaseTask
       'propel.database.password' => $database->getParameter('password'),
       'propel.database.encoding' => $database->getParameter('encoding'),
     );
+  }
+  
+  public function getConnections($databaseManager)
+  {
+    $connections = array();
+    foreach ($databaseManager->getNames() as $connectionName)
+    {
+      $database = $databaseManager->getDatabase($connectionName);
+      $connections[$connectionName] = array(
+        'adapter'  => $database->getParameter('phptype'),
+        'dsn'      => $database->getParameter('dsn'),
+        'user'     => $database->getParameter('username'),
+        'password' => $database->getParameter('password'),
+      );
+    }
+    return $connections;
+  }
+
+  public function getConnection($databaseManager, $connection)
+  {
+    $database = $databaseManager->getDatabase($connection);
+    return array(
+      'adapter'  => $database->getParameter('phptype'),
+      'dsn'      => $database->getParameter('dsn'),
+      'user'     => $database->getParameter('username'),
+      'password' => $database->getParameter('password'),
+    );
+  }
+  
+  protected function getPlatform($databaseManager, $connection)
+  {
+    $params = $this->getConnection($databaseManager, $connection);
+    $platformClass = ucfirst($params['adapter']) . 'Platform';
+    include_once dirname(__FILE__) . '/../vendor/propel-generator/lib/platform/' . $platformClass . '.php';
+    return new $platformClass();
+  }
+
+  protected function getParser($databaseManager, $connection, $con)
+  {
+    $params = $this->getConnection($databaseManager, $connection);
+    $parserClass = ucfirst($params['adapter']) . 'SchemaParser';
+    include_once dirname(__FILE__) . '/../vendor/propel-generator/lib/reverse/' . $params['adapter'] . '/' . $parserClass . '.php';
+    $parser = new $parserClass();
+    $parser->setConnection($con);
+    $parser->setGeneratorConfig($this->getGeneratorConfig());
+    return $parser;
+  }
+  
+  protected function getModels($databaseManager, $verbose = false)
+  {
+    Phing::startup(); // required to locate behavior classes...
+    $schemas = sfFinder::type('file')
+      ->name('*schema.xml')
+      ->follow_link()
+      ->in(sfConfig::get('sf_config_dir'));
+    if (!$schemas)
+    {
+      throw new sfCommandException('You must create a schema.yml or schema.xml file.');
+    }
+    $ads = array();
+    
+    foreach ($schemas as $schema)
+    {
+      if ($verbose)
+      {
+        $this->logSection('schema', sprintf('  Parsing schema "%s"', $schema), null, 'COMMENT');
+      }
+      $dom = new DomDocument('1.0', 'UTF-8');
+      $dom->load($schema);
+      //$this->includeExternalSchemas($dom, sfConfig::get('sf_config_dir'));
+      $xmlParser = new XmlToAppData(new DefaultPlatform(), '');
+      $generatorConfig = $this->getGeneratorConfig();
+      $generatorConfig->setBuildConnections($this->getConnections($databaseManager));
+      $xmlParser->setGeneratorConfig($generatorConfig);
+      
+      $ad = $xmlParser->parseString($dom->saveXML(), $schema);
+      $ads[] = $ad;
+      $nbTables = $ad->getDatabase()->countTables();
+      if ($verbose)
+      {
+        $this->logSection('schema', sprintf('  %d tables processed successfully', $nbTables), null, 'COMMENT');
+      }
+    }
+    if (count($ads)>1) {
+      $ad = array_shift($ads);
+      $ad->joinAppDatas($ads);
+      //$ad = $this->joinDataModels($ads);
+      //$this->dataModels = array($ad);
+    } else {
+      $ad = $ads[0];
+    }
+    return $ad;
+  }
+  
+  protected function getGeneratorConfig($params = array())
+  {
+    $iniFile = sfConfig::get('sf_config_dir'). '/propel.ini';
+    if (!$params && file_exists($iniFile))
+    {
+      $params = parse_ini_file($iniFile);
+    }
+    require_once dirname(__FILE__) . '/../vendor/propel-generator/lib/config/GeneratorConfig.php';
+    return new GeneratorConfig($params);
   }
 
   protected function getProperties($file)
