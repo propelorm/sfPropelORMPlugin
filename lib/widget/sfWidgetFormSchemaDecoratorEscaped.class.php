@@ -38,16 +38,13 @@ class sfWidgetFormSchemaDecoratorEscaped extends sfWidgetFormSchemaDecorator
   
   /**
    * Escape string for inclusion as a JavaScript string
-   * Code identical to EscapingHelper::esc_js_no_entities()
+   *
    * @param String $string the string to escape
-   * @
+   * @return String Escaped string to enclose between double quote.
    */
   protected function escape($string)
   {
-    return str_replace(
-      array("\\"  , "\n"  , "\r" , "\""  , "'"  ),
-      array("\\\\", "\\n" , "\\r", "\\\"", "\\'"),
-      $string);
+    return substr(json_encode($string), 1, -1); // remove first and last double quote
   }
   
   protected function getDecorator($name)
