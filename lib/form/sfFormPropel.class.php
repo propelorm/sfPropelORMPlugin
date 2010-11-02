@@ -583,6 +583,7 @@ abstract class sfFormPropel extends sfFormObject
       'hide_on_new'           => false,
       'collection_form_class' => 'sfFormPropelCollection',
       'add_delete'            => true,
+      'criteria'              => null,
     ), $options);
     
     if ($this->getObject()->isNew() && $options['hide_on_new'])
@@ -598,7 +599,7 @@ abstract class sfFormPropel extends sfFormObject
       throw new sfException('embedRelation() only works for one-to-many relationships');
     }
 
-    $collection = call_user_func(array($this->getObject(), sprintf('get%ss', $relationName)));
+    $collection = call_user_func_array (array($this->getObject(), sprintf('get%ss', $relationName)), array ($options['criteria']));
     
     // compute relation fields, to be removed from embedded forms
     // because this data is not editable
