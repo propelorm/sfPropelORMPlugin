@@ -41,7 +41,7 @@ class sfPropelDiffTask extends sfPropelBaseTask
     ));
     $this->namespace = 'propel';
     $this->name = 'diff';
-    $this->aliases = array('generate-migration');
+    $this->aliases = array('migration-generate');
     $this->briefDescription = 'Computes diff between current model and database';
 
     $this->detailedDescription = <<<EOF
