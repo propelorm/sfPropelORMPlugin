@@ -31,7 +31,6 @@ class sfPropelStatusTask extends sfPropelBaseTask
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'cli'),
       new sfCommandOption('migration-dir', null, sfCommandOption::PARAMETER_OPTIONAL, 'The migrations subdirectory', 'lib/model/migration'),
       new sfCommandOption('migration-table', null, sfCommandOption::PARAMETER_OPTIONAL, 'The name of the migration table', 'propel_migration'),
-      new sfCommandOption('ask-confirmation', null, sfCommandOption::PARAMETER_NONE, 'Ask for confirmation'),
       new sfCommandOption('verbose', null, sfCommandOption::PARAMETER_NONE, 'Enables verbose output'),
     ));
     $this->namespace = 'propel';
