@@ -12,14 +12,14 @@ require_once(dirname(__FILE__).'/sfPropelBaseTask.class.php');
 require_once(dirname(__FILE__).'/../vendor/propel-generator/lib/util/PropelMigrationManager.php');
 
 /**
- * Executes the next migration up
+ * Executes the next migration down
  *
  * @package    symfony
  * @subpackage propel
  * @author     François Zaninotto
  * @version    SVN: $Id: sfPropelBuildModelTask.class.php 23922 2009-11-14 14:58:38Z fabien $
  */
-class sfPropelMigrateUpTask extends sfPropelBaseTask
+class sfPropelMigrateDownTask extends sfPropelBaseTask
 {
   /**
    * @see sfTask
@@ -34,12 +34,12 @@ class sfPropelMigrateUpTask extends sfPropelBaseTask
       new sfCommandOption('verbose', null, sfCommandOption::PARAMETER_NONE, 'Enables verbose output'),
     ));
     $this->namespace = 'propel';
-    $this->name = 'up';
-    $this->aliases = array('migration-up');
-    $this->briefDescription = 'Executes the next migration up';
+    $this->name = 'down';
+    $this->aliases = array('migration-down');
+    $this->briefDescription = 'Executes the next migration down';
 
     $this->detailedDescription = <<<EOF
-The [propel:up|INFO] checks the version of the database structure, and looks for migration files not yet executed (i.e. with a greater version timestamp). The first migration found is executed.
+The [propel:up|INFO] checks the version of the database structure, and looks for migration files already executed (i.e. with a lower version timestamp). The last executed migration found is reversed.
 
 The task reads the database connection settings in [config/databases.yml|COMMENT].
 
@@ -60,24 +60,34 @@ EOF;
     $migrationDirectory = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR . $options['migration-dir'];
     $manager->setMigrationDir($migrationDirectory);
     
-    if (!$nextMigrationTimestamp = $manager->getFirstUpMigrationTimestamp())
+    $previousTimestamps = $manager->getAlreadyExecutedMigrationTimestamps();
+    if (!$nextMigrationTimestamp = array_pop($previousTimestamps))
     {
-      $this->logSection('propel', 'All migrations were already executed - nothing to migrate.');
+      $this->logSection('propel', 'No migration were ever executed on this database - nothing to reverse.');
       return false;
     }
     $this->logSection('propel', sprintf(
-      'Executing migration %s up',
+      'Executing migration %s down',
       $manager->getMigrationClassName($nextMigrationTimestamp)
     ));
     
-    $migration = $manager->getMigrationObject($nextMigrationTimestamp);
-    if (false === $migration->preUp($manager))
+    if ($nbPreviousTimestamps = count($previousTimestamps))
     {
-      $this->logSection('propel', 'preUp() returned false. Aborting migration.', null, 'ERROR');
+      $previousTimestamp = array_pop($previousTimestamps);
+    }
+    else
+    {
+      $previousTimestamp = 0;
+    }
+    
+    $migration = $manager->getMigrationObject($nextMigrationTimestamp);
+    if (false === $migration->preDown($manager))
+    {
+      $this->logSection('propel', 'preDown() returned false. Aborting migration.', null, 'ERROR');
       return false;
     }
     
-    foreach ($migration->getUpSQL() as $datasource => $sql)
+    foreach ($migration->getDownSQL() as $datasource => $sql)
     {
       $connection = $manager->getConnection($datasource);
       if ($options['verbose'])
@@ -122,25 +132,23 @@ EOF;
         count($statements),
         $datasource
       ));
-      $manager->updateLatestMigrationTimestamp($datasource, $nextMigrationTimestamp);
+      
+      $manager->updateLatestMigrationTimestamp($datasource, $previousTimestamp);
       if ($options['verbose'])
       {
-        $this->logSection('propel', sprintf('  Updated latest migration date to %d for datasource "%s"', $nextMigrationTimestamp, $datasource), null, 'COMMENT');
+        $this->logSection('propel', sprintf('  Downgraded latest migration date to %d for datasource "%s"', $previousTimestamp, $datasource), null, 'COMMENT');
       }
     }
 
-    $migration->postUp($manager);
+    $migration->postDown($manager);
     
-    if ($timestamps = $manager->getValidMigrationTimestamps())
+    if ($nbPreviousTimestamps)
     {
-      $this->logSection('propel', sprintf(
-        'Migration complete. %d migrations left to execute.',
-        count($timestamps)
-      ));
+      $this->logSection('propel', sprintf('Reverse migration complete. %d more migrations available for reverse.', $nbPreviousTimestamps));
     }
     else
     {
-      $this->logSection('propel', 'Migration complete. No further migration to execute.');
+      $this->logSection('propel', 'Reverse migration complete. No more migration available for reverse');
     }
   }
 

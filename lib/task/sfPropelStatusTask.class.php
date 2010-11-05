@@ -39,7 +39,7 @@ class sfPropelStatusTask extends sfPropelBaseTask
     $this->briefDescription = 'Lists the migrations yet to be executed';
 
     $this->detailedDescription = <<<EOF
-The [propel:status|INFO] checks the version of the database structure, and looks for migration files not yet executed (i.e. with a lower version timestamp).
+The [propel:status|INFO] checks the version of the database structure, and looks for migration files not yet executed (i.e. with a greater version timestamp).
 
 The task reads the database connection settings in [config/databases.yml|COMMENT].
 
@@ -117,7 +117,7 @@ EOF;
         {
           $this->logSection('propel', sprintf('  %s %s (executed)', $timestamp == $oldestMigrationTimestamp ? '>' : ' ', $manager->getMigrationClassName($timestamp)), null, 'COMMENT');
         }
-        else
+        elseif ($timestamp > $oldestMigrationTimestamp)
         {
           $this->logSection('propel', sprintf('    %s', $manager->getMigrationClassName($timestamp)));
         }
