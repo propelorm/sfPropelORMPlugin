@@ -128,7 +128,7 @@ class sfPropelDatabase extends sfPDODatabase
 
     $event = new sfEvent($propelConfiguration, 'propel.filter_connection_config', array('name' => $this->getParameter('datasource'), 'database' => $this));
 
-    $array = array(
+    $runtimeConf = array(
       'adapter'    => $this->getParameter('phptype'),
       'connection' => array(
         'dsn'       => $this->getParameter('dsn'),
@@ -178,7 +178,7 @@ class sfPropelDatabase extends sfPDODatabase
         }
       }
 
-      $array['slaves']['connection'] = $connections;
+      $runtimeConf['slaves']['connection'] = $connections;
     }
 
     $event = sfProjectConfiguration::getActive()->getEventDispatcher()->filter($event, $array);
