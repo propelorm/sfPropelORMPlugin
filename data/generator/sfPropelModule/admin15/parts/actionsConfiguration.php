@@ -24,7 +24,11 @@
 
   public function getListObjectActions()
   {
+    <?php if ($this->hasBehavior('sortable')): ?>
+    return <?php echo $this->asPhp(isset($this->config['list']['object_actions']) ? $this->config['list']['object_actions'] : array('_edit' => null, '_move_up' => null, '_move_down' => null, '_delete' => null)) ?>;
+    <?php else: ?>
     return <?php echo $this->asPhp(isset($this->config['list']['object_actions']) ? $this->config['list']['object_actions'] : array('_edit' => null, '_delete' => null)) ?>;
+    <?php endif ?>
 <?php unset($this->config['list']['object_actions']) ?>
   }
 

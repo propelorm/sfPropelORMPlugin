@@ -530,4 +530,17 @@ class sfPropelGenerator extends sfModelGenerator
     
     return $customization;
   }
+
+  /**
+   * check if modelClass has a behavior
+   * @param  string  $behavior
+   * @return boolean
+   */
+  public function hasBehavior($behavior)
+  {
+    $behaviors = $this->getTableMap()->getBehaviors();
+
+    return isset($behaviors[$behavior]);
+  }
+
 }

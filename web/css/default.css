@@ -165,6 +165,19 @@
   background: url(../images/edit.png) no-repeat 0 0;
 }
 
+#sf_admin_container ul li.sf_admin_action_moveup a, #sf_admin_container ul li.sf_admin_action_moveup span {
+  background: url(/images/arrow_up.png) no-repeat 0 0;
+}
+
+#sf_admin_container ul li.sf_admin_action_movedown a, #sf_admin_container ul li.sf_admin_action_movedown span {
+  background: url(/images/arrow_down.png) no-repeat 0 0;
+}
+
+#sf_admin_container ul li.disabled span {
+  opacity: 0.40;
+  padding-left: 20px;
+}
+
 #sf_admin_container .notice
 {
   margin: 4px 0;
