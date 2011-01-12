@@ -60,4 +60,29 @@ if (\$this->isModified() && !\$this->isColumnModified({$this->getTable()->getCol
 EOF;
     }
   }
+
+  public function objectMethods($builder)
+  {
+    if ($this->isDisabled())
+    {
+      return;
+    }
+
+    if ($column = $this->getParameter('update_column'))
+    {
+      return <<<EOF
+/**
+ * Mark the current object so that the update date doesn't get updated during next save
+ *
+ * @return     {$builder->getStubObjectBuilder()->getClassname()} The current object (for fluent API support)
+ */
+public function keepUpdateDateUnchanged()
+{
+  \$this->modifiedColumns[] = {$this->getTable()->getColumn($column)->getConstantName()};
+  return \$this;
+}
+
+EOF;
+    }
+  }
 }
