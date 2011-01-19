@@ -1,4 +1,4 @@
-= Installing sfPropel15Plugin With Propel 1.6 =
+# Installing sfPropel15Plugin With Propel 1.6
 
 This version of sfPropelPlugin doesn't come bundled with the required dependencies. To install the plugin on a symfony application, follow these steps:
 
