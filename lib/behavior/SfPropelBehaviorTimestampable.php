@@ -51,19 +51,20 @@ EOF;
 
     if ($column = $this->getParameter('update_column'))
     {
-      if($this->getTable()->hasBehavior('soft_delete'))
+      $columnConstant = $this->getTable()->getColumn($column)->getConstantName();
+      if ($this->getTable()->hasBehavior('soft_delete'))
       {
         $deletedColumn = $this->getTable()->getBehavior('soft_delete')->getParameter('deleted_column');
-        $string = "if (\$this->isModified() && !\$this->isColumnModified({$this->getTable()->getColumn($column)->getConstantName()}) && !\$this->isColumnModified({$this->getTable()->getColumn($deletedColumn)->getConstantName()}))
+        $string = "if (\$this->isModified() && !\$this->isColumnModified($columnConstant) && !\$this->isColumnModified({$this->getTable()->getColumn($deletedColumn)->getConstantName()}))
 {
-  \$this->set{$this->getTable()->getColumn($column)->getPhpName()}(time());
+	\$this->set{$this->getTable()->getColumn($column)->getPhpName()}(time());
 }";
       }
       else
       {
-        $string = "if (\$this->isModified() && !\$this->isColumnModified({$this->getTable()->getColumn($column)->getConstantName()}))
+        $string = "if (\$this->isModified() && !\$this->isColumnModified($columnConstant))
 {
-  \$this->set{$this->getTable()->getColumn($column)->getPhpName()}(time());
+	\$this->set{$this->getTable()->getColumn($column)->getPhpName()}(time());
 }";
       }
 
