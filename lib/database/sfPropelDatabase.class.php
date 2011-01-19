@@ -127,7 +127,8 @@ class sfPropelDatabase extends sfPDODatabase
     }
 
     $event = new sfEvent($propelConfiguration, 'propel.filter_connection_config', array('name' => $this->getParameter('datasource'), 'database' => $this));
-    $event = sfProjectConfiguration::getActive()->getEventDispatcher()->filter($event, array(
+
+    $runtimeConf = array(
       'adapter'    => $this->getParameter('phptype'),
       'connection' => array(
         'dsn'       => $this->getParameter('dsn'),
@@ -140,7 +141,47 @@ class sfPropelDatabase extends sfPDODatabase
           'queries' => $this->getParameter('queries', array()),
         ),
       ),
-    ));
+      'slaves' => array()
+    );
+
+    if (($slaves = $this->getParameter('slaves', null)) && isset($slaves['connection']))
+    {
+      if (isset($slaves['connection']['dns']))
+      {
+        $connections = array(
+          'dsn'       => $slaves['connection']['dsn'],
+          'user'      => $slaves['connection']['username'],
+          'password'  => $slaves['connection']['password'],
+          'classname' => $this->getParameter('classname', 'PropelPDO'),
+          'options'   => $this->getParameter('options', array()),
+          'settings'  => array(
+            'charset' => array('value' => $this->getParameter('encoding', sfConfig::get('sf_charset'))),
+            'queries' => $this->getParameter('queries', array()),
+          ),
+        );
+      }
+      else
+      {
+        foreach ($slaves['connection'] as $name => $connection)
+        {
+          $connections[$name] = array(
+            'dsn'       => $connection['dsn'],
+            'user'      => $connection['username'],
+            'password'  => $connection['password'],
+            'classname' => $this->getParameter('classname', 'PropelPDO'),
+            'options'   => $this->getParameter('options', array()),
+            'settings'  => array(
+              'charset' => array('value' => $this->getParameter('encoding', sfConfig::get('sf_charset'))),
+              'queries' => $this->getParameter('queries', array()),
+            ),
+          );
+        }
+      }
+
+      $runtimeConf['slaves']['connection'] = $connections;
+    }
+
+    $event = sfProjectConfiguration::getActive()->getEventDispatcher()->filter($event, $array);
 
     $propelConfiguration->setParameter('datasources.'.$this->getParameter('datasource'), $event->getReturnValue());
   }
