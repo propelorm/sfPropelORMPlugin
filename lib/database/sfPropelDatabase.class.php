@@ -181,7 +181,7 @@ class sfPropelDatabase extends sfPDODatabase
       $runtimeConf['slaves']['connection'] = $connections;
     }
 
-    $event = sfProjectConfiguration::getActive()->getEventDispatcher()->filter($event, $array);
+    $event = sfProjectConfiguration::getActive()->getEventDispatcher()->filter($event, $runtimeConf);
 
     $propelConfiguration->setParameter('datasources.'.$this->getParameter('datasource'), $event->getReturnValue());
   }
