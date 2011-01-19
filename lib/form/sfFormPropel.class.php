@@ -570,6 +570,7 @@ abstract class sfFormPropel extends sfFormObject
    * Available options:
    *  - hide_on_new: If true, returns null for new objects. Defaults to false.
    *  - collection_form_class: class of the collection form to return. Defaults to sfFormPropelCollection.
+   *  - criteria: Optional criteria to filter related objects
    * Additional options are passed to sfFormPropelCollection::__construct()
    *
    * @param string $relationName The name of a relation of the current Model, e.g. 'Book'
@@ -582,8 +583,8 @@ abstract class sfFormPropel extends sfFormObject
     $options = array_merge(array(
       'hide_on_new'           => false,
       'collection_form_class' => 'sfFormPropelCollection',
-      'add_delete'            => true,
       'criteria'              => null,
+      'add_delete'            => true,
     ), $options);
     
     if ($this->getObject()->isNew() && $options['hide_on_new'])
@@ -598,8 +599,12 @@ abstract class sfFormPropel extends sfFormObject
     {
       throw new sfException('embedRelation() only works for one-to-many relationships');
     }
-
-    $collection = call_user_func_array (array($this->getObject(), sprintf('get%ss', $relationName)), array ($options['criteria']));
+    
+    $collection = call_user_func_array(
+      array($this->getObject(), sprintf('get%ss', $relationName)),
+      array($options['criteria'])
+    );
+    unset($options['criteria']);
     
     // compute relation fields, to be removed from embedded forms
     // because this data is not editable
