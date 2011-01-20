@@ -283,13 +283,16 @@ class sfPropelData extends sfData
         }
 
         // Check that peer class exists before calling doDeleteAll()
-        if (!class_exists(constant($class.'::PEER')))
+        $peerClass = constant($class.'::PEER');
+        if (!class_exists($peerClass))
         {
           throw new InvalidArgumentException(sprintf('Unknown class "%sPeer".', $class));
         }
         
         $this->log(sprintf('deleting data from %s', $class));
-        call_user_func(array(constant($class.'::PEER'), 'doDeleteAll'), $this->con);
+        // bypass the soft_delete behavior if enabled
+        $deleteMethod = method_exists($peerClass, 'doForceDeleteAll') ? 'doForceDeleteAll' : 'doDeleteAll';
+        call_user_func(array($peerClass, $deleteMethod), $this->con);
 
         $this->deletedClasses[] = $class;
       }
