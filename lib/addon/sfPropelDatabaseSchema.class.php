@@ -343,7 +343,8 @@ class sfPropelDatabaseSchema
           $xml .= ">\n";
           foreach ($parameters as $key => $value)
           {
-            $xml .= "    <parameter name=\"$key\" value=\"{$this->fixXMLBoolean($value)}\"/>\n";
+            $value = is_array($value) ? implode(', ', $value) : $this->fixXMLBoolean($value);
+            $xml .= "    <parameter name=\"$key\" value=\"$value\"/>\n";
           }
           $xml .= "  </behavior>\n";
         }
@@ -398,7 +399,8 @@ class sfPropelDatabaseSchema
             $xml .= "    <behavior name=\"$behavior_name\">\n";
             foreach ($parameters as $param_name => $param_value)
             {
-              $xml .= "      <parameter name=\"$param_name\" value=\"{$this->fixXMLBoolean($param_value)}\" />\n";
+              $param_value = is_array($param_value) ? implode(', ', $param_value) : $this->fixXMLBoolean($param_value);
+              $xml .= "      <parameter name=\"$param_name\" value=\"$param_value\"/>\n";
             }
             $xml .= "    </behavior>\n";
           }
