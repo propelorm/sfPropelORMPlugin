@@ -165,14 +165,14 @@ The partial column code is a one-liner, but it's quite tedious to repeat it many
 
     [php]
     // in modules/book/templates/_author.php
-    <?php echo link_to($book->getAuthor(), 'author_edit', $book->getAuthor) ?>
+    <?php echo link_to($book->getAuthor(), 'author_edit', $book->getAuthor()) ?>
 
 The `admin15` theme provides a shortcut for this situation. Just define the `link_module` setting in the `Author` field configuration to point the `author` module, and you're good to go:
 
     [yaml]
     # in generator.yml
     list:
-      display:  [title, Author]
+      display:  [title, =Author]
       fields:
         Author: { link_module: author }
         
