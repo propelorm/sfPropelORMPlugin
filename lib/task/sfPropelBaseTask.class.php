@@ -429,6 +429,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     } else {
       $ad = $ads[0];
     }
+    $ad->doFinalInitialization();
     return $ad;
   }
   
@@ -439,7 +440,31 @@ abstract class sfPropelBaseTask extends sfBaseTask
     {
       $params = parse_ini_file($iniFile);
     }
-    require_once dirname(__FILE__) . '/../vendor/propel-generator/lib/config/GeneratorConfig.php';
+    $behaviorsMapping = array(
+      'timestampable' => 'TimestampableBehavior',
+      'alternative_coding_standards' => 'AlternativeCodingStandardsBehavior',
+      'soft_delete' => 'SoftDeleteBehavior',
+      'auto_add_pk' => 'AutoAddPkBehavior',
+      'nested_set' => 'nestedset.NestedSetBehavior',
+      'sortable' => 'sortable.SortableBehavior',
+      'sluggable' => 'sluggable.SluggableBehavior',
+      'concrete_inheritance' => 'concrete_inheritance.ConcreteInheritanceBehavior',
+      'query_cache' => 'query_cache.QueryCacheBehavior',
+      'aggregate_column' => 'aggregate_column.AggregateColumnBehavior',
+      'versionable' => 'versionable.VersionableBehavior',
+      'i18n' => 'i18n.I18nBehavior',
+    );
+    foreach ($behaviorsMapping as $behavior => $value) {
+      $key = 'propel.behavior.' . $behavior . '.class';
+      if (!isset($params[$key])) {
+        $params[$key] = 'behavior.' . $value;
+      }
+    }
+    
+    sfToolkit::addIncludePath(array(
+      sfConfig::get('sf_propel_generator_path', realpath(dirname(__FILE__).'/../vendor/propel-generator/lib')),
+    ));
+    require_once 'config/GeneratorConfig.php';
     return new GeneratorConfig($params);
   }
 
