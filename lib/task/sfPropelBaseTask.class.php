@@ -415,7 +415,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
       
       $ad = $xmlParser->parseString($dom->saveXML(), $schema);
       $ads[] = $ad;
-      $nbTables = $ad->getDatabase()->countTables();
+      $nbTables = $ad->getDatabase(null, false)->countTables();
       if ($verbose)
       {
         $this->logSection('schema', sprintf('  %d tables processed successfully', $nbTables), null, 'COMMENT');
