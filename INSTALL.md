@@ -8,7 +8,7 @@ This version of sfPropelPlugin doesn't come bundled with the required dependenci
     > git checkout -b 1.6 remotes/origin/1.6
     > cd lib/
     > mkdir vendor
-    > cd vendor
+    > cd vendor/
     > svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3/classes/phing phing
     > svn checkout http://svn.propelorm.org/branches/1.6/runtime/lib propel
     > svn checkout http://svn.propelorm.org/branches/1.6/generator propel-generator
