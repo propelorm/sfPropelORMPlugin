@@ -55,7 +55,7 @@ EOF;
       if ($this->getTable()->hasBehavior('soft_delete'))
       {
         $deletedColumnName = $this->getTable()->getBehavior('soft_delete')->getParameter('deleted_column');
-        $deletedColumnConstant = $this->getTable()->getColumn($deletedColumn)->getConstantName();
+        $deletedColumnConstant = $this->getTable()->getColumn($deletedColumnName)->getConstantName();
         $string = "if (\$this->isModified() && !\$this->isColumnModified($columnConstant) && !\$this->isColumnModified($deletedColumnConstant))
 {
 	\$this->set{$this->getTable()->getColumn($column)->getPhpName()}(time());
