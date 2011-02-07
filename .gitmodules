@@ -1,0 +1,3 @@
+[submodule "lib/vendor/phing"]
+	path = lib/vendor/phing
+	url = https://github.com/KaroDidi/phing.git
