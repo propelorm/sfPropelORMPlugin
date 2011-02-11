@@ -20,6 +20,8 @@ Right after the installation of the plugin, you should update plugin assets:
 
 Disable the core Propel plugin and enable the `sfPropel15Plugin` instead:
 
+::
+
     [php]
     class ProjectConfiguration extends sfProjectConfiguration
     {
@@ -30,6 +32,8 @@ Disable the core Propel plugin and enable the `sfPropel15Plugin` instead:
     }
 
 Change the path of the symfony behaviors in the `config/propel.ini` file of your project:
+
+::
 
     [ini]
     propel.behavior.symfony.class                  = plugins.sfPropel15Plugin.lib.behavior.SfPropelBehaviorSymfony
@@ -46,6 +50,8 @@ What's New In Propel 1.5
 ------------------------
 
 Propel 1.5 is a **backwards compatible** evolution of Propel 1.4 (the version bundled with symfony 1.3 and 1.4), which adds some very interesting features. Among these features, you will find the **new Propel Query API**, which is essentially a Criteria on steroids: 
+
+::
 
     [php]
     // find the 10 latest books published by authror 'Leo'
@@ -78,6 +84,8 @@ Propel 1.5 bundles most common behaviors in a new, robust buildtime implementati
 
 `sfPropel15Plugin` allows you to register core propel behaviors right from your `schema.yml`. For instance, to create a tree structure from a `Section` model:
 
+::
+
     [yaml]
     propel:
       section:
@@ -90,6 +98,8 @@ Propel 1.5 bundles most common behaviors in a new, robust buildtime implementati
 **Tip**: Check the [`doc/schema.txt`](http://trac.symfony-project.org/browser/plugins/sfPropel15Plugin/trunk/doc/schema.txt) file in this plugin source code for a complete reference of the YAML schema format.
 
 You can also register a behavior for all your models right in the `propel.ini` configuration file. `sfPropel15Plugin` already enables the `symfony` and `symfony_i18n` behaviors to support symfony's behavior system and model localization features, but you can easily add your owns:
+
+::
 
     [ini]
     propel.behavior.default = symfony,symfony_i18n,alternative_coding_standards,auto_add_pk
@@ -123,14 +133,16 @@ Form Subframework Modifications
 - **Plain text widget and validator**: This new widget allows a field to be displayed in a form, without letting the use change it.
 - **Easy Relation Embed**: Editing related objects together with the main objects (e.g., editing `Comments` in a `Post` form) is a piece of cake. The new `sfFormPropel::embedRelation()` method does all the work to fetch related objects, build the forms for each of them, and embed the related object forms into the main form. Embdeded relation forms allow to **edit**, **add**, and **delete** a related objects with no additional code.
 
-        [php]
-        class ArticleForm extends BaseArticleForm
-        {
-          public function configure()
-          {
-            $this->embedRelation('Book');
-          }
-        }
+::
+
+    [php]
+    class ArticleForm extends BaseArticleForm
+    {
+      public function configure()
+      {
+        $this->embedRelation('Book');
+      }
+    }
 
 The Propel widgets, validators, and form classes are fully documented in the [`doc/form.txt`](http://trac.symfony-project.org/browser/plugins/sfPropel15Plugin/trunk/doc/form.txt) file in this plugin source code.
 
@@ -138,6 +150,8 @@ Routing Modifications
 ---------------------
 
 The plugin offer two new routing classes, `sfPropel15Route` and `sfPropel15RouteCollection`. These classes are used by default in the models build with the propel admin generator. They behave just like the previous `sfPropelRoute` class - except they don't use the `methods` option anymore. Instead, use the `query_methods` option to execute a list of arbitrary query methods when calling `getObject()` and `getObjects()`.
+
+::
 
     author:
       class: sfPropel15RouteCollection
@@ -152,6 +166,8 @@ The plugin offer two new routing classes, `sfPropel15Route` and `sfPropel15Route
         with_wildcard_routes: true
 
 `sfPropel15Route` also makes your code a little easier to read in the action. Instead of calling `getObject()`, you can actually call a getter using the class name of the object's route:
+
+::
 
     [php]
     public function executeShow(sfWebRequest $request)
