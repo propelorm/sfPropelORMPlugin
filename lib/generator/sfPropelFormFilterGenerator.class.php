@@ -121,6 +121,7 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
     {
       case PropelColumnTypes::BOOLEAN:
       case PropelColumnTypes::BOOLEAN_EMU:
+      case PropelColumnTypes::ENUM:
         $name = 'Choice';
         break;
       case PropelColumnTypes::DATE:
@@ -164,6 +165,11 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
         $options[] = "'from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate()";
         $options = array_merge($options, $withEmpty);
         break;
+      case PropelColumnTypes::ENUM:
+        $peerClassName = $this->table->getPeerClassname();
+        $colConst = $peerClassName . '::' . strtoupper($column->getName());
+        $options[] = sprintf("'choices' => array_merge(array(''=>'all'), %s::getValueSet(%s))", $peerClassName, $colConst);
+        break;
       default:
         $options = array_merge($options, $withEmpty);
     }
@@ -195,6 +201,7 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
     {
       case PropelColumnTypes::BOOLEAN:
       case PropelColumnTypes::BOOLEAN_EMU:
+      case PropelColumnTypes::ENUM:
         $name = 'Choice';
         break;
       case PropelColumnTypes::DOUBLE:
@@ -258,6 +265,11 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
         case PropelColumnTypes::TIME:
         case PropelColumnTypes::TIMESTAMP:
           $options[] = "'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false))";
+          break;
+        case PropelColumnTypes::ENUM:
+          $peerClassName = $this->table->getPeerClassname();
+          $colConst = $peerClassName . '::' . strtoupper($column->getName());
+          $options[] = sprintf("'choices' => %s::getValueSet(%s)", $peerClassName, $colConst);
           break;
       }
     }

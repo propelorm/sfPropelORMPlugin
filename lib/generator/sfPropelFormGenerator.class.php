@@ -240,6 +240,9 @@ class sfPropelFormGenerator extends sfGenerator
       case PropelColumnTypes::TIMESTAMP:
         $name = 'DateTime';
         break;
+      case PropelColumnTypes::ENUM:
+        $name = 'Choice';
+        break;
       default:
         $name = 'InputText';
     }
@@ -276,6 +279,14 @@ class sfPropelFormGenerator extends sfGenerator
       {
         $options[] = sprintf('\'key_method\' => \'get%s\'', $refColumn->getPhpName());
       }
+    }
+
+    if (PropelColumnTypes::ENUM == $column->getType())
+    {
+      $peerClassName = $this->table->getPeerClassname();
+      $colConst = $peerClassName . '::' . strtoupper($column->getName());
+
+      $options[] = sprintf("'choices' => %s::getValueSet(%s)", $peerClassName, $colConst);
     }
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
@@ -323,6 +334,9 @@ class sfPropelFormGenerator extends sfGenerator
         break;
       case PropelColumnTypes::TIMESTAMP:
         $name = 'DateTime';
+        break;
+      case PropelColumnTypes::ENUM:
+        $name = 'Choice';
         break;
       default:
         $name = 'Pass';
@@ -383,6 +397,11 @@ class sfPropelFormGenerator extends sfGenerator
 
        case PropelColumnTypes::BIGINT:
          $options[] = sprintf('\'min\' => %s, \'max\' => %s', -9223372036854775808, 9223372036854775807);
+         break;
+       case PropelColumnTypes::ENUM:
+         $peerClassName = $this->table->getPeerClassname();
+         $colConst = $peerClassName . '::' . strtoupper($column->getName());
+         $options[] = sprintf("'choices' => %s::getValueSet(%s)", $peerClassName, $colConst);
          break;
       }
     }
