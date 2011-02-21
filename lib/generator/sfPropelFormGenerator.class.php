@@ -283,10 +283,10 @@ class sfPropelFormGenerator extends sfGenerator
 
     if (PropelColumnTypes::ENUM == $column->getType())
     {
-      $peerClassName = $this->table->getPeerClassname();
-      $colConst = $peerClassName . '::' . strtoupper($column->getName());
+      $valueSet = $column->getValueSet();
+      $choices = array_merge(array(''=>''), array_combine($valueSet, $valueSet));
 
-      $options[] = sprintf("'choices' => %s::getValueSet(%s)", $peerClassName, $colConst);
+      $options[] = sprintf("'choices' => %s", preg_replace('/\s+/', '', var_export($choices, true)));
     }
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
@@ -399,9 +399,8 @@ class sfPropelFormGenerator extends sfGenerator
          $options[] = sprintf('\'min\' => %s, \'max\' => %s', -9223372036854775808, 9223372036854775807);
          break;
        case PropelColumnTypes::ENUM:
-         $peerClassName = $this->table->getPeerClassname();
-         $colConst = $peerClassName . '::' . strtoupper($column->getName());
-         $options[] = sprintf("'choices' => %s::getValueSet(%s)", $peerClassName, $colConst);
+         $valueSet = $column->getValueSet();
+         $options[] = sprintf("'choices' => %s", preg_replace('/\s+/', '', var_export($valueSet, true)));
          break;
       }
     }

@@ -166,9 +166,10 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
         $options = array_merge($options, $withEmpty);
         break;
       case PropelColumnTypes::ENUM:
-        $peerClassName = $this->table->getPeerClassname();
-        $colConst = $peerClassName . '::' . strtoupper($column->getName());
-        $options[] = sprintf("'choices' => array_merge(array(''=>'all'), %s::getValueSet(%s))", $peerClassName, $colConst);
+        $valueSet = $column->getValueSet();
+        $choices = array_merge(array(''=>'all'), $valueSet);
+        $options[] = sprintf("'choices' => %s", preg_replace('/\s+/', '', var_export($choices, true)));
+
         break;
       default:
         $options = array_merge($options, $withEmpty);
@@ -267,9 +268,8 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
           $options[] = "'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false))";
           break;
         case PropelColumnTypes::ENUM:
-          $peerClassName = $this->table->getPeerClassname();
-          $colConst = $peerClassName . '::' . strtoupper($column->getName());
-          $options[] = sprintf("'choices' => %s::getValueSet(%s)", $peerClassName, $colConst);
+          $valueSet = $column->getValueSet();
+          $options[] = sprintf("'choices' => %s", preg_replace('/\s+/', '', var_export(array_keys($valueSet), true)));
           break;
       }
     }
