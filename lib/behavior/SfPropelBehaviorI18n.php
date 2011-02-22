@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+require_once dirname(__FILE__) . '/../vendor/propel-generator/lib/util/PropelPHPParser.php';
+
 /**
  * Internationalizes Propel models.
  *
@@ -215,6 +217,18 @@ EOF;
     }
 
     return $script;
+  }
+  
+  /**
+   * The object builder adds a first __toString() method, 
+   * and this behavior adds a second one in objectMethods(), 
+   * so the first one must be removed.
+   */
+  public function objectFilter(&$script)
+  {
+    $parser = new PropelPHPParser($script, true);
+    $parser->removeMethod('__toString');
+    $script = $parser->getCode();
   }
 
   public function staticMethods()
