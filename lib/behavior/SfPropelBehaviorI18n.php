@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+require_once dirname(__FILE__) . '/../vendor/propel-generator/lib/util/PropelPHPParser.php';
+
 /**
  * Internationalizes Propel models.
  *
@@ -199,22 +201,37 @@ public function set{$refPhpName}ForCulture({$this->getI18nTable()->getPhpName()}
 
 EOF;
 
+    return $script;
+  }
+  
+  /**
+   * The object builder adds a first __toString() method, 
+   * and this behavior adds a second one in objectMethods(), 
+   * so the first one must be removed.
+   */
+  public function objectFilter(&$script)
+  {
     if (!$this->hasPrimaryString($this->getTable()) && $this->hasPrimaryString($this->getI18nTable()))
     {
-      $script .= <<<EOF
+      $foreignKey = $this->getI18nTable()->getBehavior('symfony_i18n_translation')->getForeignKey();
+      $refPhpName = $foreignKey->getRefPhpName() ? $foreignKey->getRefPhpName() : $this->getI18nTable()->getPhpName();
+      $toString .= <<<EOF
 
-/**
- * @see {$this->getI18nTable()->getPhpName()}
- */
-public function __toString()
-{
-  return (string) \$this->getCurrent{$refPhpName}();
-}
+
+	/**
+	 * Uses the primaryString column from the related i18n model
+	 * @see {$this->getI18nTable()->getPhpName()}
+	 */
+	public function __toString()
+	{
+  	return (string) \$this->getCurrent{$refPhpName}();
+	}
 
 EOF;
+      $parser = new PropelPHPParser($script, true);
+      $parser->replaceMethod('__toString', $toString);
+      $script = $parser->getCode();
     }
-
-    return $script;
   }
 
   public function staticMethods()
