@@ -201,21 +201,6 @@ public function set{$refPhpName}ForCulture({$this->getI18nTable()->getPhpName()}
 
 EOF;
 
-    if (!$this->hasPrimaryString($this->getTable()) && $this->hasPrimaryString($this->getI18nTable()))
-    {
-      $script .= <<<EOF
-
-/**
- * @see {$this->getI18nTable()->getPhpName()}
- */
-public function __toString()
-{
-  return (string) \$this->getCurrent{$refPhpName}();
-}
-
-EOF;
-    }
-
     return $script;
   }
   
@@ -226,9 +211,27 @@ EOF;
    */
   public function objectFilter(&$script)
   {
-    $parser = new PropelPHPParser($script, true);
-    $parser->removeMethod('__toString');
-    $script = $parser->getCode();
+    if (!$this->hasPrimaryString($this->getTable()) && $this->hasPrimaryString($this->getI18nTable()))
+    {
+      $foreignKey = $this->getI18nTable()->getBehavior('symfony_i18n_translation')->getForeignKey();
+      $refPhpName = $foreignKey->getRefPhpName() ? $foreignKey->getRefPhpName() : $this->getI18nTable()->getPhpName();
+      $toString .= <<<EOF
+
+
+	/**
+	 * Uses the primaryString column from the related i18n model
+	 * @see {$this->getI18nTable()->getPhpName()}
+	 */
+	public function __toString()
+	{
+  	return (string) \$this->getCurrent{$refPhpName}();
+	}
+
+EOF;
+      $parser = new PropelPHPParser($script, true);
+      $parser->replaceMethod('__toString', $toString);
+      $script = $parser->getCode();
+    }
   }
 
   public function staticMethods()
