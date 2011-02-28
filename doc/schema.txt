@@ -131,6 +131,7 @@ Foreign key columns accept additional parameters:
   * `onDelete`: Determines the action to trigger when a record in a related table is deleted. When set to `setnull`, the foreign key column is set to `null`. When set to `cascade`, the record is deleted. If the database engine doesn't support the set behavior, the ORM emulates it.
   * `fkPhpName`: Name of the related object seen from the current object. Propel uses this name to generate filters and accessors (see the 'Relation Names' section below)
   * `fkRefPhpName`: Name of the current object seen from the related object.
+  * `fkSkipSql`: Set to true for virtual foreign keys, not translated into SQL
 
 ### Empty Column Definition
    
