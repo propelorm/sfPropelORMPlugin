@@ -77,7 +77,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     $choices = array();
     if (false !== $this->getOption('add_empty'))
     {
-      $choices[''] = true === $this->getOption('add_empty') ? '' : $this->getOption('add_empty');
+      $choices[''] = true === $this->getOption('add_empty') ? '' : sfContext::getInstance()->getI18N()->__($this->getOption('add_empty'));
     }
 
     $criteria = PropelQuery::from($this->getOption('model'));
