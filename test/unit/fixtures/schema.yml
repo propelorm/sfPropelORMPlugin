@@ -21,6 +21,8 @@ propel:
     first_name:     { type: varchar, size: 255, default: "Anonymous" }
     last_name:      varchar(50)
     age:            { type: integer, required: true, index: true }
+    is_alive:       { type: boolean, default: true }
+    is_dead:       { type: boolean, required: true, default: false }
     ab_group_id:
     created_at:
 

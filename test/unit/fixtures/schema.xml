@@ -22,6 +22,8 @@
     <index>
       <index-column name="age" />
     </index>
+    <column name="is_alive" type="boolean" default="true" />
+    <column name="is_dead" type="boolean" required="true" default="false" />
     <column name="ab_group_id" type="integer" />
     <foreign-key foreignTable="ab_group">
       <reference local="ab_group_id" foreign="id" />
@@ -64,7 +66,7 @@
 
   <table name="ij_article" phpName="Article" behaviors="a:2:{s:8:&quot;paranoid&quot;;a:1:{s:6:&quot;column&quot;;s:10:&quot;deleted_at&quot;;}s:17:&quot;act_as_nested_set&quot;;N;}">
     <behavior name="paranoid">
-      <parameter name="column" value="deleted_at" />
+      <parameter name="column" value="deleted_at"/>
     </behavior>
     <behavior name="act_as_nested_set" />
     <column name="title" type="varchar" size="50" />
