@@ -155,8 +155,16 @@ class sfPropel15Route extends sfRequestRoute
     $query = PropelQuery::from($this->options['model']);
     if (isset($this->options['query_methods']))
     {
-      foreach ($this->options['query_methods'] as $methodName) {
-        $query->$methodName();
+      foreach ($this->options['query_methods'] as $methodName => $methodParams)
+      {
+        if(is_array($methodParams))
+        {
+          call_user_func_array(array($criteria, $methodName), $methodParams);
+        }
+        else
+        {
+          $criteria->$methodParams();
+        }
       }
     }
     $query->filterByArray($this->getModelParameters($this->parameters));
