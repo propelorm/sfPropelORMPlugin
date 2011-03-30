@@ -963,10 +963,19 @@ class sfPropelDatabaseSchema
     {
       return $value == 1 ? 'true' : 'false';
     }
-    else
+    $acceptStringBoolean = array('default');
+    if (in_array($key, $acceptStringBoolean))
     {
-      return null === $value ? 'null' : $value;
+      if ($value === true)
+      {
+        return 'true';
+      }
+      if ($value === false)
+      {
+        return 'false';
+      }
     }
+    return null === $value ? 'null' : $value;
   }
 
   /**
