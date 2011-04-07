@@ -107,6 +107,17 @@ EOF;
     $this->copyXmlSchemaFromPlugins('generated-');
     $appData = $this->getModels($databaseManager, $options['verbose']);
     $this->logSection('propel', sprintf('%d tables defined in the schema files.', $appData->countTables()));
+    if (!$options['verbose'])
+    {
+      $detachedDispatcher = $this->dispatcher;
+      // set the dispatcher to null to avoid logging from sfFilesystem::remove()
+      $this->dispatcher = null;
+    }
+    $this->cleanup();
+    if (!$options['verbose'])
+    {
+      $this->dispatcher = $detachedDispatcher;
+    }
     
     $this->logSection('propel', 'Comparing databases and schemas...');
     $manager = new PropelMigrationManager();
