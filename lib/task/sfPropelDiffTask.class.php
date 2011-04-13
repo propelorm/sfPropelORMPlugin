@@ -137,8 +137,10 @@ EOF;
       }
       $databaseDiff = PropelDatabaseComparator::computeDiff($database, $appData->getDatabase($name));
     
-      if (!$databaseDiff && $options['verbose']) {
-        $this->logSection('propel', sprintf('  Same XML and database structures for datasource "%s" - no diff to generate', $name), null, 'COMMENT');
+      if (!$databaseDiff) {
+        if($options['verbose']) {
+          $this->logSection('propel', sprintf('  Same XML and database structures for datasource "%s" - no diff to generate', $name), null, 'COMMENT');
+        }
         continue;
       }
     
@@ -154,7 +156,7 @@ EOF;
 
     if (!$migrationsUp)
     {
-      $this->logSection('propel', 'Same XML and database structures for all datasource - no diff to generate');
+      $this->logSection('propel', 'Same XML and database structures for all datasources - no diff to generate');
       return;
     }
     
