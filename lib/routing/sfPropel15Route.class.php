@@ -159,11 +159,11 @@ class sfPropel15Route extends sfRequestRoute
       {
         if(is_array($methodParams))
         {
-          call_user_func_array(array($criteria, $methodName), $methodParams);
+          call_user_func_array(array($query, $methodName), $methodParams);
         }
         else
         {
-          $criteria->$methodParams();
+          $query->$methodParams();
         }
       }
     }

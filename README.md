@@ -139,6 +139,7 @@ Routing Modifications
 
 The plugin offer two new routing classes, `sfPropel15Route` and `sfPropel15RouteCollection`. These classes are used by default in the models build with the propel admin generator. They behave just like the previous `sfPropelRoute` class - except they don't use the `methods` option anymore. Instead, use the `query_methods` option to execute a list of arbitrary query methods when calling `getObject()` and `getObjects()`.
 
+    [yaml]
     author:
       class: sfPropel15RouteCollection
       options:
@@ -149,6 +150,24 @@ The plugin offer two new routing classes, `sfPropel15Route` and `sfPropel15Route
         query_methods:        
           object: [filterByIsPublished]
           list:   [filterByIsPublished, orderByLastName]
+        with_wildcard_routes: true
+
+Array of additional parameters are also possible for `query_methods`:
+
+    [yaml]
+    author:
+      class: sfPropel15RouteCollection
+      options:
+        model:                author
+        module:               author
+        prefix_path:          /author
+        column:               id
+        query_methods:
+          object:
+            filterByIsPublished: [false]
+          list:
+            filterByIsPublished: []
+            orderBy:             [LastName]
         with_wildcard_routes: true
 
 `sfPropel15Route` also makes your code a little easier to read in the action. Instead of calling `getObject()`, you can actually call a getter using the class name of the object's route:

@@ -74,7 +74,7 @@ You must implement each `query_method` in the main object's query class. In this
         return $this->filterByPublishedAt(array('min' => time()));
       }
     }
-    
+
 You can use this feature to add calculated columns to the list without additional queries:
 
     [yaml]
@@ -100,6 +100,15 @@ Now you can add a partial column and use the virtual `NbReviews` column in the l
     [php]
     <?php echo $book->getVirtualColumn('NbReviews') ?>
 
+Sometimes you may want to add additional parameter(s) to `query_method`. You can do that by adding array to specific `query_method`. This example does the same as previous but shows how to pass parameters:
+
+    [yaml]
+    list:
+      display:       [title]
+      query_methods:
+        leftJoin:    ['Book.Review']
+        withColumn:  ['COUNT(Review.Id)', 'NbReviews']
+
 Sorting On A Virtual Column
 ---------------------------
 
@@ -110,7 +119,7 @@ The new theme provides an easy way to make virtual columns and foreign key colum
     list:
       display:       [title, Author]
       query_methods: [joinWithAuthor]
-      fields: 
+      fields:
         - Author:    { is_sortable: true }
 
 Then the generator will try to execute `BookQuery::orderByAuthor()` whenever the user clicks on the `Author` header to sort on this column. The method must be implemented as follows:
@@ -134,10 +143,10 @@ You can override the default sorting method name for a field by setting the `sor
     list:
       display:       [title, Author]
       query_methods: [joinWithAuthor]
-      fields: 
+      fields:
         - Author:    { is_sortable: true, sort_method: orderByAuthorLastName }
-        
-The generator will execute `BookQuery::orderByAuthorLastName()` instead of `BookQuery::orderByAuthor()` in that case. 
+
+The generator will execute `BookQuery::orderByAuthorLastName()` instead of `BookQuery::orderByAuthor()` in that case.
 
 Filtering The List With GET Parameters
 --------------------------------------
@@ -175,7 +184,7 @@ The `admin15` theme provides a shortcut for this situation. Just define the `lin
       display:  [title, =Author]
       fields:
         Author: { link_module: author }
-        
+
 You no longer need a partial for such simple cases. This should unclutter the `templates/` directory of your admin generator modules.
 
 Easy Custom Filter
@@ -183,7 +192,7 @@ Easy Custom Filter
 
 Adding custom filters becomes very easy once you can take advantage of the generated Propel query classes. For example, in a list of `Books`, the default filters offer one text input for the book title, and a second one for the book ISBN. In order to replace them with a single text input, here is what you need to do:
 
-    [php]    
+    [php]
     // in lib/filter/BookFormFilter.php
     class BookFormFilter extends BaseBookFormFilter
     {
@@ -193,7 +202,7 @@ Adding custom filters becomes very easy once you can take advantage of the gener
         $this->validatorSchema['full_text'] = new sfValidatorPass(array('required' => false));
       }
     }
-    
+
     // in lib/model/Bookquery.php
     class BookQuery extends BaseBookQuery
     {
@@ -234,7 +243,7 @@ For instance, to replace an input filter on a text column by a choice list, try 
     [php]
     filter:
       fields:
-        sex: 
+        sex:
           widgetClass:   sfWidgetFormChoice
           widgetOptions: { choices: { '': '' , male: Male, female: Female } }
 
@@ -243,7 +252,7 @@ To remove the "is empty" checkbox for a given filter, just set the relevant widg
     [php]
     filter:
       fields:
-        title: 
+        title:
           widgetOptions: { with_empty: false }
 
 To replace a text input by a textarea in the edit form, change the widget class:
