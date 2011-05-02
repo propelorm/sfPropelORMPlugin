@@ -107,6 +107,17 @@ EOF;
     $this->copyXmlSchemaFromPlugins('generated-');
     $appData = $this->getModels($databaseManager, $options['verbose']);
     $this->logSection('propel', sprintf('%d tables defined in the schema files.', $appData->countTables()));
+    if (!$options['verbose'])
+    {
+      $detachedDispatcher = $this->dispatcher;
+      // set the dispatcher to null to avoid logging from sfFilesystem::remove()
+      $this->dispatcher = null;
+    }
+    $this->cleanup();
+    if (!$options['verbose'])
+    {
+      $this->dispatcher = $detachedDispatcher;
+    }
     
     $this->logSection('propel', 'Comparing databases and schemas...');
     $manager = new PropelMigrationManager();
@@ -126,8 +137,10 @@ EOF;
       }
       $databaseDiff = PropelDatabaseComparator::computeDiff($database, $appData->getDatabase($name));
     
-      if (!$databaseDiff && $options['verbose']) {
-        $this->logSection('propel', sprintf('  Same XML and database structures for datasource "%s" - no diff to generate', $name), null, 'COMMENT');
+      if (!$databaseDiff) {
+        if($options['verbose']) {
+          $this->logSection('propel', sprintf('  Same XML and database structures for datasource "%s" - no diff to generate', $name), null, 'COMMENT');
+        }
         continue;
       }
     
@@ -143,7 +156,7 @@ EOF;
 
     if (!$migrationsUp)
     {
-      $this->logSection('propel', 'Same XML and database structures for all datasource - no diff to generate');
+      $this->logSection('propel', 'Same XML and database structures for all datasources - no diff to generate');
       return;
     }
     

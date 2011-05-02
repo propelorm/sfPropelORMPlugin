@@ -3,9 +3,8 @@
 This version of sfPropelPlugin doesn't come bundled with the required dependencies. To install the plugin on a symfony application, follow these steps:
 
     > cd plugins/
-    > git clone git://github.com/fzaninotto/sfPropel15Plugin.git
+    > git clone git://github.com/fzaninotto/sfPropel15Plugin.git -b 1.6
     > cd sfPropel15Plugin/
-    > git checkout -b 1.6 remotes/origin/1.6
     > cd lib/
     > mkdir vendor
     > cd vendor/
