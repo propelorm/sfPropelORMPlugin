@@ -117,7 +117,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
       $query = join($outerGlue, $parts);
       if ($query == "SET NAMES 'utf8'")
       {
-        // This is the initialization query that occurs on every request. 
+        // This is the initialization query that occurs on every request.
         // It is not significant, so prune it.
         continue;
       }

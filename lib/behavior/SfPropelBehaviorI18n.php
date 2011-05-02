@@ -203,10 +203,10 @@ EOF;
 
     return $script;
   }
-  
+
   /**
-   * The object builder adds a first __toString() method, 
-   * and this behavior adds a second one in objectMethods(), 
+   * The object builder adds a first __toString() method,
+   * and this behavior adds a second one in objectMethods(),
    * so the first one must be removed.
    */
   public function objectFilter(&$script)
@@ -258,7 +258,7 @@ EOF;
     {
       $newObject = "\$cls = {$this->getTable()->getPhpName()}Peer::getOMClass(false)";
     }
-    
+
     return <<<EOF
 
 /**

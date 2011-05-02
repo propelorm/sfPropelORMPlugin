@@ -26,7 +26,7 @@ class sfPropel
    *
    * @param sfEventDispatcher $dispatcher
    * @param string $culture
-   * 
+   *
    * @deprecated Moved to {@link sfPropelPluginConfiguration}
    */
   static public function initialize(sfEventDispatcher $dispatcher, $culture = null)

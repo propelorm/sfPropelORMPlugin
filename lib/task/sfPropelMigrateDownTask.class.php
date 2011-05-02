@@ -59,7 +59,7 @@ EOF;
     $manager->setMigrationTable($options['migration-table']);
     $migrationDirectory = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR . $options['migration-dir'];
     $manager->setMigrationDir($migrationDirectory);
-    
+
     $previousTimestamps = $manager->getAlreadyExecutedMigrationTimestamps();
     if (!$nextMigrationTimestamp = array_pop($previousTimestamps))
     {
@@ -70,7 +70,7 @@ EOF;
       'Executing migration %s down',
       $manager->getMigrationClassName($nextMigrationTimestamp)
     ));
-    
+
     if ($nbPreviousTimestamps = count($previousTimestamps))
     {
       $previousTimestamp = array_pop($previousTimestamps);
@@ -79,14 +79,14 @@ EOF;
     {
       $previousTimestamp = 0;
     }
-    
+
     $migration = $manager->getMigrationObject($nextMigrationTimestamp);
     if (false === $migration->preDown($manager))
     {
       $this->logSection('propel', 'preDown() returned false. Aborting migration.', null, 'ERROR');
       return false;
     }
-    
+
     foreach ($migration->getDownSQL() as $datasource => $sql)
     {
       $connection = $manager->getConnection($datasource);
@@ -120,7 +120,7 @@ EOF;
       {
         $this->logSection('propel', 'No statement was executed. The version was not updated.');
         $this->logSection('propel', sprintf(
-          'Please review the code in "%s"', 
+          'Please review the code in "%s"',
           $manager->getMigrationDir() . DIRECTORY_SEPARATOR . $manager->getMigrationClassName($nextMigrationTimestamp)
         ));
         $this->logSection('propel', 'Migration aborted', null, 'ERROR');
@@ -132,7 +132,7 @@ EOF;
         count($statements),
         $datasource
       ));
-      
+
       $manager->updateLatestMigrationTimestamp($datasource, $previousTimestamp);
       if ($options['verbose'])
       {
@@ -141,7 +141,7 @@ EOF;
     }
 
     $migration->postDown($manager);
-    
+
     if ($nbPreviousTimestamps)
     {
       $this->logSection('propel', sprintf('Reverse migration complete. %d more migrations available for reverse.', $nbPreviousTimestamps));

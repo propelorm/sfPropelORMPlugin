@@ -12,7 +12,7 @@ This version of sfPropelPlugin doesn't come bundled with the required dependenci
     > svn checkout http://svn.propelorm.org/branches/1.6/runtime/lib propel
     > svn checkout http://svn.propelorm.org/branches/1.6/generator propel-generator
     > cd ../../..
-    
+
 Now the classic install continues.
 
 Right after the installation of the plugin, you should update plugin assets:

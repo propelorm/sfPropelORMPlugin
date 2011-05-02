@@ -81,7 +81,7 @@
         <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
         <target>[0] cap resultat|[1] 1 resultat|(1,+Inf] %1% resultats</target>
       </trans-unit>
-      
+
       <!-- Pagination -->
       <trans-unit>
         <source>First page</source>
@@ -99,8 +99,8 @@
         <source>Last page</source>
         <target>Última pàgina</target>
       </trans-unit>
-      
-      
+
+
       <!-- Form -->
       <trans-unit>
         <source>The item was created successfully.</source>

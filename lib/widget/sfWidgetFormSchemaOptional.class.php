@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,7 +33,7 @@ class sfWidgetFormSchemaOptional extends sfWidgetFormSchemaDecoratorEscaped
     $this->addOption('max_additions', 0);
     $this->options = array_merge($this->options, $options);
   }
-  
+
   protected function getDecorator($name)
   {
     $strippedName = substr($name, strrpos($name, '[') + 1, strrpos($name, ']') - strrpos($name, '[') - 1);
@@ -64,7 +64,7 @@ function add{$strippedName}Widget()
 <a href=\"#\" id = \"add_{$strippedName}_link\" onclick=\"add{$strippedName}Widget();return false;\">
   {$this->getOption('add_link')}
 </a>";
-      
+
     return $decorator;
   }
 }

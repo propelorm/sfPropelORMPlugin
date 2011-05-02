@@ -143,7 +143,7 @@ abstract class sfFormFilterPropel extends sfFormFilter
         $ucField = self::camelize($field);
         $isReal = false;
       }
-      
+
       if (method_exists($this, $method = sprintf('add%sColumnCriteria', $ucField)))
       {
         // FormFilter::add[ColumnName]Criteria

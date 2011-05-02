@@ -10,7 +10,7 @@ Connections and tables can have specific attributes, set under an `_attributes` 
     propel:
       # connection attributes
       _attributes:   { noXsd: false, defaultIdMethod: none, package: lib.model }
-      
+
       blog_article:
         # table attributes
         _attributes: { phpName: Article }
@@ -117,7 +117,7 @@ The common column parameters are as follows:
   * `scale`: Number of decimal places for use with decimal data type (size must also be specified)
   * `index`: Boolean. Set it to `true` if you want a simple index or to `unique` if you want a unique index to be created on the column.
   * `isCulture`: Boolean. Set it to `true` for culture columns in localized content tables (see i18n section).
-  
+
 Primary key columns accept additional parameters:
 
   * `primaryKey`: Boolean. Set it to `true` for primary keys.
@@ -134,7 +134,7 @@ Foreign key columns accept additional parameters:
   * `fkSkipSql`: Set to true for virtual foreign keys, not translated into SQL
 
 ### Empty Column Definition
-   
+
 If you define nothing (`~` in YAML is equivalent to `null` in PHP), symfony will guess the best attributes according to the column name and a few conventions.
 
     [yml]
@@ -144,7 +144,7 @@ If you define nothing (`~` in YAML is equivalent to `null` in PHP), symfony will
         blog_id:    ~
         created_at: ~
         updated_at: ~
-        
+
     # symfony fills the blanks using the following rules
     propel:
       blog_read:
@@ -215,10 +215,10 @@ Cross-reference tables, used for many-to-many relationships, must declare with a
     propel:
       blog_article:
         # columns definition
-      
+
       blog_author:
         # columns definition
-      
+
       blog_article_author:
         _attributes: { phpName: ArticleAuthor, isCrossRef: true }
         article_id:  { type: integer, foreignTable: blog_article, foreignReference: id, onDelete: cascade }
@@ -233,7 +233,7 @@ Declaring a table as a cross reference table leads Propel to generate more metho
     Author::getArticles()
     Author::countArticles()
     AuthorQuery::filterByArticle($article)
-    
+
 I18n Tables
 -----------
 
@@ -269,7 +269,7 @@ Note that you can use the second syntax to be able to see the columns in your YA
 Propel Behaviors
 ----------------
 
-Enable native Propel behaviors in your tables by setting the `_propel_behaviors` key. For instance, to turn on `soft_delete` on an `Article` table, write the following schema: 
+Enable native Propel behaviors in your tables by setting the `_propel_behaviors` key. For instance, to turn on `soft_delete` on an `Article` table, write the following schema:
 
     [yaml]
     propel:
@@ -281,13 +281,13 @@ Enable native Propel behaviors in your tables by setting the `_propel_behaviors`
         _propel_behaviors:
           soft_delete:
 
-Here is the list of Propel core behaviors available in this plugin: 
+Here is the list of Propel core behaviors available in this plugin:
 
 - [timestampable](http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/timestampable): Keep track of the creation and modification date of each record.
 - [sluggable](http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/sluggable): Each row gets a unique slug that you can use to make smart URIs
 - [soft_delete]([http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/soft_delete): Keep the deleted rows hidden, so that you can recover them.
 - [nested_set](http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/nested_set): Handle hierarchichal data with ease; the nested sets algorithm needs only one query to parse a tree in any way.
-- [sortable](http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/sortable): Give rows in a table the ability to be moved up and down of a list, and to retrieve sorted results. 
+- [sortable](http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/sortable): Give rows in a table the ability to be moved up and down of a list, and to retrieve sorted results.
 - [concrete_inheritance](http://www.propelorm.org/wiki/Documentation/1.5/Inheritance#ConcreteTableInheritance): Copy the structure of a model class to another; also copy the data back to the parent class, for efficient queries.
 - [query_cache](http://www.propelorm.org/wiki/Documentation/1.5/Behaviors/query_cache): Speed up often used queries by skipping the query analysis process. Propel will still query the database for results, only faster.
 - [alternative_coding_standards](http://www.propelorm.org/xiki/Documentation/1.5/Behaviors/alternative_coding_standards): Use symfony's coding standards in Propel's generated classes.
@@ -345,7 +345,7 @@ Such a schema will generate both a Model and a Query class for `Employee` and `M
       EmployeeQuery.php
       Manager.php
       ManagerQuery.php
-      
+
 A `PersonQuery` returns mixed results, of class `Person`, `Employee`, and `Manager`, while a `ManagerQuery` returns only objects of class `Manager`:
 
     [php]

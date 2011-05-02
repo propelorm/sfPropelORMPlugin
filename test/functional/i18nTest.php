@@ -78,7 +78,7 @@ $b->
     checkElement('#movie_fr_id', false)->
     checkElement('#movie_fr_culture', false)->
   end()->
-  
+
   click('submit', array('movie' => array('director' => 'Robert Aldrich', 'en' => array('title' => 'The Dirty Dozen'), 'fr' => array('title' => 'Les Douze Salopards'))))->
   with('response')->begin()->
     isRedirected()->
@@ -123,7 +123,7 @@ $b->
 
   // Bug #7486
   click('submit')->
-  
+
   with('form')->begin()->
     hasErrors(false)->
   end()->

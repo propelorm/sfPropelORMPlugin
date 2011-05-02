@@ -59,33 +59,33 @@ EOF;
     $manager->setMigrationTable($options['migration-table']);
     $migrationDirectory = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR . $options['migration-dir'];
     $manager->setMigrationDir($migrationDirectory);
-    
+
     if (!$nextMigrationTimestamp = $manager->getFirstUpMigrationTimestamp())
     {
       $this->logSection('propel', 'All migrations were already executed - nothing to migrate.');
       return false;
     }
-    
+
     $timestamps = $manager->getValidMigrationTimestamps();
     if (count($timestamps) > 1)
     {
       $this->logSection('propel', sprintf('%d migrations to execute', count($timestamps)));
     }
-    
+
     foreach ($timestamps as $timestamp)
     {
       $this->logSection('propel', sprintf(
         'Executing migration %s up',
         $manager->getMigrationClassName($timestamp)
       ));
-    
+
       $migration = $manager->getMigrationObject($timestamp);
       if (false === $migration->preUp($manager))
       {
         $this->logSection('propel', 'preUp() returned false. Aborting migration.', null, 'ERROR');
         return false;
       }
-    
+
       foreach ($migration->getUpSQL() as $datasource => $sql)
       {
         $connection = $manager->getConnection($datasource);
@@ -119,7 +119,7 @@ EOF;
         {
           $this->logSection('propel', 'No statement was executed. The version was not updated.');
           $this->logSection('propel', sprintf(
-            'Please review the code in "%s"', 
+            'Please review the code in "%s"',
             $manager->getMigrationDir() . DIRECTORY_SEPARATOR . $manager->getMigrationClassName($timestamp)
           ));
           $this->logSection('propel', 'Migration aborted', null, 'ERROR');
@@ -140,7 +140,7 @@ EOF;
 
       $migration->postUp($manager);
     }
-    
+
     $this->logSection('propel', 'Migration complete. No further migration to execute.');
   }
 
