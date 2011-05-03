@@ -61,9 +61,16 @@ class sfValidatorPropelChoice extends sfValidatorBase
     {
       $criteria->mergeWith($this->getOption('criteria'));
     }
-    foreach ($this->getOption('query_methods') as $method)
+    foreach ($this->getOption('query_methods') as $methodName => $methodParams)
     {
-      $criteria->$method();
+      if(is_array($methodParams))
+      {
+        call_user_func_array(array($criteria, $methodName), $methodParams);
+      }
+      else
+      {
+        $criteria->$methodParams();
+      }
     }
 
     if ($this->getOption('multiple'))

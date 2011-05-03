@@ -34,11 +34,18 @@
     foreach ($this->configuration->getWiths() as $with) {
       $query->joinWith($with);
     }
-    
-    foreach ($this->configuration->getQueryMethods() as $method) {
-      $query->$method();
+
+    foreach ($this->configuration->getQueryMethods() as $methodName => $methodParams) {
+      if(is_array($methodParams))
+      {
+        call_user_func_array(array($query, $methodName), $methodParams);
+      }
+      else
+      {
+        $query->$methodParams();
+      }
     }
-    
+
     $this->processSort($query);
     
     $event = $this->dispatcher->filter(new sfEvent($this, 'admin.build_criteria'), $query);

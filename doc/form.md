@@ -57,6 +57,20 @@ You can set the widget to execute additional query methods on the related Model 
       }
     }
 
+Query methods can also accept array of parameters, for example to sort branch in reverse order:
+
+    [php]
+    class ContentForm extends BaseContentForm
+    {
+      public function configure()
+      {
+        $this->widgetSchema['section'] = new sfWidgetFormPropelChoice(array(
+          'model'         => 'Section',
+          'query_methods' => array('orderByBranch' => array(true))
+          'add_empty'     => true,
+        ));
+      }
+    }
 
 You can also enable the `query_method` option on an existing widget. For instance, to display only the list of active authors, customize the form as follows:
 
