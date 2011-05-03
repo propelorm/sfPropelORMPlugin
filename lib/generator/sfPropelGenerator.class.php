@@ -34,7 +34,7 @@ class sfPropelGenerator extends sfModelGenerator
     $this->setGeneratorClass('sfPropelModule');
   }
 
-  /** 
+  /**
    * Configures this generator.
    */
   public function configure()
@@ -129,7 +129,7 @@ class sfPropelGenerator extends sfModelGenerator
   {
     $this->dbMap = Propel::getDatabaseMap();
     $this->tableMap = call_user_func(array($this->modelClass . 'Peer', 'getTableMap'));
-    // load all related table maps, 
+    // load all related table maps,
     // and all tables related to the related table maps (for m2m relations)
     foreach ($this->tableMap->getRelations() as $relation)
     {
@@ -159,7 +159,7 @@ class sfPropelGenerator extends sfModelGenerator
       return parent::renderField($field);
     }
   }
-  
+
   /**
    * Returns the getter either non-developped: 'getFoo' or developped: '$class->getFoo()'.
    *
@@ -283,7 +283,7 @@ class sfPropelGenerator extends sfModelGenerator
    *
    * @param  string $context The Context
    *
-   * @return array An array of configuration for all the fields in a given context 
+   * @return array An array of configuration for all the fields in a given context
    */
   public function getFieldsConfiguration($context)
   {
@@ -355,7 +355,7 @@ class sfPropelGenerator extends sfModelGenerator
 
     return call_user_func(array($peer, 'translateFieldName'), $field, BasePeer::TYPE_COLNAME, $to);
   }
-  
+
   /**
    * Get the code to modify a form object based on fields configuration.
    *
@@ -376,7 +376,7 @@ class sfPropelGenerator extends sfModelGenerator
    *   fields:
    *     foo1: { widgetOptions: { bar: baz } }
    *     foo2: { widgetClass: sfWidgetFormInputText, validatorClass: sfValidatorPass }
-   *     foo3: { type: plain }  
+   *     foo3: { type: plain }
    * $form->getWidget('foo1')->setOption('bar', 'baz');
    * $form->setWidget('foo2', new sfWidgetFormInputText());
    * $form->setValidator('foo2', new sfValidatorPass());
@@ -400,10 +400,10 @@ class sfPropelGenerator extends sfModelGenerator
     $unusedFields = array_combine($defaultFieldNames, $defaultFieldNames);
     $fieldsets = ($view == 'filter') ? array('NONE' => $this->configuration->getFormFilterFields($form)) : $this->configuration->getFormFields($form, $view);
     $plainFields = array();
-    
+
     foreach ($fieldsets as $fieldset => $fields)
     {
-      foreach ($fields as $fieldName => $field) 
+      foreach ($fields as $fieldName => $field)
       {
         // plain widget
         if ($field->getConfig('type', false) == 'plain')
@@ -414,7 +414,7 @@ class sfPropelGenerator extends sfModelGenerator
           $customization .= "    \$this->" . $formVariableName . "->setValidator('$fieldName', new sfValidatorPass(array('required' => false)));
 ";
         }
-        
+
         // widget customization
         if (!$widgetConfig = $field->getConfig('widget', array()))
         {
@@ -431,7 +431,7 @@ class sfPropelGenerator extends sfModelGenerator
             $widgetConfig['attributes'] = $widgetAttributes;
           }
         }
-        if ($widgetConfig) 
+        if ($widgetConfig)
         {
           $options = (isset($widgetConfig['options'])) ? $widgetConfig['options'] : array();
           $attributes = (isset($widgetConfig['attributes'])) ? $widgetConfig['attributes'] : array();
@@ -455,7 +455,7 @@ class sfPropelGenerator extends sfModelGenerator
             }
           }
         }
-        
+
         // validator configuration
         if (!$validatorConfig = $field->getConfig('validator', array()))
         {
@@ -472,7 +472,7 @@ class sfPropelGenerator extends sfModelGenerator
             $validatorConfig['messages'] = $validatorMessages;
           }
         }
-        if ($validatorConfig) 
+        if ($validatorConfig)
         {
           $options = (isset($validatorConfig['options'])) ? $validatorConfig['options'] : array();
           $messages = (isset($validatorConfig['messages'])) ? $validatorConfig['messages'] : array();
@@ -504,21 +504,21 @@ class sfPropelGenerator extends sfModelGenerator
         }
       }
     }
-    
+
     // remove plain fields from validation
     if (!empty($plainFields))
     {
       $customization .= "    \$this->" . $formVariableName . "->mergePostValidator(new sfValidatorSchemaRemove(array('fields' => " . $this->asPhp($plainFields) .  ")));
 ";
     }
-    
+
     // remove unused fields
     if (!empty($unusedFields))
     {
       foreach ($unusedFields as $field)
       {
         // ignore primary keys, CSRF, and embedded forms
-        if ($form->getWidget($field) instanceof sfWidgetFormInputHidden 
+        if ($form->getWidget($field) instanceof sfWidgetFormInputHidden
          || $form->getWidget($field) instanceof sfWidgetFormSchemaDecorator)
         {
           continue;
@@ -527,7 +527,7 @@ class sfPropelGenerator extends sfModelGenerator
 ";
       }
     }
-    
+
     return $customization;
   }
 

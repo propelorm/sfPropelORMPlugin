@@ -18,7 +18,7 @@ Most of the time, the configuration of this widget and validator is already done
       public function setup()
       {
         // ...
-    
+
         $this->setWidgets(array(
           // ...
           'author_id' => new sfWidgetFormPropelChoice(array(
@@ -26,7 +26,7 @@ Most of the time, the configuration of this widget and validator is already done
             'add_empty' => true)
           ),
         ));
-    
+
         $this->setValidators(array(
           // ...
           'author_id' => new sfValidatorPropelChoice(array(
@@ -78,11 +78,11 @@ You can also enable the `query_method` option on an existing widget. For instanc
     class ArticleForm extends BaseArticleForm
     {
       public function configure()
-      { 
+      {
         $this->widgetSchema['author_id']->setOption('query_methods', array('active'));
       }
     }
-    
+
     class ArticleQuery extends BaseArticleQuery
     {
       public function active()
@@ -113,7 +113,7 @@ Alternatively, build the query yourself in the form, and pass it to the widget i
     class ArticleForm extends BaseArticleForm
     {
       public function configure()
-      { 
+      {
         $query = ArticleQuery::create()->filterByIsActive(true);
         $this->widgetSchema['author_id']->setOption('criteria', $query);
       }
@@ -128,7 +128,7 @@ The `sfWidgetFormPropelChoice` widget supports the following options:
 * `model`: The model class (required)
 * `add_empty`: Whether to add a first empty value or not (false by default). If the option is not a Boolean, the value will be used as the text value
 * `method`: The method to use to display object values (__toString by default)
-* `key_method`: The method to use to display the object keys (getPrimaryKey by default) 
+* `key_method`: The method to use to display the object keys (getPrimaryKey by default)
 * `order_by`: An array composed of two fields:
   * The column to order by the results (must be in the PhpName format)
   * asc or desc
@@ -159,7 +159,7 @@ In a blog application, two articles can not have the same slug; to ensure this c
       public function configure()
       {
         // ...
-     
+
         $this->validatorSchema->setPostValidator(
           new sfValidatorPropelUnique(array(
             'model' => 'Article',
@@ -183,7 +183,7 @@ This validator supports the following options:
 `sfWidgetFormPlain` and `sfValidatorSchemaRemove`
 -------------------------------------------------
 
-To display a field without any possiblity to change its value, no need to use a partial field. Just use the `sfWidgetFormPlain` widget to display the value in a div. Don't forget to disable the validator on that field, too, using the `sfValidatorPass` validator. 
+To display a field without any possiblity to change its value, no need to use a partial field. Just use the `sfWidgetFormPlain` widget to display the value in a div. Don't forget to disable the validator on that field, too, using the `sfValidatorPass` validator.
 
 But symfony expects to receive all form fields for binding, including plain fields. If the field is not present in the request, symfony uses a null value, which may erase the data in the column you want to display. To avoid erasing data, use the new `sfValidatorSchemaRemove` to remove plain fields from the binding process. This is a post validator, and it expects an array of field names in the `fields` option.
 
@@ -226,7 +226,7 @@ If you need to build a form based on a collection of objects rather than on a si
     $collection[]= new Book();
     $form = new sfFormPropelCollection($collection);
     echo $form; // displays a list of 3 BookForms, bound to each element in the collection
-    
+
 Embedding A Relation Form
 -------------------------
 

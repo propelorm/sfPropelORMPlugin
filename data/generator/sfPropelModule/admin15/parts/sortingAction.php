@@ -1,5 +1,5 @@
 <?php
-$customSorts = array(); 
+$customSorts = array();
 foreach ($this->configuration->getValue('list.display') as $name => $field)
 {
   if ($customSort = $field->getConfig('sort_method', false, false))
@@ -26,7 +26,7 @@ foreach ($this->configuration->getValue('list.display') as $name => $field)
       return;
     }
 
-<?php endif ?>    
+<?php endif ?>
     try
     {
       $column = <?php echo constant($this->getModelClass().'::PEER') ?>::translateFieldName($sort[0], BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_PHPNAME);
@@ -36,9 +36,9 @@ foreach ($this->configuration->getValue('list.display') as $name => $field)
       // probably a fake column, using a custom orderByXXX() query method
       $column = sfInflector::camelize($sort[0]);
     }
-    
+
     $method = sprintf('orderBy%s', $column);
-    
+
     try
     {
       $query->$method('asc' == $sort[1] ? 'asc' : 'desc');

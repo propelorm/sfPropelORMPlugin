@@ -45,7 +45,7 @@ Change the path of the symfony behaviors in the `config/propel.ini` file of your
 What's New In Propel 1.5
 ------------------------
 
-Propel 1.5 is a **backwards compatible** evolution of Propel 1.4 (the version bundled with symfony 1.3 and 1.4), which adds some very interesting features. Among these features, you will find the **new Propel Query API**, which is essentially a Criteria on steroids: 
+Propel 1.5 is a **backwards compatible** evolution of Propel 1.4 (the version bundled with symfony 1.3 and 1.4), which adds some very interesting features. Among these features, you will find the **new Propel Query API**, which is essentially a Criteria on steroids:
 
     [php]
     // find the 10 latest books published by authror 'Leo'
@@ -118,7 +118,7 @@ The new options for the `admin15` generator theme are fully documented, and illu
 Form Subframework Modifications
 -------------------------------
 
-- **Updated `sfWidgetFormPropelChoice` widget**: The widget now uses the new Query API. You can customize the list of choices more easily by executing custom query methods, using the new `query_methods` option. 
+- **Updated `sfWidgetFormPropelChoice` widget**: The widget now uses the new Query API. You can customize the list of choices more easily by executing custom query methods, using the new `query_methods` option.
 - **Updated Propel validators**: Both the `sfValidatorPropelChoice` and the `sfValidatorPropelUnique` were updated to use the new PropelQuery objects, and to accept a `query_methods` option similar to the one of `sfWidgetFormPropelChoice`.
 - **Plain text widget and validator**: This new widget allows a field to be displayed in a form, without letting the use change it.
 - **Easy Relation Embed**: Editing related objects together with the main objects (e.g., editing `Comments` in a `Post` form) is a piece of cake. The new `sfFormPropel::embedRelation()` method does all the work to fetch related objects, build the forms for each of them, and embed the related object forms into the main form. Embdeded relation forms allow to **edit**, **add**, and **delete** a related objects with no additional code.
@@ -147,7 +147,7 @@ The plugin offer two new routing classes, `sfPropel15Route` and `sfPropel15Route
         module:               author
         prefix_path:          /author
         column:               id
-        query_methods:        
+        query_methods:
           object: [filterByIsPublished]
           list:   [filterByIsPublished, orderByLastName]
         with_wildcard_routes: true

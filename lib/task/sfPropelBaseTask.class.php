@@ -65,7 +65,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     foreach ($schemas as $schema)
     {
       $dbSchema->loadXML($schema);
-      
+
       if ($verbose)
       {
         $this->logSection('schema', sprintf('  converting "%s" to YML', $schema), null, 'COMMENT');
@@ -339,7 +339,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
       'propel.database.encoding' => $database->getParameter('encoding'),
     );
   }
-  
+
   public function getConnections($databaseManager)
   {
     $connections = array();
@@ -366,7 +366,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
       'password' => $database->getParameter('password'),
     );
   }
-  
+
   protected function getPlatform($databaseManager, $connection)
   {
     $params = $this->getConnection($databaseManager, $connection);
@@ -385,7 +385,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     $parser->setGeneratorConfig($this->getGeneratorConfig());
     return $parser;
   }
-  
+
   protected function getModels($databaseManager, $verbose = false)
   {
     Phing::startup(); // required to locate behavior classes...
@@ -398,7 +398,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
       throw new sfCommandException('You must create a schema.yml or schema.xml file.');
     }
     $ads = array();
-    
+
     foreach ($schemas as $schema)
     {
       if ($verbose)
@@ -412,7 +412,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
       $generatorConfig = $this->getGeneratorConfig();
       $generatorConfig->setBuildConnections($this->getConnections($databaseManager));
       $xmlParser->setGeneratorConfig($generatorConfig);
-      
+
       $ad = $xmlParser->parseString($dom->saveXML(), $schema);
       $ads[] = $ad;
       $nbTables = $ad->getDatabase(null, false)->countTables();
@@ -432,7 +432,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     $ad->doFinalInitialization();
     return $ad;
   }
-  
+
   protected function getGeneratorConfig($params = array())
   {
     $iniFile = sfConfig::get('sf_config_dir'). '/propel.ini';
@@ -460,7 +460,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
         $params[$key] = 'behavior.' . $value;
       }
     }
-    
+
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_propel_generator_path', realpath(dirname(__FILE__).'/../vendor/propel-generator/lib')),
     ));

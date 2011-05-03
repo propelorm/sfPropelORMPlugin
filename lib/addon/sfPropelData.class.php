@@ -36,7 +36,7 @@ class sfPropelData extends sfData
     $this->dispatcher = $dispatcher;
     $this->formatter  = $formatter;
   }
-  
+
   public function log($message, $size = null, $style = 'INFO')
   {
     if ($this->dispatcher instanceof sfEventDispatcher)
@@ -44,7 +44,7 @@ class sfPropelData extends sfData
       $this->dispatcher->notify(new sfEvent($this, 'command.log', array($this->formatter->formatSection('Propel', $message, $size, $style))));
     }
   }
-  
+
   /**
    * Loads data from a file or directory into a Propel data source
    *
@@ -92,7 +92,7 @@ class sfPropelData extends sfData
     $this->log(sprintf('reading data from %s', $file));
     parent::doLoadDataFromFile($file);
   }
-  
+
   /**
    * Implements the abstract loadDataFromArray method and loads the data using the generated data model.
    *
@@ -288,7 +288,7 @@ class sfPropelData extends sfData
         {
           throw new InvalidArgumentException(sprintf('Unknown class "%sPeer".', $class));
         }
-        
+
         $this->log(sprintf('deleting data from %s', $class));
         // bypass the soft_delete behavior if enabled
         $deleteMethod = method_exists($peerClass, 'doForceDeleteAll') ? 'doForceDeleteAll' : 'doDeleteAll';

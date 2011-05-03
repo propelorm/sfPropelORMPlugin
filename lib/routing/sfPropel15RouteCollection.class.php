@@ -97,7 +97,7 @@ class sfPropel15RouteCollection extends sfObjectRouteCollection
       array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
     );
   }
-  
+
   protected function getWildcardRouteForCollection()
   {
     return new $this->routeClass(

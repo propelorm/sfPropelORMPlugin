@@ -388,7 +388,7 @@ class sfPropelDatabaseSchema
         $xml .= sprintf(" behaviors=\"%s\"", htmlspecialchars(serialize($table['_behaviors'])), ENT_QUOTES, sfConfig::get('sf_charset'));
       }
       $xml .= ">\n";
-      
+
       // behaviors
       if (isset($table['_propel_behaviors']))
       {
@@ -410,7 +410,7 @@ class sfPropelDatabaseSchema
           }
         }
       }
-      
+
       // columns
       foreach ($this->getChildren($table) as $col_name => $column)
       {

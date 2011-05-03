@@ -16,11 +16,11 @@ Symfony is to specify slave servers for each connection in config/databases.yml 
           dsn:        mysql:dbname=test;host=mysql-master
           username:   root
           password:
-          
+
           encoding:   utf8
           persistent: true
           pooling:    true
-          
+
           slaves:
             connection:
               mysql-slave-01:

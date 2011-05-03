@@ -3,7 +3,7 @@
 /**
  * Subclass for representing a row from the 'product' table.
  *
- * 
+ *
  *
  * @package    lib.model
  * @subpackage model

@@ -2,7 +2,7 @@
 
 /**
  * sfPropelPlugin configuration.
- * 
+ *
  * @package    sfPropelPlugin
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
@@ -58,7 +58,7 @@ class sfPropel15PluginConfiguration extends sfPluginConfiguration
 
   /**
    * Clears all instance pools.
-   * 
+   *
    * This method is used to clear Propel's static instance pools between
    * requests performed in functional tests.
    */
