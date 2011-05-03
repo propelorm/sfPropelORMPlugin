@@ -12,9 +12,9 @@ class sfFormPropelCollection extends sfForm
   protected $model;
   protected $collection;
   protected $isEmpty = false;
-  
+
   /**
-   * Form constructor. 
+   * Form constructor.
    *
    * Available options:
    * - embedded_form_class: The class name of the forms to embed. Uses the model name by default.
@@ -29,7 +29,7 @@ class sfFormPropelCollection extends sfForm
    *                  Recommended values: 6 for embedded form, 7 for merged form
    * - remove_fields: The list of fields to remove from the embedded object forms
    *
-   * @param PropelCollection $collection A collection of Propel objects 
+   * @param PropelCollection $collection A collection of Propel objects
    *                                     used to initialize default values
    * @param array            $options    An array of options
    * @param string           $CSRFSecret A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
@@ -45,7 +45,7 @@ class sfFormPropelCollection extends sfForm
       'delete_widget' => null,
       'remove_fields' => array(),
     ), $options);
-    
+
     if (!$collection)
     {
       $this->model = $options['model'];
@@ -62,12 +62,12 @@ class sfFormPropelCollection extends sfForm
       $this->collection = $collection;
       $this->model = $collection->getModel();
     }
-    
+
     $this->isEmpty = $this->getCollection()->isEmpty();
 
     parent::__construct(array(), $options, $CSRFSecret);
   }
-  
+
   /**
    * Configures the current form.
    */
@@ -108,7 +108,7 @@ class sfFormPropelCollection extends sfForm
       $i++;
     }
   }
-  
+
   /**
    * Getter for the internal collection object
    *
@@ -118,7 +118,7 @@ class sfFormPropelCollection extends sfForm
   {
     return $this->collection;
   }
-  
+
   /**
    * Getter for the name of the Propel model used by the collection
    *
@@ -128,7 +128,7 @@ class sfFormPropelCollection extends sfForm
   {
     return $this->model;
   }
-  
+
   /**
    * Check whether the embedded colleciton is empty
    *
@@ -138,7 +138,7 @@ class sfFormPropelCollection extends sfForm
   {
     return $this->isEmpty;
   }
-  
+
   /**
    * Getter for the embedded form class.
    * Uses the embedded_form_class option if available,
@@ -152,7 +152,7 @@ class sfFormPropelCollection extends sfForm
     {
       $class = $this->getCollection()->getModel() . 'Form';
     }
-    
+
     return $class;
   }
 
@@ -178,11 +178,11 @@ class sfFormPropelCollection extends sfForm
     $this->setDefault($name, $form->getDefaults());
 
     $widgetSchema = $form->getWidgetSchema();
-    
+
     $decorator = null === $decorator ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $decorator;
 
     $this->widgetSchema[$name] = new sfWidgetFormSchemaOptional($widgetSchema, $decorator, $options);
-    
+
     $this->validatorSchema[$name] = new sfValidatorPass();
 
     $this->resetFormFields();

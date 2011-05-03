@@ -5,7 +5,7 @@
     {
       $this->setFilters($request->getParameter('filters'));
     }
-    
+
     // sorting
     if ($request->getParameter('sort'))
     {

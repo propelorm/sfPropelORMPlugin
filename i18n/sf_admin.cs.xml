@@ -41,7 +41,7 @@
         <source>go</source>
         <target>ok</target>
       </trans-unit>
-      
+
       <!-- Filters -->
       <trans-unit>
         <source>Reset</source>
@@ -85,7 +85,7 @@
         <source>Checked</source>
         <target>Aktivováno</target>
       </trans-unit>
-      
+
       <!-- Pagination -->
       <trans-unit>
         <source>First page</source>

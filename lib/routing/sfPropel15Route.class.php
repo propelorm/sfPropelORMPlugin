@@ -107,7 +107,7 @@ class sfPropel15Route extends sfRequestRoute
 
     // check the related object
     $this->object = $this->getQuery()->findOne();
-    
+
     if (!$this->object && (!isset($this->options['allow_empty']) || !$this->options['allow_empty']))
     {
       throw new sfError404Exception(sprintf('Unable to find the %s object with the following parameters "%s").', $this->options['model'], str_replace("\n", '', var_export($this->filterParameters($this->parameters), true))));
@@ -149,7 +149,7 @@ class sfPropel15Route extends sfRequestRoute
 
     return $this->objects;
   }
-  
+
   protected function getQuery()
   {
     $query = PropelQuery::from($this->options['model']);
@@ -170,7 +170,7 @@ class sfPropel15Route extends sfRequestRoute
     $query->filterByArray($this->getModelParameters($this->parameters));
     return $query;
   }
-  
+
   protected function getModelParameters($parameters)
   {
   	if (!is_array($parameters))
@@ -281,7 +281,7 @@ class sfPropel15Route extends sfRequestRoute
 
     return $variables;
   }
-  
+
   public function __call($name, $arguments)
   {
     if($name == 'get' . $this->options['model'])

@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,7 +35,7 @@ class sfWidgetFormDelete extends sfWidgetFormInputCheckbox
   public function __construct($options = array(), $attributes = array())
   {
     parent::__construct($options, $attributes);
-    
+
     if ($this->getOption('hide_parent'))
     {
       $hideParentCode = 'this' . str_repeat('.parentNode', $this->getOption('parent_level')) . '.style.display="none";';

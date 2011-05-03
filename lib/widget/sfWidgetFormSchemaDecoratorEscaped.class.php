@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -18,7 +18,7 @@
  */
 class sfWidgetFormSchemaDecoratorEscaped extends sfWidgetFormSchemaDecorator
 {
-  
+
   /**
    * @param  string $name        The element name
    * @param  string $value       The value displayed in this widget
@@ -35,7 +35,7 @@ class sfWidgetFormSchemaDecoratorEscaped extends sfWidgetFormSchemaDecorator
     $widgetString = $this->escape($widgetString);
     return strtr($this->getDecorator($name), array('%content%' => $widgetString));
   }
-  
+
   /**
    * Escape string for inclusion as a JavaScript string
    *
@@ -46,7 +46,7 @@ class sfWidgetFormSchemaDecoratorEscaped extends sfWidgetFormSchemaDecorator
   {
     return substr(json_encode($string), 1, -1); // remove first and last double quote
   }
-  
+
   protected function getDecorator($name)
   {
     return $this->decorator;
