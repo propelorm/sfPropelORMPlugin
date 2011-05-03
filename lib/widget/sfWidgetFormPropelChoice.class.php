@@ -85,9 +85,16 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     {
       $criteria->mergeWith($this->getOption('criteria'));
     }
-    foreach ($this->getOption('query_methods') as $method)
+    foreach ($this->getOption('query_methods') as $methodName => $methodParams)
     {
-      $criteria->$method();
+      if(is_array($methodParams))
+      {
+        call_user_func_array(array($criteria, $methodName), $methodParams);
+      }
+      else
+      {
+        $criteria->$methodParams();
+      }
     }
     if ($order = $this->getOption('order_by'))
     {
@@ -95,7 +102,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     }
     $objects = $criteria->find($this->getOption('connection'));
 
-		$methodKey = $this->getOption('key_method');
+    $methodKey = $this->getOption('key_method');
     if (!method_exists($this->getOption('model'), $methodKey))
     {
       throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
@@ -111,7 +118,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     {
       $choices[$object->$methodKey()] = $object->$methodValue();
     }
-		
-		return $choices;
+
+    return $choices;
   }
 }
