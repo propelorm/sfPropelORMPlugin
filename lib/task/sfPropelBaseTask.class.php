@@ -207,12 +207,22 @@ abstract class sfPropelBaseTask extends sfBaseTask
     }
   }
 
-  protected function cleanup()
+  protected function cleanup($verbose = false)
   {
+    if (!$verbose)
+    {
+      $detachedDispatcher = $this->dispatcher;
+      // set the dispatcher to null to avoid logging from sfFilesystem::remove()
+      $this->dispatcher = null;
+    }
     if (null === $this->commandApplication || !$this->commandApplication->withTrace())
     {
       $finder = sfFinder::type('file')->name('generated-*schema.xml')->name('*schema-transformed.xml');
       $this->getFilesystem()->remove($finder->in(array('config', 'plugins')));
+    }
+    if (!$verbose)
+    {
+      $this->dispatcher = $detachedDispatcher;
     }
   }
 

@@ -100,6 +100,7 @@ EOF;
         ), 'QUESTION_LARGE', false)
     )
     {
+    	$this->cleanup();
       $this->logSection('propel', 'Task aborted.');
 
       return 1;
