@@ -382,7 +382,9 @@ abstract class sfPropelBaseTask extends sfBaseTask
     $params = $this->getConnection($databaseManager, $connection);
     $platformClass = ucfirst($params['adapter']) . 'Platform';
     include_once dirname(__FILE__) . '/../vendor/propel-generator/lib/platform/' . $platformClass . '.php';
-    return new $platformClass();
+    $platform = new $platformClass();
+    $platform->setGeneratorConfig($this->getGeneratorConfig());
+    return $platform;
   }
 
   protected function getParser($databaseManager, $connection, $con)
