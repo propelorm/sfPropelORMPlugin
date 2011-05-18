@@ -126,7 +126,7 @@ abstract class sfFormPropel extends sfFormObject
         // The form must be added to the main form
         while (array_key_exists($name . $i, $taintedValues))
         {
-          $this->embedForm($name . $i, $form);
+          $this->embedForm($name . $i, clone $form);
           $this->getWidgetSchema()->moveField($name . $i, sfWidgetFormSchema::BEFORE, $name);
           $i++;
         }
@@ -143,7 +143,7 @@ abstract class sfFormPropel extends sfFormObject
         $target = $this->embeddedForms[$parent];
         while (array_key_exists($name . $i, $taintedValuesCopy))
         {
-          $target->embedForm($name . $i, $form);
+          $target->embedForm($name . $i, clone $form);
           $target->getWidgetSchema()->moveField($name . $i, sfWidgetFormSchema::BEFORE, $name);
           $i++;
           // the parent form schema is not updated when updating an embedded form
@@ -500,7 +500,7 @@ abstract class sfFormPropel extends sfFormObject
   {
     foreach ($form->getEmbeddedForms() as $name => $embeddedForm)
     {
-      $this->embedForm($name, $embeddedForm);
+      $this->embedForm($name, clone $embeddedForm);
     }
     parent::mergeForm($form);
   }
