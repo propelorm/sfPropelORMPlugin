@@ -558,7 +558,7 @@ abstract class sfFormPropel extends sfFormObject
 
     $relationForm = $this->getRelationForm($relationName, $options);
 
-    $this->addEmptyRelationForm($relationName, $relationForm, $options['empty_label'] ? $options['empty_label'] : 'new' . $relationName, $options['title']. '/', $options);
+    $this->addEmptyRelationForm($relationName, $relationForm, 'new' . $relationName, $options['title']. '/', $options);
 
     $this->embedForm($options['title'], $relationForm, $options['decorator']);
 
