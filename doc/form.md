@@ -240,6 +240,8 @@ Since one-to-many relationships return `PropelCollection` objects, the ability t
       public function configure()
       {
         $this->embedRelation('Book');
+
+        $this->widgetSchema->setlabel('Book', 'Published books');
       }
     }
 
@@ -249,7 +251,6 @@ Now the Article form displays the list of related books for each author, togethe
 
 `embedRelation()` offers many options to customize the embedded relation form:
 
-* `title`: The title of the collection form once embedded. Defaults to the relation name.
 * `embedded_form_class`: The class name of the forms to embed. Uses the model name by default (a form based on a collection of Book objects embeds BookForm objects).
 * `collection_form_class`: Class of the collection form to return. Defaults to sfFormPropelCollection.
 * `hide_on_new`: If true, the relation form does not appear for new objects. Defaults to false.

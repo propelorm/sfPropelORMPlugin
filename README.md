@@ -129,6 +129,8 @@ Form Subframework Modifications
           public function configure()
           {
             $this->embedRelation('Book');
+
+            $this->widgetSchema->setlabel('Book', 'Published books');
           }
         }
 
