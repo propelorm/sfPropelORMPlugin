@@ -535,6 +535,7 @@ abstract class sfFormPropel extends sfFormObject
   /**
    * Embed a Collection form based on a Relation into this form.
    * Available options:
+   *  - title: The title of the collection form once embedded. Defaults to the relation name.
    *  - decorator: The decorator for the sfWidgetFormSchemaDecorator
    *  - add_empty: Whether to allow the user to add new objects to the collection. Defaults to true
    * Additional options are passed to sfFromPropel::getRelationForm()
@@ -548,6 +549,7 @@ abstract class sfFormPropel extends sfFormObject
   public function embedRelation($relationName, $options = array())
   {
     $options = array_merge(array(
+      'title'               => $relationName,
       'decorator'           => null,
       'add_empty'           => true,
       'max_additions'       => 0,
@@ -559,6 +561,8 @@ abstract class sfFormPropel extends sfFormObject
     $this->addEmptyRelationForm($relationName, $relationForm, 'new' . $relationName, $relationName. '/', $options);
 
     $this->embedForm($relationName, $relationForm, $options['decorator']);
+
+    $this->widgetSchema->setLabel($relationName, $options['title']);
 
     return $this;
   }
