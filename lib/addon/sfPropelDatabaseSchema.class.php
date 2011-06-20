@@ -388,7 +388,7 @@ class sfPropelDatabaseSchema
         $xml .= sprintf(" behaviors=\"%s\"", htmlspecialchars(serialize($table['_behaviors'])), ENT_QUOTES, sfConfig::get('sf_charset'));
       }
       $xml .= ">\n";
-      
+
       // behaviors
       if (isset($table['_propel_behaviors']))
       {
@@ -410,7 +410,7 @@ class sfPropelDatabaseSchema
           }
         }
       }
-      
+
       // columns
       foreach ($this->getChildren($table) as $col_name => $column)
       {
@@ -804,7 +804,7 @@ class sfPropelDatabaseSchema
     {
       foreach ($column as $key => $value)
       {
-        if (!in_array($key, array('foreignClass', 'foreignTable', 'foreignReference', 'fkPhpName', 'fkRefPhpName', 'onDelete', 'onUpdate', 'index', 'unique', 'sequence', 'inheritance', 'vendor')))
+        if (!in_array($key, array('foreignClass', 'foreignTable', 'foreignReference', 'fkPhpName', 'fkRefPhpName', 'fkSkipSql', 'onDelete', 'onUpdate', 'index', 'unique', 'sequence', 'inheritance', 'vendor')))
         {
           $attributes_string .= " $key=\"".htmlspecialchars($this->getCorrectValueFor($key, $value), ENT_QUOTES, sfConfig::get('sf_charset'))."\"";
         }
@@ -897,6 +897,10 @@ class sfPropelDatabaseSchema
       {
         $attributes_string .= " refPhpName=\"{$column['fkRefPhpName']}\"";
       }
+      if (isset($column['fkSkipSql']))
+      {
+        $attributes_string .= " skipSql=\"" . $this->getCorrectValueFor('fkSkipSql', $column['fkSkipSql']) . "\"";
+      }
       $attributes_string .= ">\n";
       $attributes_string .= "      <reference local=\"$col_name\" foreign=\"{$column['foreignReference']}\" />\n";
       $attributes_string .= "    </foreign-key>\n";
@@ -954,15 +958,24 @@ class sfPropelDatabaseSchema
 
   protected function getCorrectValueFor($key, $value)
   {
-    $booleans = array('required', 'primaryKey', 'autoincrement', 'autoIncrement', 'isI18N', 'isCulture');
+    $booleans = array('required', 'primaryKey', 'autoincrement', 'autoIncrement', 'isI18N', 'isCulture', 'fkSkipSql');
     if (in_array($key, $booleans))
     {
       return $value == 1 ? 'true' : 'false';
     }
-    else
+    $acceptStringBoolean = array('default');
+    if (in_array($key, $acceptStringBoolean))
     {
-      return null === $value ? 'null' : $value;
+      if ($value === true)
+      {
+        return 'true';
+      }
+      if ($value === false)
+      {
+        return 'false';
+      }
     }
+    return null === $value ? 'null' : $value;
   }
 
   /**

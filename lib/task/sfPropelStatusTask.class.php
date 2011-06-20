@@ -59,7 +59,7 @@ EOF;
     $manager->setMigrationTable($options['migration-table']);
     $migrationDirectory = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR . $options['migration-dir'];
     $manager->setMigrationDir($migrationDirectory);
-    
+
     $this->logSection('propel', 'Checking Database Versions...');
     foreach ($connections as $name => $params)
     {
@@ -76,7 +76,7 @@ EOF;
         $manager->createMigrationTable($name);
       }
     }
-    
+
     $oldestMigrationTimestamp = $manager->getOldestDatabaseVersion();
     if ($options['verbose'])
     {
@@ -89,7 +89,7 @@ EOF;
         $this->logSection('propel', '  No migration was ever executed on these connection settings.', null, 'COMMENT');
       }
     }
-    
+
     $this->logSection('propel', 'Listing Migration files...');
     $migrationTimestamps = $manager->getMigrationTimestamps();
     $nbExistingMigrations = count($migrationTimestamps);
@@ -129,7 +129,7 @@ EOF;
       $this->logSection('propel', 'Make sure you run the sql-diff task.');
       return false;
     }
-    
+
     $migrationTimestamps = $manager->getValidMigrationTimestamps();
     $nbNotYetExecutedMigrations = count($migrationTimestamps);
     if (!$nbNotYetExecutedMigrations)

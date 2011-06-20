@@ -20,19 +20,19 @@
  */
 abstract class sfFormPropel extends sfFormObject
 {
-  
+
   /**
    * List of forms that can be added by the user
    * @var array[sfForm]
    */
   protected $optionalForms = array();
-  
+
   /**
    * Name of the field used for deletion.
    * @var string
    */
   protected $deleteField;
-  
+
   /**
    * Constructor.
    *
@@ -93,7 +93,7 @@ abstract class sfFormPropel extends sfFormObject
       $method = sprintf('getCurrent%s', $this->getI18nModelName($culture));
       $i18nObject = $this->getObject()->$method($culture);
       $i18n = new $class($i18nObject);
-      
+
       if ($i18nObject->isNew())
       {
         unset($i18n['id'], $i18n['culture']);
@@ -116,7 +116,7 @@ abstract class sfFormPropel extends sfFormObject
     $this->addOptionalForms($taintedValues);
     return parent::bind($taintedValues, $taintedFiles);
   }
-  
+
   public function addOptionalForms($taintedValues = null)
   {
     foreach ($this->optionalForms as $name => $form) {
@@ -167,11 +167,11 @@ abstract class sfFormPropel extends sfFormObject
   {
     $this->setWidget($name, $widget);
     $this->setValidator($name, new sfValidatorPass(array('required' => false)));
-    $this->setDeleteField($name);   
-    
+    $this->setDeleteField($name);
+
     return $this;
   }
-  
+
   /**
    * Updates and saves the current object.
    * @see sfFormObject
@@ -189,7 +189,7 @@ abstract class sfFormPropel extends sfFormObject
     }
 
     $this->updateObject();
-    
+
     // this is Propel specific
     if(isset($this->getObject()->markForDeletion))
     {
@@ -203,7 +203,7 @@ abstract class sfFormPropel extends sfFormObject
     // embedded forms
     $this->saveEmbeddedForms($con);
   }
-  
+
   /**
    * Updates the values of the object with the cleaned up values.
    *
@@ -266,7 +266,7 @@ abstract class sfFormPropel extends sfFormObject
       }
     }
   }
-  
+
   /**
    * Processes cleaned up values with user defined methods.
    *
@@ -435,7 +435,7 @@ abstract class sfFormPropel extends sfFormObject
       unlink($directory.DIRECTORY_SEPARATOR.$this->getObject()->$getter());
     }
   }
-  
+
   /**
    * Get the name of the Peer class of the form's model, e.g. 'AuthorPeer'
    *
@@ -445,7 +445,7 @@ abstract class sfFormPropel extends sfFormObject
   {
     return constant(get_class($this->getObject()).'::PEER');
   }
-  
+
   /**
    * Saves the current file for the field.
    *
@@ -487,7 +487,7 @@ abstract class sfFormPropel extends sfFormObject
       return $file->save();
     }
   }
-  
+
   /**
    * Overrides sfForm::mergeForm() to also merge embedded forms
    * Allows autosave of merged collections
@@ -504,7 +504,7 @@ abstract class sfFormPropel extends sfFormObject
     }
     parent::mergeForm($form);
   }
-  
+
   /**
    * Merge a Collection form based on a Relation into this form.
    * Available options:
@@ -522,13 +522,13 @@ abstract class sfFormPropel extends sfFormObject
       'add_empty'           => true,
       'item_pattern'        => '%model%%index%',
     ), $options);
-    
+
     $relationForm = $this->getRelationForm($relationName, $options);
 
     $this->addEmptyRelationForm($relationName, $relationForm, 'new' . $relationName, '', $options);
-    
+
     $this->mergeForm($relationForm);
-    
+
     return $this;
   }
 
@@ -555,16 +555,16 @@ abstract class sfFormPropel extends sfFormObject
       'max_additions'       => 0,
       'empty_label'         => null,
     ), $options);
-    
+
     $relationForm = $this->getRelationForm($relationName, $options);
-    
+
     $this->addEmptyRelationForm($relationName, $relationForm, $options['empty_label'] ? $options['empty_label'] : 'new' . $relationName, $options['title']. '/', $options);
-    
+
     $this->embedForm($options['title'], $relationForm, $options['decorator']);
-    
+
     return $this;
   }
-  
+
   /**
    * Get a Collection form based on a Relation of the current form's model.
    * Available options:
@@ -586,38 +586,38 @@ abstract class sfFormPropel extends sfFormObject
       'criteria'              => null,
       'add_delete'            => true,
     ), $options);
-    
+
     if ($this->getObject()->isNew() && $options['hide_on_new'])
     {
       return;
     }
     unset($options['hide_on_new']);
-    
+
     // compute relation elements
     $relationMap = $this->getRelationMap($relationName);
     if ($relationMap->getType() != RelationMap::ONE_TO_MANY)
     {
       throw new sfException('embedRelation() only works for one-to-many relationships');
     }
-    
+
     $collection = call_user_func_array(
       array($this->getObject(), sprintf('get%ss', $relationName)),
       array($options['criteria'])
     );
     unset($options['criteria']);
-    
+
     // compute relation fields, to be removed from embedded forms
     // because this data is not editable
     if (!isset($options['remove_fields'])) {
       $options['remove_fields'] = $this->getRelationFields($relationMap);
     }
-    
+
     // create the relation form
     $collectionFormClass = $options['collection_form_class'];
     unset($options['collection_form_class']);
-    
+
     $collectionForm = new $collectionFormClass($collection, $options);
-    
+
     return $collectionForm;
   }
 
@@ -641,9 +641,9 @@ abstract class sfFormPropel extends sfFormObject
       'max_additions'       => 0,
       'add_link'            => 'Add new',
     ), $options);
-    
+
     $count = $relationForm->getCollection()->count();
-    if (!$options['add_empty'] || 
+    if (!$options['add_empty'] ||
        ($options['max_additions'] > 0 && $options['max_additions'] <= $count))
     {
       return;
@@ -657,7 +657,7 @@ abstract class sfFormPropel extends sfFormObject
     $relationForm->embedOptionalForm($emptyName, $emptyForm, null, $options);
     $this->optionalForms[$prefix . $emptyName] = $emptyForm;
   }
-  
+
   /**
    * Get an empty Propel form based on a Relation of the current form's model.
    * Available options:
@@ -675,17 +675,17 @@ abstract class sfFormPropel extends sfFormObject
       'embedded_form_class' => null,
       'empty_label'         => null,
     ), $options);
-    
+
     // compute relation elements
     $relationMap = $this->getRelationMap($relationName);
     if ($relationMap->getType() != RelationMap::ONE_TO_MANY)
     {
       throw new sfException('getEmptyRelatedForm() only works for one-to-many relationships');
     }
-    
+
     $relatedClass = $relationMap->getRightTable()->getClassname();
     $relatedObject = new $relatedClass();
-    
+
     // the relatedObject must be related to this form's object
     // but without actually adding the relatedObject to the collection
     // that's what the next lines do
@@ -696,7 +696,7 @@ abstract class sfFormPropel extends sfFormObject
     {
       call_user_func(array($this->getObject(), sprintf('add%s', $relationName)), $realRelatedObject);
     }
-    
+
     if (!$formClass = $options['embedded_form_class'])
     {
       $formClass = $relatedClass . 'Form';
@@ -714,16 +714,16 @@ abstract class sfFormPropel extends sfFormObject
     {
       unset($emptyForm[$field]);
     }
-    
+
     return $emptyForm;
   }
-  
+
   protected function getRelationMap($relationName)
   {
     $tableMap = call_user_func(array($this->getPeer(), 'getTableMap'));
     return $tableMap->getRelation($relationName);
   }
-  
+
   protected function getRelationFields($relationMap)
   {
     $relatedPeer = $relationMap->getRightTable()->getPeerClassname();
@@ -734,7 +734,7 @@ abstract class sfFormPropel extends sfFormObject
     }
     return $relationFields;
   }
-  
+
   public function setDeleteField($fieldName)
   {
     $this->deleteField = $fieldName;
@@ -744,7 +744,7 @@ abstract class sfFormPropel extends sfFormObject
   {
     return null !== $this->deleteField;
   }
-  
+
   public function getDeleteField()
   {
     return $this->deleteField;

@@ -69,7 +69,7 @@ EOF;
   {
     $databaseManager = new sfDatabaseManager($this->configuration);
     $connections = $this->getConnections($databaseManager);
-    
+
     $this->logSection('propel', 'Reading databases structure...');
     $ad = new AppData();
     $totalNbTables = 0;
@@ -100,14 +100,15 @@ EOF;
     } else {
       $this->logSection('propel', 'Database is empty');
     }
-    
+
     $this->logSection('propel', 'Loading XML schema files...');
     Phing::startup(); // required to locate behavior classes...
     $this->schemaToXML(self::DO_NOT_CHECK_SCHEMA, 'generated-');
     $this->copyXmlSchemaFromPlugins('generated-');
     $appData = $this->getModels($databaseManager, $options['verbose']);
     $this->logSection('propel', sprintf('%d tables defined in the schema files.', $appData->countTables()));
-    
+    $this->cleanup($options['verbose']);
+
     $this->logSection('propel', 'Comparing databases and schemas...');
     $manager = new PropelMigrationManager();
     $manager->setConnections($connections);
@@ -119,18 +120,20 @@ EOF;
       {
         $this->logSection('propel', sprintf('  Comparing database "%s"', $name), null, 'COMMENT');
       }
-      
+
       if (!$appData->hasDatabase($name)) {
         // FIXME: tables present in database but not in XML
         continue;
       }
       $databaseDiff = PropelDatabaseComparator::computeDiff($database, $appData->getDatabase($name));
-    
-      if (!$databaseDiff && $options['verbose']) {
-        $this->logSection('propel', sprintf('  Same XML and database structures for datasource "%s" - no diff to generate', $name), null, 'COMMENT');
+
+      if (!$databaseDiff) {
+        if($options['verbose']) {
+          $this->logSection('propel', sprintf('  Same XML and database structures for datasource "%s" - no diff to generate', $name), null, 'COMMENT');
+        }
         continue;
       }
-    
+
       $this->logSection('propel', sprintf('Structure of database was modified in datasource "%s": %s', $name, $databaseDiff->getDescription()));
       if ($options['verbose'])
       {
@@ -143,10 +146,10 @@ EOF;
 
     if (!$migrationsUp)
     {
-      $this->logSection('propel', 'Same XML and database structures for all datasource - no diff to generate');
+      $this->logSection('propel', 'Same XML and database structures for all datasources - no diff to generate');
       return;
     }
-    
+
     $timestamp = time();
     $migrationDirectory = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR . $options['migration-dir'];
     $migrationFileName = $manager->getMigrationFileName($timestamp);
@@ -166,7 +169,7 @@ EOF;
     $migrationClassBody = $manager->getMigrationClassBody($migrationsUp, $migrationsDown, $timestamp);
     file_put_contents($migrationFilePath, $migrationClassBody);
     $this->logSection('propel', sprintf('"%s" file successfully created in %s', $migrationFileName, $migrationDirectory));
-    
+
     if ($editorCmd = $options['editor-cmd'])
     {
       $this->logSection('propel', sprintf('Using "%s" as text editor', $editorCmd));

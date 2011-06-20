@@ -74,7 +74,7 @@
         <target>afl</target>
       </trans-unit>
       <trans-unit>
-        <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source> 
+        <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
         <target>[0] geen resultaat|[1] 1 resultaat|(1,+Inf] %1% resultaten</target>
       </trans-unit>
 

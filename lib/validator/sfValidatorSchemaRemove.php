@@ -31,7 +31,7 @@ class sfValidatorSchemaRemove extends sfValidatorSchema
   {
     $this->addRequiredOption('fields');
     $this->addOption('throw_global_error', false);
-    
+
     parent::__construct(null, $options, $messages);
   }
 
@@ -49,7 +49,7 @@ class sfValidatorSchemaRemove extends sfValidatorSchema
     {
       throw new InvalidArgumentException('You must pass an array parameter to the clean() method');
     }
-    
+
     foreach ($this->getOption('fields') as $field)
     {
       // isset() doesn't work here since the value is null

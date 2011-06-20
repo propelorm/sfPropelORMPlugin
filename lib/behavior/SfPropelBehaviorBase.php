@@ -48,6 +48,6 @@ abstract class SfPropelBehaviorBase extends Behavior
    */
   protected function isDisabled()
   {
-    return 'true' == $this->getParameter('disabled');
+    return isset($this->parameters['disabled']) && 'true' == $this->getParameter('disabled');
   }
 }

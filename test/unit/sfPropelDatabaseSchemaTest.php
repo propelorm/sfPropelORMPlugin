@@ -47,7 +47,7 @@ require_once SF_DIR . 'lib/util/sfInflector.class.php';
 require_once SF_DIR . 'lib/util/sfToolkit.class.php';
 require_once SF_DIR . 'lib/yaml/sfYaml.php';
 
-$t = new my_lime_test(409);
+$t = new my_lime_test(423);
 
 $t->diag('Classical YAML to XML conversion');
 $p = new sfPropelDatabaseSchema();

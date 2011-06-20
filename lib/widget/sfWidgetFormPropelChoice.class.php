@@ -37,7 +37,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
    *  * add_empty:   Whether to add a first empty value or not (false by default)
    *                 If the option is not a Boolean, the value will be used as the text value
    *  * method:      The method to use to display object values (__toString by default)
-   *  * key_method:  The method to use to display the object keys (getPrimaryKey by default) 
+   *  * key_method:  The method to use to display the object keys (getPrimaryKey by default)
    *  * order_by:    An array composed of two fields:
    *                   * The column to order by the results (must be in the PhpName format)
    *                   * asc or desc
@@ -54,7 +54,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
   {
     $this->addRequiredOption('model');
     $this->addOption('add_empty', false);
-    $this->addOption('method', '__toString'); 
+    $this->addOption('method', '__toString');
     $this->addOption('key_method', 'getPrimaryKey');
     $this->addOption('order_by', null);
     $this->addOption('query_methods', array());
@@ -85,9 +85,16 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     {
       $criteria->mergeWith($this->getOption('criteria'));
     }
-    foreach ($this->getOption('query_methods') as $method)
+    foreach ($this->getOption('query_methods') as $methodName => $methodParams)
     {
-      $criteria->$method();
+      if(is_array($methodParams))
+      {
+        call_user_func_array(array($criteria, $methodName), $methodParams);
+      }
+      else
+      {
+        $criteria->$methodParams();
+      }
     }
     if ($order = $this->getOption('order_by'))
     {
@@ -95,7 +102,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     }
     $objects = $criteria->find($this->getOption('connection'));
 
-		$methodKey = $this->getOption('key_method');
+    $methodKey = $this->getOption('key_method');
     if (!method_exists($this->getOption('model'), $methodKey))
     {
       throw new RuntimeException(sprintf('Class "%s" must implement a "%s" method to be rendered in a "%s" widget', $this->getOption('model'), $methodKey, __CLASS__));
@@ -111,7 +118,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     {
       $choices[$object->$methodKey()] = $object->$methodValue();
     }
-		
-		return $choices;
+
+    return $choices;
   }
 }
