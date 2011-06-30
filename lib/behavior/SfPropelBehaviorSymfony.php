@@ -81,7 +81,7 @@ class SfPropelBehaviorSymfony extends SfPropelBehaviorBase
     }
 
     $behaviors = $this->getTable()->getBehaviors();
-    $isI18n = isset($behaviors['symfony_i18n']) ? 'true' : 'false';
+    $isI18n = isset($behaviors['i18n']) ? 'true' : 'false';
 
     return <<<EOF
 
