@@ -49,6 +49,7 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    $this->cleanupSQLs();
     $this->schemaToXML(self::DO_NOT_CHECK_SCHEMA, 'generated-');
     $this->copyXmlSchemaFromPlugins('generated-');
     $ret = $this->callPhing('sql', self::CHECK_SCHEMA);
@@ -56,4 +57,13 @@ EOF;
 ///// FIXME: must change the propel.ini based on databases.yml! as done in insert-sql
     return !$ret;
   }
+
+  protected function cleanupSQLs()
+  {
+      if (null === $this->commandApplication || !$this->commandApplication->withTrace())
+      {
+            $finder = sfFinder::type('file')->name('*model.schema.sql')->name('sqldb.map');
+            $this->getFilesystem()->remove($finder->in(array('data/sql')));
+          }
+    }
 }
