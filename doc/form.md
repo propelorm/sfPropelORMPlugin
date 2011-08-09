@@ -1,12 +1,12 @@
 Form Extensions
 ===============
 
-The `sfPropel15Plugin` provides two widgets and three validators, to help build and validate forms bound to a Model object.
+The `sfPropelORMPlugin` provides two widgets and three validators, to help build and validate forms bound to a Model object.
 
 `sfWidgetPropelChoice` and `sfValidatorPropelChoice`
 ----------------------------------------------------
 
-Editing a foreign key columns is often a matter of choosing the related object to relate. For instance, editing the `author_id` field of an `Article` model means choosing an element in the list of existing Authors. `sfPropel15Plugin` provides an extension of the `sfWidgetFormChoice` class that takes care of populating the list of options based on a related table. It is called `sfWidgetPropelChoice`, and is associated witha validator called `sfValidatorPropelChoice`.
+Editing a foreign key columns is often a matter of choosing the related object to relate. For instance, editing the `author_id` field of an `Article` model means choosing an element in the list of existing Authors. `sfPropelORMPlugin` provides an extension of the `sfWidgetFormChoice` class that takes care of populating the list of options based on a related table. It is called `sfWidgetPropelChoice`, and is associated witha validator called `sfValidatorPropelChoice`.
 
 ### Generated Configuration
 
