@@ -49,7 +49,7 @@ class sfFormPropelCollection extends sfForm
     if (!$collection)
     {
       $this->model = $options['model'];
-      $collection = new PropelObjectcollection();
+      $collection = new PropelObjectCollection();
       $collection->setModel($this->model);
       $this->collection = $collection;
     }
