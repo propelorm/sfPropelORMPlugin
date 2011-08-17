@@ -23,10 +23,10 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
 
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_root_dir'),
-      sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor')),
+      sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor/propel/runtime/lib')),
     ));
 
-    require_once 'propel/Propel.php';
+    require_once 'Propel.php';
 
     if (!Propel::isInit())
     {
