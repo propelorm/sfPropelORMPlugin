@@ -8,7 +8,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfPropelPluginConfiguration.class.php 23739 2009-11-09 23:32:46Z Kris.Wallsmith $
  */
-class sfPropel15PluginConfiguration extends sfPluginConfiguration
+class sfPropelORMPluginConfiguration extends sfPluginConfiguration
 {
   /**
    * @see sfPluginConfiguration
@@ -18,15 +18,16 @@ class sfPropel15PluginConfiguration extends sfPluginConfiguration
     sfConfig::set('sf_orm', 'propel');
     if (!sfConfig::get('sf_admin_module_web_dir'))
     {
-      sfConfig::set('sf_admin_module_web_dir', '/sfPropel15Plugin');
+      sfConfig::set('sf_admin_module_web_dir', '/sfPropelORMPlugin');
     }
 
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_root_dir'),
-      sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor')),
+      sfConfig::get('sf_phing_path', realpath(dirname(__FILE__).'/../lib/vendor/phing/classes')),
+      sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor/propel/runtime/lib')),
     ));
 
-    require_once 'propel/Propel.php';
+    require_once 'Propel.php';
 
     if (!Propel::isInit())
     {
