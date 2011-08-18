@@ -23,6 +23,7 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
 
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_root_dir'),
+      sfConfig::get('sf_phing_path', realpath(dirname(__FILE__).'/../lib/vendor/phing/classes')),
       sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor/propel/runtime/lib')),
     ));
 
