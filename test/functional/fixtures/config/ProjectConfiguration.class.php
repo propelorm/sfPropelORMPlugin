@@ -7,7 +7,8 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
   public function setup()
   {
-    $this->enablePlugins('sfPropelORMPlugin');
+    $this->enablePlugins(array('sfPropelORMPlugin'));
+    $this->setPluginPath('sfPropelORMPlugin', realpath(dirname(__FILE__) . '/../../../..'));
   }
 
   public function initializePropel($app)
