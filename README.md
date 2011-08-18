@@ -151,10 +151,10 @@ The new options for the `admin15` generator theme are fully documented, and illu
 ``` php
 class ArticleForm extends BaseArticleForm
 {
-    public function configure()
-    {
+  public function configure()
+  {
     $this->embedRelation('Book');
-    }
+  }
 }
 ```
 
