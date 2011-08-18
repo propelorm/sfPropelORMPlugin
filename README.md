@@ -34,14 +34,6 @@ Install `Phing` and `Propel`:
 
 ### Final step
 
-From the project root directory or by using the command:
-
-    php symfony plugin:install sfPropelORMPlugin
-
-Right after the installation of the plugin, you should update plugin assets:
-
-    php symfony plugin:publish-assets
-
 Disable the core Propel plugin and enable the `sfPropelORMPlugin` instead:
 
 ``` php
@@ -49,12 +41,16 @@ Disable the core Propel plugin and enable the `sfPropelORMPlugin` instead:
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
-    public function setup()
-    {
+  public function setup()
+  {
     $this->enablePlugins('sfPropelORMPlugin');
-    }
+  }
 }
 ```
+
+Right after the installation of the plugin, you should update plugin assets:
+
+    php symfony plugin:publish-assets
 
 Change the path of the symfony behaviors in the `config/propel.ini` file of your project:
 
