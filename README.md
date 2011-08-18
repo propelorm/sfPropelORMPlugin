@@ -98,7 +98,7 @@ Propel 1.6 bundles most common behaviors in a new, robust buildtime implementati
 - [sortable](http://www.propelorm.org/wiki/Documentation/1.6/Behaviors/sortable)
 - [concrete_inheritance](http://www.propelorm.org/wiki/Documentation/1.6/Inheritance#ConcreteTableInheritance)
 - [query_cache](http://www.propelorm.org/wiki/Documentation/1.6/Behaviors/query_cache)
-- [alternative_coding_standards](http://www.propelorm.org/xiki/Documentation/1.6/Behaviors/alternative_coding_standards)
+- [alternative_coding_standards](http://www.propelorm.org/wiki/Documentation/1.6/Behaviors/alternative_coding_standards)
 - [auto_add_pk](http://www.propelorm.org/wiki/Documentation/1.6/Behaviors/auto_add_pk)
 
 `sfPropelORMPlugin` allows you to register core propel behaviors right from your `schema.yml`. For instance, to create a tree structure from a `Section` model:
