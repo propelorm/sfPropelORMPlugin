@@ -26,6 +26,13 @@ require_once $root_dir.'/config/ProjectConfiguration.class.php';
 $configuration = ProjectConfiguration::getApplicationConfiguration($app, 'test', isset($debug) ? $debug : true);
 sfContext::createInstance($configuration);
 
+// FIXME
+// for behavior inclusions
+// this a bit dirty, but allow functionnal tests to work.
+sfToolkit::addIncludePath(array(
+  realpath(dirname(__FILE__).'/../../'),
+  ));
+
 // remove all cache
 sf_functional_test_shutdown();
 register_shutdown_function('sf_functional_test_shutdown');

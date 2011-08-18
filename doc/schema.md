@@ -308,7 +308,7 @@ You can register more than one behavior and set the parameters of each behaviors
           sluggable:
           timestampable:
 
-You can also register a behavior for all your models right in the `propel.ini`. `sfPropel15Plugin` already enables the `symfony` and `symfony_i18n` behaviors to support symfony's behavior system and model localization features, but you can easily add your owns:
+You can also register a behavior for all your models right in the `propel.ini`. `sfPropelORMPlugin` already enables the `symfony` and `symfony_i18n` behaviors to support symfony's behavior system and model localization features, but you can easily add your owns:
 
     [ini]
     propel.behavior.default = symfony,symfony_i18n,alternative_coding_standards,auto_add_pk

@@ -1,7 +1,7 @@
 Admin Generator Extensions
 ==========================
 
-sfPropel15Plugin comes bundled with a new admin generator theme named 'admin15'. This theme provides additional features based on the new Propel 1.5 query objects, and is backwards compatible with sfPropelPlugin's admin generator theme.
+sfPropelORMPlugin comes bundled with a new admin generator theme named 'admin15'. This theme provides additional features based on the new Propel 1.5 query objects, and is backwards compatible with sfPropelPlugin's admin generator theme.
 
 To enable this theme, edit your `generator.yml` and change the `theme` property from `admin` to `admin15`, as follows:
 
