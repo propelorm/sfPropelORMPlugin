@@ -11,7 +11,7 @@ Clone the plugin from Github:
 
     git clone git://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
     cd plugins/sfPropelORMPlugin
-    git submodule init --update
+    git submodule update --init
 
 If you use Git as a VCS for your project, it should be better to add the plugin as a submodule:
 
