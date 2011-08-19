@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once dirname(__FILE__) . '/../vendor/propel/generator/lib/util/PropelPHPParser.php';
+require_once 'generator/lib/util/PropelPHPParser.php';
 
 /**
  * Internationalizes Propel models.
