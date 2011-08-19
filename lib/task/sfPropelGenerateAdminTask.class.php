@@ -64,7 +64,7 @@ For the filters and batch actions to work properly, you need to add
 the [with_wildcard_routes|COMMENT] option to the route:
 
   article:
-    class: sfPropel15RouteCollection
+    class: sfPropelORMRouteCollection
     options:
       model:                Article
       with_wildcard_routes: true
@@ -120,7 +120,7 @@ EOF;
       $module = $options['module'] ? $options['module'] : $name;
       $content = sprintf(<<<EOF
 %s:
-  class: sfPropel15RouteCollection
+  class: sfPropelORMRouteCollection
   options:
     model:                %s
     module:               %s
@@ -146,7 +146,7 @@ EOF
   {
     $routeOptions = $arguments['route']->getOptions();
 
-    if (!$arguments['route'] instanceof sfPropel15RouteCollection)
+    if (!$arguments['route'] instanceof sfPropelORMRouteCollection)
     {
       throw new sfCommandException(sprintf('The route "%s" is not a Propel collection route.', $arguments['route_name']));
     }
@@ -197,7 +197,7 @@ EOF
    */
   protected function checkRoute($route, $model, $module)
   {
-    if ($route instanceof sfPropel15RouteCollection)
+    if ($route instanceof sfPropelORMRouteCollection)
     {
       $options = $route->getOptions();
       return $model == $options['model'] && $module == $options['module'];

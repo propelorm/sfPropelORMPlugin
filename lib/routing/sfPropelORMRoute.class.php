@@ -18,7 +18,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfObjectRoute.class.php 20784 2009-08-04 20:53:57Z Kris.Wallsmith $
  */
-class sfPropel15Route extends sfRequestRoute
+class sfPropelORMRoute extends sfRequestRoute
 {
   protected
     $object  = false,
@@ -288,6 +288,6 @@ class sfPropel15Route extends sfRequestRoute
     {
       return call_user_func_array(array($this, 'getObject'), $arguments);
     }
-    throw new Exception(sprintf('Call to undefined method sfPropel15Route::%s.', $name));
+    throw new Exception(sprintf('Call to undefined method sfPropelORMRoute::%s.', $name));
   }
 }
