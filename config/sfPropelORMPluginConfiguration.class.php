@@ -16,17 +16,20 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
   public function initialize()
   {
     sfConfig::set('sf_orm', 'propel');
-    sfConfig::set('sf_phing_path', sfConfig::get('sf_lib_dir', '../../../lib').'/vendor/phing');
-    sfConfig::set('sf_propel_path', sfConfig::get('sf_lib_dir', '../../../lib').'/vendor/propel');
+    //I need the project root. It changes from environment to environment so....
+    $project_root = dirname(__FILE__).'/../../../';
+    
+    sfConfig::set('sf_phing_path', $project_root.'lib/vendor/phing');
+    sfConfig::set('sf_propel_path', $project_root.'lib/vendor/propel');
     //This one because propel includes phing/.....php
-    sfConfig::set('sf_vendor_path', sfConfig::get('sf_lib_dir', '../../../lib').'/vendor');
+    sfConfig::set('sf_vendor_path', $project_root.'lib/vendor');
     
     
     if (!sfConfig::get('sf_admin_module_web_dir'))
     {
       sfConfig::set('sf_admin_module_web_dir', '/sfPropelORMPlugin');
     }
-
+    
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_root_dir'),
       sfConfig::get('sf_phing_path'),
@@ -34,7 +37,7 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
       sfConfig::get('sf_propel_path'),
       sfConfig::get('sf_vendor_path')
     ));
-
+    
     require_once 'Propel.php';
 
     if (!Propel::isInit())
