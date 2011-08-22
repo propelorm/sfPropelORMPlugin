@@ -16,7 +16,7 @@ Clone the plugin from Github:
 If you use Git as a VCS for your project, it should be better to add the plugin as a submodule:
 
     git submodule add git://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
-    git submodule init --update --recursive
+    git submodule update --init --recursive
 
 As both Phing and Propel libraries are bundled with the plugin, you have to initialize submodules for the plugin.
 
@@ -28,25 +28,8 @@ Install the plugin via the subversion repository:
 
 Install `Phing` and `Propel`:
 
-    cd lib/vendor
-    svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3/classes/phing phing
-    svn checkout http://svn.github.com/propelorm/Propel.git propel
-
-Optional: add a reference to the propel and phing folders in the test project:
-
-``` php
-// plugins/sfPropelORMPlugin/test/functional/fixtures/config/ProjectConfiguration.class.php
-
-class ProjectConfiguration extends sfProjectConfiguration
-{
-  public function setup()
-  {
-    $this->enablePlugins(array('sfPropelORMPlugin'));
-    $this->setPluginPath('sfPropelORMPlugin', realpath(dirname(__FILE__) . '/../../../..'));
-    sfConfig::set('sf_phing_path', SF_DIR.'/../phing');
-    sfConfig::set('sf_propel_path', SF_DIR.'/../propel');
-  }
-```
+    svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3/classes/phing lib/vendor/phing
+    svn checkout http://svn.github.com/propelorm/Propel.git lib/vendor/propel
 
 ### Final step
 
@@ -59,12 +42,30 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
   public function setup()
   {
-    $this->enablePlugins('sfPropelORMPlugin');
     // If you're following the SVN way, uncomment the next two lines
     //sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir').'/lib/vendor/phing');
     //sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir').'/lib/vendor/propel');
+
+    $this->enablePlugins('sfPropelORMPlugin');
   }
 }
+```
+
+**Optional:** update references to the `propel` and `phing` folders in the test project.
+
+``` php
+// plugins/sfPropelORMPlugin/test/functional/fixtures/config/ProjectConfiguration.class.php
+
+class ProjectConfiguration extends sfProjectConfiguration
+{
+  public function setup()
+  {
+    $this->enablePlugins(array('sfPropelORMPlugin'));
+    $this->setPluginPath('sfPropelORMPlugin', realpath(dirname(__FILE__) . '/../../../..'));
+
+    sfConfig::set('sf_phing_path', SF_DIR.'/../phing');
+    sfConfig::set('sf_propel_path', SF_DIR.'/../propel');
+  }
 ```
 
 Right after the installation of the plugin, you should update plugin assets:
