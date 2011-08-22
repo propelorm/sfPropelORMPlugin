@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-//require_once(dirname(__FILE__).'/sfPropelBaseTask.class.php');
-//require_once(dirname(__FILE__).'/../vendor/propel/generator/lib/util/PropelMigrationManager.php');
-
 /**
  * Checks the migrations to run
  *

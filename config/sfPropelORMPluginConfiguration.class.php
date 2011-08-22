@@ -16,18 +16,20 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
   public function initialize()
   {
     sfConfig::set('sf_orm', 'propel');
+    
     if (!sfConfig::get('sf_admin_module_web_dir'))
     {
       sfConfig::set('sf_admin_module_web_dir', '/sfPropelORMPlugin');
     }
-
+    
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_root_dir'),
-      sfConfig::get('sf_phing_path', realpath(dirname(__FILE__).'/../lib/vendor/phing/classes')),
-      sfConfig::get('sf_propel_runtime_path', realpath(dirname(__FILE__).'/../lib/vendor/propel/runtime/lib')),
+      sfConfig::get('sf_phing_path'),
+      sfConfig::get('sf_propel_path'),
+      sfConfig::get('sf_phing_path').'/../',
     ));
-
-    require_once 'Propel.php';
+    
+    require_once 'runtime/lib/Propel.php';
 
     if (!Propel::isInit())
     {

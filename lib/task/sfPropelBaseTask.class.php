@@ -237,7 +237,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     // Call phing targets
     sfToolkit::addIncludePath(array(
       sfConfig::get('sf_symfony_lib_dir'),
-      sfConfig::get('sf_propel_generator_path', realpath(dirname(__FILE__).'/../vendor/propel/generator/lib')),
+      sfConfig::get('sf_propel_generator_path', sfConfig::get('sf_propel_path').'generator/lib'),
     ));
 
     $args = array();
@@ -255,7 +255,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
     // Build file
     $args[] = '-f';
-    $args[] = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'propel/generator'.DIRECTORY_SEPARATOR.'build.xml');
+    $args[] = realpath(sfConfig::get('sf_propel_path').DIRECTORY_SEPARATOR.'generator'.DIRECTORY_SEPARATOR.'build.xml');
 
     // Logger
     if (DIRECTORY_SEPARATOR != '\\' && (function_exists('posix_isatty') && @posix_isatty(STDOUT)))
@@ -381,7 +381,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
   {
     $params = $this->getConnection($databaseManager, $connection);
     $platformClass = ucfirst($params['adapter']) . 'Platform';
-    include_once dirname(__FILE__) . '/../vendor/propel/generator/lib/platform/' . $platformClass . '.php';
+    include_once sfConfig::get('sf_propel_path') . '/generator/lib/platform/' . $platformClass . '.php';
     $platform = new $platformClass();
     $platform->setGeneratorConfig($this->getGeneratorConfig());
     return $platform;
@@ -391,7 +391,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
   {
     $params = $this->getConnection($databaseManager, $connection);
     $parserClass = ucfirst($params['adapter']) . 'SchemaParser';
-    include_once dirname(__FILE__) . '/../vendor/propel/generator/lib/reverse/' . $params['adapter'] . '/' . $parserClass . '.php';
+    include_once sfConfig::get('sf_propel_path') . '/generator/lib/reverse/' . $params['adapter'] . '/' . $parserClass . '.php';
     $parser = new $parserClass();
     $parser->setConnection($con);
     $parser->setGeneratorConfig($this->getGeneratorConfig());
