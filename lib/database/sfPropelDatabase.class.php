@@ -146,7 +146,7 @@ class sfPropelDatabase extends sfPDODatabase
 
     if (($slaves = $this->getParameter('slaves', null)) && isset($slaves['connection']))
     {
-      if (isset($slaves['connection']['dns']))
+      if (isset($slaves['connection']['dsn']))
       {
         $connections = array(
           'dsn'       => $slaves['connection']['dsn'],
@@ -225,6 +225,12 @@ class sfPropelDatabase extends sfPDODatabase
    */
   protected function parseDsn($dsn)
   {
-    return array('phptype' => substr($dsn, 0, strpos($dsn, ':')));
+    $phptype = substr($dsn, 0, strpos($dsn, ':'));
+
+    if ('oci' === $phptype) {
+        $phptype = 'oracle';
+    }
+
+    return array('phptype' => $phptype);
   }
 }
