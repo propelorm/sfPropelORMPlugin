@@ -31,7 +31,7 @@ sfContext::createInstance($configuration);
 // this a bit dirty, but allow functionnal tests to work.
 sfToolkit::addIncludePath(array(
   realpath(dirname(__FILE__).'/../../'),
-  ));
+));
 
 // remove all cache
 sf_functional_test_shutdown();
