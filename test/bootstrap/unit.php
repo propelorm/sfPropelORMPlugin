@@ -14,6 +14,7 @@ require_once SF_DIR . 'lib/autoload/sfSimpleAutoload.class.php';
 
 $autoload = sfSimpleAutoload::getInstance(sys_get_temp_dir().DIRECTORY_SEPARATOR.sprintf('sf_autoload_unit_propel_%s.data', md5(__FILE__)));
 $autoload->addDirectory(realpath(dirname(__FILE__).'/../../lib'));
+$autoload->addDirectory(realpath(dirname(__FILE__).'/../../../../lib/vendor/propel'));
 $autoload->register();
 
 $_test_dir = realpath(dirname(__FILE__).'/..');

@@ -9,6 +9,9 @@ class ProjectConfiguration extends sfProjectConfiguration
   {
     $this->enablePlugins(array('sfPropelORMPlugin'));
     $this->setPluginPath('sfPropelORMPlugin', realpath(dirname(__FILE__) . '/../../../..'));
+
+    sfConfig::set('sf_phing_path', SF_DIR.'/../phing');
+    sfConfig::set('sf_propel_path', SF_DIR.'/../propel');
   }
 
   public function initializePropel($app)
