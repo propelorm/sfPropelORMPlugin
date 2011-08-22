@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once 'propel/generator/lib/model/Behavior.php';
+require_once 'generator/lib/model/Behavior.php';
 
 /**
  * Base behavior class.
