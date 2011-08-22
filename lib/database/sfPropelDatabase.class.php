@@ -146,7 +146,7 @@ class sfPropelDatabase extends sfPDODatabase
 
     if (($slaves = $this->getParameter('slaves', null)) && isset($slaves['connection']))
     {
-      if (isset($slaves['connection']['dns']))
+      if (isset($slaves['connection']['dsn']))
       {
         $connections = array(
           'dsn'       => $slaves['connection']['dsn'],
