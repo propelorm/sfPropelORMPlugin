@@ -509,4 +509,52 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
     return $properties;
   }
+
+  /**
+   * Write an XML file which represents propel.configuration
+   *
+   * @param $databaseManager
+   * @param string $file    Should be 'buildtime-conf.xml'.
+   */
+  protected function createBuildTimeFile($databaseManager, $file)
+  {
+    $xml = strtr(<<<EOT
+<?xml version="1.0"?>
+<config>
+    <propel>
+        <datasources default="%default_connection%">
+
+EOT
+    , array('%default_connection%' => 'propel'));
+
+    foreach ($this->getConnections($databaseManager) as $name => $datasource)
+    {
+      $xml .= strtr(<<<EOT
+            <datasource id="%name%">
+                <adapter>%adapter%</adapter>
+                <connection>
+                    <dsn>%dsn%</dsn>
+                    <user>%username%</user>
+                    <password>%password%</password>
+                </connection>
+            </datasource>
+
+EOT
+      , array(
+        '%name%'     => $name,
+        '%adapter%'  => $datasource['adapter'],
+        '%dsn%'      => $datasource['dsn'],
+        '%username%' => $datasource['user'],
+        '%password%' => $datasource['password'],
+      ));
+    }
+
+    $xml .= <<<EOT
+        </datasources>
+    </propel>
+</config>
+EOT;
+
+    file_put_contents($file, $xml);
+  }
 }
