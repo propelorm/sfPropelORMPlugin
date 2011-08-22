@@ -240,6 +240,10 @@ abstract class sfPropelBaseTask extends sfBaseTask
       sfConfig::get('sf_propel_generator_path', realpath(dirname(__FILE__).'/../vendor/propel/generator/lib')),
     ));
 
+    // create a buildtime-conf.xml file
+    $buildTimeFile = sfConfig::get('sf_config_dir').'/buildtime-conf.xml';
+    $this->createBuildTimeFile($buildTimeFile);
+
     $args = array();
     $bufferPhingOutput = null === $this->commandApplication || !$this->commandApplication->withTrace();
 
@@ -305,6 +309,11 @@ abstract class sfPropelBaseTask extends sfBaseTask
     if ($bufferPhingOutput)
     {
       ob_end_clean();
+    }
+
+    if (is_file($buildTimeFile))
+    {
+      unlink($buildTimeFile);
     }
 
     chdir(sfConfig::get('sf_root_dir'));
@@ -508,5 +517,52 @@ abstract class sfPropelBaseTask extends sfBaseTask
     }
 
     return $properties;
+  }
+
+  /**
+   * Write an XML file which represents propel.configuration
+   *
+   * @param string $file Should be 'buildtime-conf.xml'.
+   */
+  protected function createBuildTimeFile($file)
+  {
+    $xml = strtr(<<<EOT
+<?xml version="1.0"?>
+<config>
+    <propel>
+        <datasources default="%default_connection%">
+
+EOT
+    , array('%default_connection%' => 'propel'));
+
+    foreach ($this->getConnections() as $name => $datasource)
+    {
+      $xml .= strtr(<<<EOT
+            <datasource id="%name%">
+                <adapter>%adapter%</adapter>
+                <connection>
+                    <dsn>%dsn%</dsn>
+                    <user>%username%</user>
+                    <password>%password%</password>
+                </connection>
+            </datasource>
+
+EOT
+      , array(
+        '%name%' => $name,
+        '%adapter%' => $datasource['adapter'],
+        '%dsn%' => $datasource['dsn'],
+        '%username%' => $datasource['user'],
+        '%password%' => $datasource['password'],
+      ));
+    }
+
+    $xml .= <<<EOT
+        </datasources>
+    </propel>
+</config>
+EOT;
+
+    file_put_contents($file, $xml);
   }
 }
