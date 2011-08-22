@@ -225,6 +225,12 @@ class sfPropelDatabase extends sfPDODatabase
    */
   protected function parseDsn($dsn)
   {
-    return array('phptype' => substr($dsn, 0, strpos($dsn, ':')));
+    $phptype = substr($dsn, 0, strpos($dsn, ':'));
+
+    if ('oci' === $phptype) {
+        $phptype = 'oracle';
+    }
+
+    return array('phptype' => $phptype);
   }
 }
