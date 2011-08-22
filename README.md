@@ -63,9 +63,13 @@ class ProjectConfiguration extends sfProjectConfiguration
     $this->enablePlugins(array('sfPropelORMPlugin'));
     $this->setPluginPath('sfPropelORMPlugin', realpath(dirname(__FILE__) . '/../../../..'));
 
-    // Update the following parameters to fit your needs
-    sfConfig::set('sf_phing_path', SF_DIR.'/../phing');
-    sfConfig::set('sf_propel_path', SF_DIR.'/../propel');
+    // SVN way
+    //sfConfig::set('sf_propel_path', SF_DIR.'/../lib/vendor/propel');
+    //sfConfig::set('sf_phing_path', SF_DIR.'/../lib/vendor/phing');
+
+    // Git way
+    sfConfig::set('sf_propel_path', realpath(dirname(__FILE__) . '/../../../../lib/vendor/propel'));
+    sfConfig::set('sf_phing_path', realpath(dirname(__FILE__) . '/../../../../lib/vendor/phing'));
   }
 ```
 
