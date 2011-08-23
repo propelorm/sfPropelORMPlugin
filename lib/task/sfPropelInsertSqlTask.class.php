@@ -100,7 +100,7 @@ EOF;
         ), 'QUESTION_LARGE', false)
     )
     {
-    	$this->cleanup();
+      $this->cleanup();
       $this->logSection('propel', 'Task aborted.');
 
       return 1;
@@ -111,6 +111,13 @@ EOF;
     mkdir($this->tmpDir, 0777, true);
     foreach ($sqls as $connection => $files)
     {
+      $database = $databaseManager->getDatabase($connection);
+      if (false === $database->getParameter('insert_sql', true))
+      {
+        $this->logSection('propel', 'Skipped connection: ' . $connection, null, 'ERROR');
+        continue;
+      }
+
       $dir = $this->tmpDir.'/'.$connection;
       mkdir($dir, 0777, true);
 
