@@ -103,8 +103,13 @@ class sfValidatorPropelUnique extends sfValidatorSchema
         $criteria->$methodParams();
       }
     }
-    $tableMap = call_user_func(array($this->getOption('model') . 'Peer', 'getTableMap'));
-    $nullColsCount = 0;
+
+    if ($this->getOption('allow_null_uniques'))
+    {
+      $tableMap = call_user_func(array($this->getOption('model') . 'Peer', 'getTableMap'));
+      $nullColsCount = 0;
+    }
+
     foreach ($this->getOption('column') as $i => $column)
     {
       $name = isset($fields[$i]) ? $fields[$i] : $column;
@@ -117,7 +122,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
       $colName = call_user_func(array(constant($this->getOption('model').'::PEER'), 'translateFieldName'), $column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
 
       // handle null unique indexes
-      if (null === $values[$name] && !$tableMap->getColumn($colName)->isNotNull())
+      if ($this->getOption('allow_null_uniques') && null === $values[$name] && !$tableMap->getColumn($colName)->isNotNull())
       {
         $nullColsCount++;
         continue;
@@ -126,16 +131,16 @@ class sfValidatorPropelUnique extends sfValidatorSchema
       $criteria->add($colName, $values[$name]);
     }
 
-    if (!$this->getOption('allow_null_uniques') || $nullColsCount != count($this->getOption('column')))
+    if ($this->getOption('allow_null_uniques') && $nullColsCount == count($this->getOption('column')))
     {
-      $object = $criteria->findOne($this->getOption('connection'));
+      // all columns for checking were both empty and null unique
+      $object = null;
     }
     else
     {
-      // all colums for checking were both empty and null unique
-      $object = null;
+      // perform query for normal unique check
+      $object = $criteria->findOne($this->getOption('connection'));
     }
-
 
     // if no object or if we're updating the object, it's ok
     if (null === $object || $this->isUpdate($object, $values))
