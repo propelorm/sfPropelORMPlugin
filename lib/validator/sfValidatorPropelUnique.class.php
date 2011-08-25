@@ -126,7 +126,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
       $criteria->add($colName, $values[$name]);
     }
 
-    if ( !$this->getOption('allow_null_uniques') || $nullColsCount != count($this->getOption('column')) )
+    if (!$this->getOption('allow_null_uniques') || $nullColsCount != count($this->getOption('column')))
     {
       $object = $criteria->findOne($this->getOption('connection'));
     }
