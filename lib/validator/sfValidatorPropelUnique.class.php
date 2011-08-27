@@ -49,6 +49,8 @@ class sfValidatorPropelUnique extends sfValidatorSchema
    *  * field               Field name used by the form, other than the column name
    *  * primary_key:        The primary key column name in Propel field name format (optional, will be introspected if not provided)
    *                        You can also pass an array if the table has several primary keys
+   *  * allow_null_uniques: Whether to allow null values (false by default). If a field is not "NOT NULL" the validator will accept null values.
+   *                        Check this for database support: http://troels.arvin.dk/db/rdbms/#constraints-unique
    *  * connection:         The Propel connection to use (null by default)
    *  * throw_global_error: Whether to throw a global error (false by default) or an error tied to the first field related to the column option array
    *
@@ -61,6 +63,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
     $this->addOption('query_methods', array());
     $this->addOption('field', null);
     $this->addOption('primary_key', null);
+    $this->addOption('allow_null_uniques', false);
     $this->addOption('connection', null);
     $this->addOption('throw_global_error', false);
 
@@ -100,6 +103,13 @@ class sfValidatorPropelUnique extends sfValidatorSchema
         $criteria->$methodParams();
       }
     }
+
+    if ($this->getOption('allow_null_uniques'))
+    {
+      $tableMap = call_user_func(array($this->getOption('model') . 'Peer', 'getTableMap'));
+      $nullColsCount = 0;
+    }
+
     foreach ($this->getOption('column') as $i => $column)
     {
       $name = isset($fields[$i]) ? $fields[$i] : $column;
@@ -111,10 +121,26 @@ class sfValidatorPropelUnique extends sfValidatorSchema
 
       $colName = call_user_func(array(constant($this->getOption('model').'::PEER'), 'translateFieldName'), $column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
 
+      // handle null unique indexes
+      if ($this->getOption('allow_null_uniques') && null === $values[$name] && !$tableMap->getColumn($colName)->isNotNull())
+      {
+        $nullColsCount++;
+        continue;
+      }
+
       $criteria->add($colName, $values[$name]);
     }
 
-    $object = $criteria->findOne($this->getOption('connection'));
+    if ($this->getOption('allow_null_uniques') && $nullColsCount == count($this->getOption('column')))
+    {
+      // all columns for checking were both empty and null unique
+      $object = null;
+    }
+    else
+    {
+      // perform query for normal unique check
+      $object = $criteria->findOne($this->getOption('connection'));
+    }
 
     // if no object or if we're updating the object, it's ok
     if (null === $object || $this->isUpdate($object, $values))
