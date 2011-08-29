@@ -120,7 +120,7 @@ $b->
     check('MovieI18N', array('culture' => 'fr', 'id' => 2, 'title' => 'Les Douze Salopards (1)'))->
     check('MovieI18N', array('culture' => 'en', 'id' => 2, 'title' => 'The Dirty Dozen (1)'))->
   end()->
-
+  
   // Bug #7486
   click('submit')->
 
@@ -152,8 +152,50 @@ $b->
   // END: Bug #7486
 ;
 
+// https://github.com/propelorm/sfPropelORMPlugin/issues/38
+$b->
+  get('/i18n/movie')->
+  with('request')->begin()->
+    isParameter('module', 'i18n')->
+    isParameter('action', 'movie')->
+  end()->
+  click('submit', array('movie' => array('director' => 'James McTeigue', 'en' => array('title' => 'V For Vendetta'), 'fr' => array('title' => 'V Pour Vendetta'), 'Toy' => array('newToy1' => array('ref' => '04212', 'en' => array('name' => 'V mask'), 'fr' => array('name' => 'masque de V'))))))->
+  
+  with('response')->begin()->
+    isRedirected()->
+    followRedirect()->
+  end()->
+  
+  with('response')->begin()->
+    checkElement('input[value="James McTeigue"]')->
+    checkElement('input[value="V For Vendetta"]')->
+    checkElement('input[value="V Pour Vendetta"]')->
+    checkElement('input[name="movie[Toy][1][ref]"][value="04212"]')->
+    checkElement('input[name="movie[Toy][1][en][name]"][value="V mask"]')->
+    checkElement('input[name="movie[Toy][1][fr][name]"][value="masque de V"]')->
+  end()->
+  with('propel')->begin()->
+    check('Movie', array(), 4)->
+    check('Movie', array('director' => 'James McTeigue', 'id' => 4))->
+    check('MovieI18N', array(), 8)->
+    check('MovieI18N', array('id' => 4), 2)->
+    check('MovieI18N', array('culture' => 'fr', 'id' => 4, 'title' => 'V Pour Vendetta'))->
+    check('MovieI18N', array('culture' => 'en', 'id' => 4, 'title' => 'V For Vendetta'))->
+    check('Toy', array(),1)->
+    check('Toy', array('ref' => '04212'))->
+    check('ToyI18N', array(), 2)->
+    check('ToyI18N', array('id' => 1), 2)->
+    check('ToyI18N', array('culture' => 'fr', 'id' => 1, 'name' => 'masque de V'))->
+    check('ToyI18N', array('culture' => 'en', 'id' => 1, 'name' => 'V mask'))->
+  end()
+  // END: https://github.com/propelorm/sfPropelORMPlugin/issues/38
+;
+
+
 $b->getAndCheck('i18n', 'products')
   ->with('response')->begin()
     ->checkElement('ul#products li.toString', 'PRIMARY STRING')
   ->end()
 ;
+
+  

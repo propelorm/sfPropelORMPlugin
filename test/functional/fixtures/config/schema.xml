@@ -91,6 +91,24 @@
      <unique-column name="title" />
     </unique>
   </table>
+  
+  <table name="toy" isI18N="true" i18nTable="toy_i18n">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="ref" type="varchar" size="255" />
+    <column name="movie_id" type="integer" />
+    <foreign-key foreignTable="movie">
+      <reference local="movie_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="toy_i18n">
+    <column name="id" type="integer" required="true" primaryKey="true" />
+    <foreign-key foreignTable="toy" onDelete="cascade">
+      <reference local="id" foreign="id"/>
+    </foreign-key>
+    <column name="culture" type="varchar" size="7" required="true" primaryKey="true" isCulture="true" />
+    <column name="name" type="varchar" size="255" />
+  </table>
 
   <table name="attachment">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
