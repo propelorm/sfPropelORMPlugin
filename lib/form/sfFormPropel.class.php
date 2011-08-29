@@ -249,7 +249,7 @@ abstract class sfFormPropel extends sfFormObject
     {
       if ($form instanceof sfFormObject)
       {
-        $form->saveEmbeddedForms($con);
+        
         // this is Propel specific
         if(isset($form->getObject()->markForDeletion))
         {
@@ -259,6 +259,7 @@ abstract class sfFormPropel extends sfFormObject
         {
           $form->getObject()->save($con);
         }
+        $form->saveEmbeddedForms($con);
       }
       else
       {

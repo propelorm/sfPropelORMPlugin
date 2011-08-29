@@ -211,6 +211,7 @@ EOF;
    */
   public function objectFilter(&$script)
   {
+    
     if (!$this->hasPrimaryString($this->getTable()) && $this->hasPrimaryString($this->getI18nTable()))
     {
       $foreignKey = $this->getI18nTable()->getBehavior('symfony_i18n_translation')->getForeignKey();
@@ -232,6 +233,16 @@ EOF;
       $parser->replaceMethod('__toString', $toString);
       $script = $parser->getCode();
     }
+    
+    $table = $this->getTable();
+    $i18nTable = $this->getI18nTable();
+		$tablePhpName = $this->getTable()->getPhpName();
+    $i18nTablePhpName = $this->getI18nTable()->getPhpName();
+    $pattern = '/foreach \(\$this->coll'.$i18nTablePhpName.'s as \$referrerFK\) \{/';
+    $addition = "
+          \$referrerFK->set".$tablePhpName."(\$this);";
+		$replacement = "\$0$addition";
+		$script = preg_replace($pattern, $replacement, $script);
   }
 
   public function staticMethods()
