@@ -51,9 +51,18 @@ EOF;
   {
     $this->schemaToXML(self::DO_NOT_CHECK_SCHEMA, 'generated-');
     $this->copyXmlSchemaFromPlugins('generated-');
+
+    $databaseManager = new sfDatabaseManager($this->configuration);
+
+    // create a buildtime-conf.xml file
+    $buildTimeFile = sfConfig::get('sf_config_dir').'/buildtime-conf.xml';
+    $this->createBuildTimeFile($databaseManager, $buildTimeFile);
+
     $ret = $this->callPhing('sql', self::CHECK_SCHEMA);
     $this->cleanup();
+
 ///// FIXME: must change the propel.ini based on databases.yml! as done in insert-sql
+
     return !$ret;
   }
 }

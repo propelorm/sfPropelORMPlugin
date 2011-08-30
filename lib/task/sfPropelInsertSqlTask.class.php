@@ -72,6 +72,10 @@ EOF;
 
     $databaseManager = new sfDatabaseManager($this->configuration);
 
+    // create a buildtime-conf.xml file
+    $buildTimeFile = sfConfig::get('sf_config_dir').'/buildtime-conf.xml';
+    $this->createBuildTimeFile($databaseManager, $buildTimeFile);
+
     $properties = $this->getProperties(sfConfig::get('sf_data_dir').'/sql/sqldb.map');
     $sqls = array();
     foreach ($properties as $file => $connection)
