@@ -158,6 +158,7 @@ The plugin comes bundled with a new admin generator theme named 'admin15'. This 
 - **Easy links to filtered lists**: A link to a fitlered list view is very easy to write with the new theme. Just add GET parameter, the same way you used to do with the admin generator in symfony 1.2, and it works
 - **Links to another admin module**: To make a foreign key column link to the edit view of the related object in another module, you no longer need to create a partial. Just define the `link_module` setting in the foreign key field configuration, and you're good to go:
 - **Easy custom filters**: Adding custom filters becomes very easy once you can take advantage of the generated Propel query classes. This allows your, for instance, to setup a full-text search input in two minutes, replacing many text filters by a single one for better usability.
+- **Automatic sortable links**: If a module is generated on a model with sortable behavior, actions for moving records up and down are automatically added.
 
 ### Filter and Edit forms enhancement
 
