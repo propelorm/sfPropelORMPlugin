@@ -40,6 +40,7 @@ class sfWidgetFormSchemaOptional extends sfWidgetFormSchemaDecoratorEscaped
     $decorator = $this->escape($this->decorator);
     $decorator = "
 <script type=\"text/javascript\">
+/* <![CDATA[ */
 var added{$strippedName} = 0;
 function add{$strippedName}Widget()
 {
@@ -58,6 +59,7 @@ function add{$strippedName}Widget()
     }
   $decorator .= "
 }
+/* ]]> */
 </script>
 <div id=\"add_{$strippedName}\" style=\"display:none\">
 </div>
