@@ -76,6 +76,7 @@ EOF;
       'skip-forms'      => $options['skip-forms'],
       'classes-only'    => $options['classes-only'],
       'no-confirmation' => $options['no-confirmation'],
+      'connection'      => $options['connection'],
     ));
 
     if (0 == $ret)
@@ -84,7 +85,8 @@ EOF;
       $loadData->setCommandApplication($this->commandApplication);
       $loadData->setConfiguration($this->configuration);
       $loadData->run($options['dir'], array(
-        'append' => $options['append'],
+        'append'      => $options['append'],
+        'connection'  => $options['connection'],
       ));
     }
 
