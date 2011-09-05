@@ -113,6 +113,8 @@ EOF;
     $this->tmpDir = sys_get_temp_dir().'/propel_insert_sql_'.rand(11111, 99999);
     register_shutdown_function(array($this, 'removeTmpDir'));
     mkdir($this->tmpDir, 0777, true);
+
+    $ret = true;
     foreach ($sqls as $connection => $files)
     {
       $database = $databaseManager->getDatabase($connection);
@@ -136,13 +138,13 @@ EOF;
       $properties = $this->getPhingPropertiesForConnection($databaseManager, $connection);
       $properties['propel.sql.dir'] = $dir;
 
-      $ret = $this->callPhing('insert-sql', self::CHECK_SCHEMA, $properties);
+      $ret &= $this->callPhing('insert-sql', self::CHECK_SCHEMA, $properties);
     }
     $this->removeTmpDir();
 
     $this->cleanup();
 
-    return !$ret;
+    return $ret;
   }
 
   public function removeTmpDir()
