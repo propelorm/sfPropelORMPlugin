@@ -138,13 +138,17 @@ EOF;
       $properties = $this->getPhingPropertiesForConnection($databaseManager, $connection);
       $properties['propel.sql.dir'] = $dir;
 
-      $ret &= $this->callPhing('insert-sql', self::CHECK_SCHEMA, $properties);
+      if(!$this->callPhing('insert-sql', self::CHECK_SCHEMA, $properties))
+      {
+        $this->logSection('propel', 'Unknown error occured', null, 'ERROR');
+        $ret = false;
+      }
     }
     $this->removeTmpDir();
 
     $this->cleanup();
 
-    return $ret;
+    return !$ret;
   }
 
   public function removeTmpDir()
