@@ -121,4 +121,21 @@ static public function getUniqueColumnNames()
 
 EOF;
   }
+  
+  public function objectFilter(&$script, $builder)
+	{
+		$behaviors = $this->getTable()->getBehaviors();
+    if(isset($behaviors['i18n']))
+    {
+      $table = $this->getTable();
+      $tablePhpName = $this->getTable()->getPhpName();
+      $i18nTable = $behaviors['i18n']->getI18nTable();
+      $i18nTablePhpName = $behaviors['i18n']->getI18nTable()->getPhpName();
+      $pattern = '/foreach \(\$this->coll'.$i18nTablePhpName.'s as \$referrerFK\) \{/';
+      $addition = "
+        \$referrerFK->set".$tablePhpName."(\$this);";
+      $replacement = "\$0$addition";
+      $script = preg_replace($pattern, $replacement, $script);
+    }
+	}
 }
