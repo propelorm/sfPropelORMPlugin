@@ -66,7 +66,7 @@ $b->
   end()
 ;
 
-// i18n forms
+// SfPropelBehaviorI18n (part of sfPropelORMPlugin)
 $b->
   get('/i18n/movie')->
   with('request')->begin()->
@@ -120,7 +120,6 @@ $b->
     check('MovieI18N', array('culture' => 'fr', 'id' => 2, 'title' => 'Les Douze Salopards (1)'))->
     check('MovieI18N', array('culture' => 'en', 'id' => 2, 'title' => 'The Dirty Dozen (1)'))->
   end()->
-  
   // Bug #7486
   click('submit')->
 
@@ -151,6 +150,63 @@ $b->
   end()
   // END: Bug #7486
 ;
+
+  // Symfony integration with BehaviorI18n (part of Propel)
+  $b->
+  get('/i18n/moviePropel')->
+  with('request')->begin()->
+    isParameter('module', 'i18n')->
+    isParameter('action', 'moviePropel')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    checkElement('#movie_propel_fr_id', false)->
+    checkElement('#movie_propel_fr_locale', false)->
+  end()->
+
+  click('submit', array('movie_propel' => array('director' => 'Robert Aldrich', 'en' => array('title' => 'The Dirty Dozen'), 'fr' => array('title' => 'Les Douze Salopards'))))->
+  with('response')->begin()->
+    isRedirected()->
+    followRedirect()->
+  end()->
+  with('response')->begin()->
+    checkElement('input[value="Robert Aldrich"]')->
+    checkElement('input[value="The Dirty Dozen"]')->
+    checkElement('input[value="Les Douze Salopards"]')->
+    checkElement('#movie_propel_fr_id', true)->
+    checkElement('#movie_propel_fr_locale', true)->
+  end()->
+
+  with('propel')->begin()->
+    check('MoviePropel', array(), 2)->
+    check('MoviePropel', array('director' => 'Robert Aldrich', 'id' => 2))->
+    check('MoviePropelI18N', array(), 4)->
+    check('MoviePropelI18N', array('id' => 2), 2)->
+    check('MoviePropelI18N', array('locale' => 'fr', 'id' => 2, 'title' => 'Les Douze Salopards'))->
+    check('MoviePropelI18N', array('locale' => 'en', 'id' => 2, 'title' => 'The Dirty Dozen'))->
+  end()->
+
+  click('submit', array('movie_propel' => array('director' => 'Robert Aldrich (1)', 'en' => array('title' => 'The Dirty Dozen (1)'), 'fr' => array('title' => 'Les Douze Salopards (1)'))))->
+  with('response')->begin()->
+    isRedirected()->
+    followRedirect()->
+  end()->
+  with('response')->begin()->
+    checkElement('input[value="Robert Aldrich (1)"]')->
+    checkElement('input[value="The Dirty Dozen (1)"]')->
+    checkElement('input[value="Les Douze Salopards (1)"]')->
+  end()->
+
+  with('propel')->begin()->
+    check('MoviePropel', array(), 2)->
+    check('MoviePropel', array('director' => 'Robert Aldrich (1)', 'id' => 2))->
+    check('MoviePropelI18N', array(), 4)->
+    check('MoviePropelI18N', array('id' => 2), 2)->
+    check('MoviePropelI18N', array('locale' => 'fr', 'id' => 2, 'title' => 'Les Douze Salopards (1)'))->
+    check('MoviePropelI18N', array('locale' => 'en', 'id' => 2, 'title' => 'The Dirty Dozen (1)'))->
+  end();
+  
+  
 
 // https://github.com/propelorm/sfPropelORMPlugin/issues/38
 $b->
