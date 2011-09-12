@@ -89,12 +89,12 @@ abstract class sfFormPropel extends sfFormObject
 
     $class = $this->getI18nFormClass();
     foreach ($cultures as $culture)
-    {      
+    {
       // test if i18n Propel's methods exists
       if(method_exists($this->getObject(), 'setLocale') && method_exists($this->getObject(), 'getCurrentTranslation'))
       {
-        $this->getObject()->setLocale($culture); 
-        $i18nObject = $this->getObject()->getCurrentTranslation(); 
+        $this->getObject()->setLocale($culture);
+        $i18nObject = $this->getObject()->getCurrentTranslation();
       }
       // else try to use SfPropelBehaviorI18n Propel's methods exists
       else
@@ -102,12 +102,12 @@ abstract class sfFormPropel extends sfFormObject
         $method = sprintf('getCurrent%s', $this->getI18nModelName());
         $i18nObject = $this->getObject()->$method($culture);
       }
-      
+
       $i18n = new $class($i18nObject);
 
       if ($i18nObject->isNew())
       {
-        unset($i18n['id'], $i18n['culture'], $i18n['locale']);       
+        unset($i18n['id'], $i18n['culture'], $i18n['locale']);
       }
 
       $this->embedForm($culture, $i18n, $decorator);
@@ -260,7 +260,6 @@ abstract class sfFormPropel extends sfFormObject
     {
       if ($form instanceof sfFormObject)
       {
-        
         // this is Propel specific
         if(isset($form->getObject()->markForDeletion))
         {
