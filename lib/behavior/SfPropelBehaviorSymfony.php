@@ -107,7 +107,7 @@ EOF;
     }
     $unices = implode(', ', array_unique($unices));
 
-    return <<<EOF
+    $script = <<<EOF
 
 /**
  * Returns an array of arrays that contain columns in each unique index.
@@ -120,6 +120,25 @@ static public function getUniqueColumnNames()
 }
 
 EOF;
+    $behaviors = $this->getTable()->getBehaviors();
+    if(isset($behaviors['i18n']))
+    {
+      $i18nTablePhpName = $behaviors['i18n']->getI18nTable()->getPhpName();
+      $script.= <<<EOF
+
+/** 
+ * Returns the current assocciated i18n model name 
+ * 
+ * @return    string model name 
+ */ 
+static public function getI18nModel() 
+{ 
+  return '{$i18nTablePhpName}'; 
+} 
+
+EOF;
+    }    
+    return $script;
   }
   
   public function objectFilter(&$script, $builder)

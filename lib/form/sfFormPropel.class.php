@@ -89,8 +89,7 @@ abstract class sfFormPropel extends sfFormObject
 
     $class = $this->getI18nFormClass();
     foreach ($cultures as $culture)
-    {
-      
+    {      
       // test if i18n Propel's methods exists
       if(method_exists($this->getObject(), 'setLocale') && method_exists($this->getObject(), 'getCurrentTranslation'))
       {
@@ -100,8 +99,8 @@ abstract class sfFormPropel extends sfFormObject
       // else try to use SfPropelBehaviorI18n Propel's methods exists
       else
       {
-      $method = sprintf('getCurrent%s', $this->getI18nModelName($culture));
-      $i18nObject = $this->getObject()->$method($culture);
+        $method = sprintf('getCurrent%s', $this->getI18nModelName());
+        $i18nObject = $this->getObject()->$method($culture);
       }
       
       $i18n = new $class($i18nObject);
