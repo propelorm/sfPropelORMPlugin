@@ -73,26 +73,6 @@ class SfPropelBehaviorSymfony extends SfPropelBehaviorBase
     }
   }
 
-  public function staticAttributes()
-  {
-    if ($this->isDisabled())
-    {
-      return;
-    }
-
-    $behaviors = $this->getTable()->getBehaviors();
-    $isI18n = isset($behaviors['i18n']) ? 'true' : 'false';
-
-    return <<<EOF
-
-/**
- * Indicates whether the current model includes I18N.
- */
-const IS_I18N = {$isI18n};
-
-EOF;
-  }
-
   public function staticMethods()
   {
     if ($this->isDisabled())
@@ -131,7 +111,7 @@ EOF;
  * 
  * @return    string model name 
  */ 
-static public function getI18nModel() 
+public static function getI18nModel() 
 { 
   return '{$i18nTablePhpName}'; 
 } 
