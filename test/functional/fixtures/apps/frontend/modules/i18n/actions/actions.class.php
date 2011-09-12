@@ -40,6 +40,25 @@ class i18nActions extends sfActions
       }
     }
   }
+  
+  public function executeMoviePropel($request)
+  {
+    $this->form = new MoviePropelForm(MoviePropelPeer::retrieveByPk($request->getParameter('id')));
+
+    if ($request->isMethod(sfRequest::POST))
+    {
+      $this->form->bind($request->getParameter('movie_propel'));
+
+      if ($this->form->isValid())
+      {
+        $movie = $this->form->save();
+
+        $this->redirect('i18n/moviePropel?id='.$movie->getId());
+      }
+    }
+  }
+  
+  
 
   public function executeProducts()
   {

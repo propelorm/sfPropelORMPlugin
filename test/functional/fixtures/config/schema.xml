@@ -74,7 +74,8 @@
       <reference local="id" foreign="id"/>
     </foreign-key>
   </table>
-
+  
+  <!-- model and data for testing SfPropelBehaviorI18n (part of sfPropelORMPlugin - symfony_i18n - historical integration ) -->
   <table name="movie" isI18N="true" i18nTable="movie_i18n">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
     <column name="director" type="varchar" size="255" />
@@ -91,7 +92,7 @@
      <unique-column name="title" />
     </unique>
   </table>
-  
+  <!-- model and data for testing SfPropelBehaviorI18n (part of sfPropelORMPlugin - symfony_i18n - historical integration ) -->
   <table name="toy" isI18N="true" i18nTable="toy_i18n">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
     <column name="ref" type="varchar" size="255" />
@@ -108,6 +109,30 @@
     </foreign-key>
     <column name="culture" type="varchar" size="7" required="true" primaryKey="true" isCulture="true" />
     <column name="name" type="varchar" size="255" />
+  </table>
+  <!-- model and data for testing Symfony integration with BehaviorI18n (part of Propel) -->
+  <table name="movie_propel">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="director" type="varchar" size="255" />
+    <column name="title" type="varchar" primaryString="true" />
+    <behavior name="i18n">
+      <parameter name="i18n_columns" value="title" />
+      <parameter name="locale_alias" value="culture" />
+    </behavior>
+  </table>
+  <!-- model and data for testing Symfony integration with BehaviorI18n (part of Propel) -->
+  <table name="toy_propel">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="ref" type="varchar" size="255" />
+    <column name="name" type="varchar" size="255" />
+    <behavior name="i18n">
+      <parameter name="i18n_columns" value="name" />
+      <parameter name="locale_alias" value="culture" />
+    </behavior>
+    <column name="movie_propel_id" type="integer" />
+    <foreign-key foreignTable="movie_propel">
+      <reference local="movie_propel_id" foreign="id" />
+    </foreign-key>
   </table>
 
   <table name="attachment">
