@@ -261,7 +261,7 @@ Now the Article form displays the list of related books for each author, togethe
 If `add_empty` is set to `true`, the following additional options are available:
 
 * `empty_label`: The label of the empty form. Defaults to 'new' + the relation name.
-* `add_link`: The text of the JavaScript link that displays the empty form. Defaults to `Ann new`
+* `add_link`: The text of the JavaScript link that displays the empty form. Defaults to `Add new`
 * `max_additions`: The max number of additions accepted on the client side. Defaults to 0 (no limit)
 
 If `add_delete` is set to `true`, the following additional options are available:
