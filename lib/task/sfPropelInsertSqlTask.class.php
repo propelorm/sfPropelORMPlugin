@@ -43,7 +43,7 @@ The [propel:insert-sql|INFO] task creates database tables:
   [./symfony propel:insert-sql|INFO]
 
 The task connects to the database and executes all SQL statements
-found in [config/sql/*schema.sql|COMMENT] files.
+found in [data/sql/*schema.sql|COMMENT] files.
 
 Before execution, the task will ask you to confirm the execution
 as it deletes all data in your database.
