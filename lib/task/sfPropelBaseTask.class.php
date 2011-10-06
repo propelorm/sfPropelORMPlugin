@@ -215,11 +215,19 @@ abstract class sfPropelBaseTask extends sfBaseTask
       // set the dispatcher to null to avoid logging from sfFilesystem::remove()
       $this->dispatcher = null;
     }
+
     if (null === $this->commandApplication || !$this->commandApplication->withTrace())
     {
       $finder = sfFinder::type('file')->name('generated-*schema.xml')->name('*schema-transformed.xml');
       $this->getFilesystem()->remove($finder->in(array('config', 'plugins')));
     }
+
+    $buildTimeFile = sfConfig::get('sf_config_dir').'/buildtime-conf.xml';
+    if (file_exists($buildTimeFile))
+    {
+      $this->getFilesystem()->remove($buildTimeFile);
+    }
+
     if (!$verbose)
     {
       $this->dispatcher = $detachedDispatcher;
