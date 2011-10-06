@@ -114,7 +114,14 @@ class Swift_PropelSpool extends Swift_ConfigurableSpool
     $time = time();
     foreach ($objects as $object)
     {
-      $message = unserialize($object->$method());
+      if (is_resource($object->$method()))
+      {
+        $message = unserialize(stream_get_contents($object->$method()));
+      }
+      else
+      {
+        $message = unserialize($object->$method());
+      }
 
       $object->delete();
 
