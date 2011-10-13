@@ -73,6 +73,10 @@ class sfPropelGenerator extends sfModelGenerator
       // load this table's relations and related tables
       $table->getRelations();
 
+      if (!$table->isCrossRef()) {
+        continue;
+      }
+
       foreach ($table->getColumns() as $column)
       {
         if ($column->isForeignKey() && $column->isPrimaryKey() && $this->getTableMap()->getClassname() == $this->dbMap->getTable($column->getRelatedTableName())->getClassname())

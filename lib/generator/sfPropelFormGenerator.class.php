@@ -125,6 +125,10 @@ class sfPropelFormGenerator extends sfGenerator
     // go through all tables to find m2m relationships
     foreach ($this->dbMap->getTables() as $tableName => $table)
     {
+      if (!$table->isCrossRef()) {
+        continue;
+      }
+
       foreach ($table->getColumns() as $column)
       {
         if ($column->isForeignKey() && $column->isPrimaryKey() && $this->table->getClassname() == $this->getForeignTable($column)->getClassname())
