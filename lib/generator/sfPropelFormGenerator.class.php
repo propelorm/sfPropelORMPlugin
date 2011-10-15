@@ -124,35 +124,48 @@ class sfPropelFormGenerator extends sfGenerator
   public function getManyToManyTables()
   {
     $tables = array();
+    $foreignTables = array();
+    $relations = array();
 
-    // go through all tables to find m2m relationships
-    foreach ($this->dbMap->getTables() as $tableName => $table)
+    // go through all relations
+    foreach  ($this->table->getRelations() as $relation)
     {
-      foreach ($table->getColumns() as $column)
+      //we have a many to many Relation
+      if (RelationMap::MANY_TO_MANY === $relation->getType())
       {
-        if ($column->isForeignKey() && $column->isPrimaryKey() && $this->table->getClassname() == $this->getForeignTable($column)->getClassname())
-        {
-          // we have a m2m relationship
-          // find the other primary key
-          foreach ($table->getColumns() as $relatedColumn)
-          {
-            if ($relatedColumn->isForeignKey() && $relatedColumn->isPrimaryKey() && $this->table->getClassname() != $this->getForeignTable($relatedColumn)->getClassname())
-            {
-              // we have the related table
-              $tables[] = array(
-                'middleTable'   => $table,
-                'relatedTable'  => $this->getForeignTable($relatedColumn),
-                'column'        => $column,
-                'relatedColumn' => $relatedColumn,
-              );
-
-              break 2;
-            }
-          }
-        }
+        $foreignTables[$relation->getLocalTable()->getClassname()] = $relation->getLocalTable();
+      }
+      else if (RelationMap::ONE_TO_MANY === $relation->getType())
+      {
+        $relations[$relation->getLocalTable()->getClassname()] = $relation;
       }
     }
 
+    // find middleTable for Many to Many relation
+    foreach ($foreignTables as $tableName => $foreignTable)
+    {
+      foreach ($foreignTable->getRelations() as $foreignRelation)
+      {
+        $foreignTableName = $foreignRelation->getLocalTable()->getClassname();
+
+        // Test if the foreign table has a common relation with our table
+        // TODO: test if is CrossRef
+        if (RelationMap::ONE_TO_MANY === $foreignRelation->getType()
+            && array_key_exists($foreignTableName, $relations))
+        {
+          $columns = $relations[$foreignTableName]->getLocalColumns();
+          $relatedColumns = $foreignRelation->getLocalColumns();
+
+          $tables[] = array(
+            'middleTable'   => $foreignRelation->getLocalTable(),
+            'relatedTable'  => $foreignTable,
+            'column'        => reset($columns),
+            'relatedColumn' => reset($relatedColumns),
+          );
+          continue 2;
+        }
+      }
+    }
     return $tables;
   }
 
