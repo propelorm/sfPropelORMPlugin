@@ -30,4 +30,8 @@ $h->register(sfFinder::type('file')->prune('fixtures')->name('*Test.php')->in(ar
   $h->base_dir.'/functional',
 )));
 
-exit($h->run() ? 0 : 1);
+$code = $h->run();
+
+file_put_contents('junit.xml', $h->to_xml());
+
+exit($code ? 0 : 1);
