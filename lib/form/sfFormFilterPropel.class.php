@@ -18,6 +18,9 @@
  */
 abstract class sfFormFilterPropel extends sfFormFilter
 {
+  /** merged forms list */
+  protected $merged_forms = array();
+
   /**
    * Returns the current model name.
    *
@@ -31,6 +34,27 @@ abstract class sfFormFilterPropel extends sfFormFilter
    * @return array An array of fields with their filter type
    */
   abstract public function getFields();
+
+  /**
+   * merge a form and add it to current merged forms
+   * @see sfForm
+   */
+  public function mergeForm(sfForm $form)
+  {
+    parent::mergeForm($form);
+
+    $this->merged_forms[] = $form;
+  }
+
+  /**
+   * return the list of merged forms
+   *
+   * @return array
+   */
+  public function getMergedForms()
+  {
+    return $this->merged_forms;
+  }
 
   /**
    * Returns a Propel Criteria based on the current values form the form.
@@ -161,7 +185,35 @@ abstract class sfFormFilterPropel extends sfFormFilter
       }
       else
       {
-        throw new LogicException(sprintf('You must define a "%s" method in the %s class to be able to filter with the "%s" field.', sprintf('filterBy%s', $ucField), get_class($criteria), $field));
+        $processed = false;
+        try
+        {
+          // is it an embedded flter ?
+          $form = $this->getEmbeddedForm($field);
+          $criteria->mergeWith($form->buildCriteria($values[$field]));
+          $processed = true;
+        }
+        catch(InvalidArgumentException $e)
+        {
+        }
+
+        if(!$processed)
+        {
+          // try with merged
+          foreach ($this->getMergedForms() as $form)
+          {
+            if (array_key_exists($field, $form->getFields()))
+            {
+              $criteria->mergeWith($form->buildCriteria(array($field => $values[$field])));
+              $processed = true;
+            }
+          }
+        }
+
+        if (!$processed)
+        {
+          throw new LogicException(sprintf('You must define a "%s" method in the %s class to be able to filter with the "%s" field.', sprintf('filterBy%s', $ucField), get_class($criteria), $field));
+        }
       }
     }
 
