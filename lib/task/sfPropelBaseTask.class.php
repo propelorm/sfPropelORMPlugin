@@ -105,6 +105,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
     foreach ($schemas as $schema)
     {
+      $this->logSection('convert-xml', $schema);
       $schemaArray = sfYaml::load($schema);
 
       if (!is_array($schemaArray))

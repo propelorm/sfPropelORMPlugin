@@ -46,7 +46,8 @@ class uniqueActions extends sfActions
 
   public function executeCategory($request)
   {
-    $category = CategoryPeer::retrieveByPk($request->getParameter('category[id]'));
+    $_category = $request->getParameter('category');
+    $category = CategoryPeer::retrieveByPk($_category['id']);
     $this->form = new CategoryForm($category);
 
     if ($request->getParameter('global'))
