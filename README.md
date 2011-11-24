@@ -186,6 +186,20 @@ class ArticleForm extends BaseArticleForm
 
 The Propel widgets, validators, and form classes are fully documented in the [`doc/form.md`](https://raw.github.com/propelorm/sfPropelORMPlugin/master/doc/form.md) file in this plugin source code.
 
+## Filter Subframework modification
+
+You now can merge or embed filters into filters, it works out of the box.
+
+``` php
+class ArticleFilter extends BaseArticleFilter
+{
+  public function configure()
+  {
+    $this->mergeForm(new AuthorFilter());
+  }
+}
+```
+
 ## Routing Modifications
 
 The plugin offer two new routing classes, `sfPropelORMRoute` and `sfPropelORMRouteCollection`. These classes are used by default in the models build with the propel admin generator. They behave just like the previous `sfPropelRoute` class - except they don't use the `methods` option anymore. Instead, use the `query_methods` option to execute a list of arbitrary query methods when calling `getObject()` and `getObjects()`.
