@@ -289,7 +289,7 @@ class sfPropelFormGenerator extends sfGenerator
       $valueSet = $column->getValueSet();
       $choices = array_merge(array(''=>''), array_combine($valueSet, $valueSet));
 
-      $options[] = sprintf("'choices' => %s", preg_replace('/\s+/', '', var_export($choices, true)));
+      $options[] = sprintf("'choices' => %s", preg_replace('/[\n\r]+/', '', var_export($choices, true)));
     }
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
@@ -407,7 +407,7 @@ class sfPropelFormGenerator extends sfGenerator
          break;
        case PropelColumnTypes::ENUM:
          $valueSet = $column->getValueSet();
-         $options[] = sprintf("'choices' => %s", preg_replace('/\s+/', '', var_export($valueSet, true)));
+         $options[] = sprintf("'choices' => %s", preg_replace('/[\n\r]+/', '', var_export($valueSet, true)));
          break;
       }
     }
