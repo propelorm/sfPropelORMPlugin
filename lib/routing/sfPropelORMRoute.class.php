@@ -18,7 +18,7 @@
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @version    SVN: $Id: sfObjectRoute.class.php 20784 2009-08-04 20:53:57Z Kris.Wallsmith $
  */
-class sfPropelORMRoute extends sfRequestRoute
+class sfPropelORMRoute extends sfObjectRoute
 {
   protected
     $object  = false,
