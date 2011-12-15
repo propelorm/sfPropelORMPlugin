@@ -87,15 +87,15 @@ class sfFormPropelCollection extends sfForm
         if (!($deleteWidget = $this->options['delete_widget']))
         {
           $options = array();
-          if ($alertText = $this->getOption('alert_text', false))
+          if (!is_null($alertText = $this->getOption('alert_text', null)))
           {
             $options['alert_text'] = $alertText;
           }
-          if ($hideParent = $this->getOption('hide_parent', false))
+          if (!is_null($hideParent = $this->getOption('hide_parent', null)))
           {
             $options['hide_parent'] = $hideParent;
           }
-          if ($parentLevel = $this->getOption('parent_level', false))
+          if (!is_null($parentLevel = $this->getOption('parent_level', null)))
           {
             $options['parent_level'] = $parentLevel;
           }
