@@ -640,6 +640,7 @@ abstract class sfFormPropel extends sfFormObject
    *  - add_empty: Whether to allow the user to add new objects to the collection. Defaults to true
    *  - max_additions: The maximum number of related objects that can be added. Defaults to 0 (no limit)
    *  - add_link: Text of the JS link that triggers the addition of the empty form. Defaults to 'Add new'
+   *  - empty_decorator: decorator for the empty form
    *
    * @param string $relationName The name of a relation of the current Model, e.g. 'Book'
    * @param sfFormPropelCollection $relationForm The form to augment
@@ -653,6 +654,7 @@ abstract class sfFormPropel extends sfFormObject
       'add_empty'           => true,
       'max_additions'       => 0,
       'add_link'            => 'Add new',
+      'empty_decorator'     => null
     ), $options);
 
     $count = $relationForm->getCollection()->count();
@@ -667,7 +669,7 @@ abstract class sfFormPropel extends sfFormObject
       $options['max_additions'] = $options['max_additions'] - $count;
     }
     $emptyForm = $this->getEmptyRelatedForm($relationName, $options);
-    $relationForm->embedOptionalForm($emptyName, $emptyForm, null, $options);
+    $relationForm->embedOptionalForm($emptyName, $emptyForm, $options['empty_decorator'], $options);
     $this->optionalForms[$prefix . $emptyName] = $emptyForm;
   }
 
