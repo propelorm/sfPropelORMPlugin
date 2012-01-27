@@ -26,11 +26,12 @@ class sfPropelBuildFiltersTask extends sfPropelBaseTask
   protected function configure()
   {
     $this->addOptions(array(
-      new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'propel'),
+      new sfCommandOption('connection', null, sfCommandOption::PARAMETER_OPTIONAL, 'The connection name', false),
       new sfCommandOption('model-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The model dir name', 'model'),
       new sfCommandOption('filter-dir-name', null, sfCommandOption::PARAMETER_REQUIRED, 'The filter form dir name', 'filter'),
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
       new sfCommandOption('generator-class', null, sfCommandOption::PARAMETER_REQUIRED, 'The generator class', 'sfPropelFormFilterGenerator'),
+      new sfCommandOption('all-connections', null, sfCommandOption::PARAMETER_REQUIRED, 'To build all connections', true),
     ));
 
     $this->namespace = 'propel';
@@ -45,8 +46,8 @@ The [propel:build-filters|INFO] task creates filter form classes from the schema
 The task read the schema information in [config/*schema.xml|COMMENT] and/or
 [config/*schema.yml|COMMENT] from the project and all installed plugins.
 
-The task use the [propel|COMMENT] connection as defined in [config/databases.yml|COMMENT].
-You can use another connection by using the [--connection|COMMENT] option:
+The task use by default [all-connections|COMMENT] as defined in [config/databases.yml|COMMENT].
+You can use only one connection by using the [--connection|COMMENT] option:
 
   [./symfony propel:build-filters --connection="name"|INFO]
 
@@ -62,6 +63,15 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    if (false === $options['connection'] && false === $options['all-connections'])
+    {
+        $options['connection'] = 'propel';
+    }
+    elseif (false !== $options['connection'])
+    {
+        $options['all-connections'] = false;
+    }
+
     $this->logSection('propel', 'generating filter form classes');
 
     $generatorManager = new sfGeneratorManager($this->configuration);
@@ -69,6 +79,7 @@ EOF;
       'connection'      => $options['connection'],
       'model_dir_name'  => $options['model-dir-name'],
       'filter_dir_name' => $options['filter-dir-name'],
+      'all_connections' => $options['all-connections'],
     ));
 
     $properties = parse_ini_file(sfConfig::get('sf_config_dir').'/properties.ini', true);
