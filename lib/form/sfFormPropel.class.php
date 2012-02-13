@@ -614,7 +614,7 @@ abstract class sfFormPropel extends sfFormObject
     }
 
     $collection = call_user_func_array(
-      array($this->getObject(), sprintf('get%ss', $relationName)),
+      array($this->getObject(), sprintf('get%s', $relationMap->getPluralName())),
       array($options['criteria'])
     );
     unset($options['criteria']);
@@ -704,9 +704,9 @@ abstract class sfFormPropel extends sfFormObject
     // the relatedObject must be related to this form's object
     // but without actually adding the relatedObject to the collection
     // that's what the next lines do
-    $realRelatedObjects = call_user_func(array($this->getObject(), sprintf('get%ss', $relationName)))->getArrayCopy();
+    $realRelatedObjects = call_user_func(array($this->getObject(), sprintf('get%s', $relationMap->getPluralName())))->getArrayCopy();
     call_user_func(array($this->getObject(), sprintf('add%s', $relationName)), $relatedObject);
-    call_user_func(array($this->getObject(), sprintf('init%ss', $relationName)));
+    call_user_func(array($this->getObject(), sprintf('init%s', $relationMap->getPluralName())));
     foreach ($realRelatedObjects as $realRelatedObject)
     {
       call_user_func(array($this->getObject(), sprintf('add%s', $relationName)), $realRelatedObject);
