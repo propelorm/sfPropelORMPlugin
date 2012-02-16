@@ -137,7 +137,6 @@ EOF;
         \$referrerFK->set".$tablePhpName."(\$this);";
       $replacement = "\$0$addition";
       $script = preg_replace($pattern, $replacement, $script);
-      
       $pattern = '/protected \$currentLocale = \'.*\';/';
       $replacement = 'protected \$currentLocale = null;';
       $script = preg_replace($pattern, $replacement, $script);            
