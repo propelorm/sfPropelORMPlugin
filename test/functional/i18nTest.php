@@ -34,6 +34,19 @@ $b->
   end()
 ;
 
+// it
+$b->
+  get('/i18n/queryPropel')->
+  with('request')->begin()->
+    isParameter('module', 'i18n')->
+    isParameter('action', 'queryPropel')->
+  end()->
+  with('response')->begin()->
+    isStatusCode(200)->
+    checkElement('#movies .propel_it:first', 'La Vita è bella')->
+  end()
+;
+
 // fr
 $b->
   get('/i18n/index')->
