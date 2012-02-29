@@ -52,10 +52,22 @@
     {
       $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $object)));
 
-      // reload the object if it's in a tree to avoid breaking nested set structure
+      // check if object is in a tree
       if ($count && method_exists($object, 'isInTree') && $object->isInTree())
       {
-        $object->reload();
+        // test if we can reload an object
+        try
+        {
+          $object->reload(); // reload to avoid breaking nested set structure
+        }
+        catch (Exception $e)
+        {
+          // will fail if object does not exist in the database anymore
+          // happens when trying to delete children of already deleted object
+          // so increase the counter and move on
+          $count++;
+          continue;
+        }
       }
 
       $object->delete();
