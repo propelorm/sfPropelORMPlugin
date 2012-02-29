@@ -16,6 +16,13 @@ class i18nActions extends sfActions
 
     $this->movies = MoviePeer::doSelect(new Criteria());
   }
+  
+  public function executeQueryPropel()
+  {
+    $this->getUser()->setCulture('it');
+
+    $this->moviesPropel = MoviePropelQuery::create()->find();
+  }
 
   public function executeDefault()
   {

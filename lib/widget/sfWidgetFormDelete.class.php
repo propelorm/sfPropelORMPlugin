@@ -39,18 +39,14 @@ class sfWidgetFormDelete extends sfWidgetFormInputCheckbox
     if ($this->getOption('hide_parent'))
     {
       $hideParentCode = 'this' . str_repeat('.parentNode', $this->getOption('parent_level')) . '.style.display="none";';
-    }
-    else
-    {
-      $hideParentCode = '';
-    }
-    if ($this->getOption('alert_text'))
-    {
-      $this->setAttribute('onclick', sprintf('if(confirm("%s")) { %s } else return false;', $this->translate($this->getOption('alert_text')), $hideParentCode));
-    }
-    else
-    {
-      $this->setAttribute('onclick', $hideParentCode);
+      if ($this->getOption('alert_text'))
+      {
+        $this->setAttribute('onclick', sprintf('if(confirm("%s")) { %s } else return false;', $this->translate($this->getOption('alert_text')), $hideParentCode));
+      }
+      else
+      {
+        $this->setAttribute('onclick', $hideParentCode);
+      }
     }
   }
 
