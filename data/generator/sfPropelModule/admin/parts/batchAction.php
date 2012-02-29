@@ -52,6 +52,12 @@
     {
       $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $object)));
 
+      // reload the object if it's in a tree to avoid breaking nested set structure
+      if (method_exists($object, 'isInTree') && $object->isInTree())
+      {
+        $object->reload();
+      }
+
       $object->delete();
       if ($object->isDeleted())
       {
