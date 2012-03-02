@@ -63,6 +63,7 @@ function add{$strippedName}Widget()
 {
   added{$strippedName} += 1;
   var content = \"{$decorator}\";
+  var {$strippedName}Js = \"{$this->widgetJsString}\";
   var spanTag = document.createElement(\"span\");
   spanTag.innerHTML = content.replace(/([_\[]){$strippedName}([_\]])/g, '\$1{$strippedName}' +  + added{$strippedName} + '\$2');
   document.getElementById('add_{$strippedName}').appendChild(spanTag);
