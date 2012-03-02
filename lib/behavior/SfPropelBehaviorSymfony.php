@@ -137,61 +137,7 @@ EOF;
         \$referrerFK->set".$tablePhpName."(\$this);";
       $replacement = "\$0$addition";
       $script = preg_replace($pattern, $replacement, $script);
-      $pattern = '/protected \$currentLocale = \'.*\';/';
-      $replacement = 'protected \$currentLocale = null;';
-      $script = preg_replace($pattern, $replacement, $script);            
-      $pattern = '/\(\$locale = \'.*\'/';
-      $replacement = '(\$locale';
-      $script = preg_replace($pattern, $replacement, $script);
-      $getLocale .= <<<EOF
-                
-            
-/**
- * Gets the locale for translations
- *
- * @return    string $locale Locale to use for the translation, e.g. 'fr_FR'
- */
-public function getLocale()
-{
-  if(null == \$this->currentLocale)
-  {
-    return sfPropel::getDefaultCulture();
-  }
-  else
-  {
-    return \$this->currentLocale;
-  }
-}
-EOF;
-      $parser = new PropelPHPParser($script, true);
-      $parser->replaceMethod('getLocale', $getLocale);
-      $script = $parser->getCode();
-      $setLocale .= <<<EOF
-   
-   
-/**
- * Sets the locale for translations
- *
- * @param     string \$locale Locale to use for the translation, e.g. 'fr_FR'
- *
- * @return    $tablePhpName The current object (for fluent API support)
- */
-public function setLocale(\$locale)
-{
-  if(null == \$this->currentLocale)
-  {
-    \$this->currentLocale =  sfPropel::getDefaultCulture();
-  }
-  else
-  {
-    \$this->currentLocale = \$locale;
-  }
-  return \$this;
-}
-EOF;
-      $parser = new PropelPHPParser($script, true);
-      $parser->replaceMethod('setLocale', $setLocale);
-      //$script = $parser->getCode();
+      
     }   
   }
   
