@@ -30,6 +30,7 @@ Author:
   fabien:
     name: Fabien
     author_articles: [article_1, article_2]
+    hobbies:         ['foo', 'bar']
   thomas:
     name: Thomas
     author_articles: [article_1]

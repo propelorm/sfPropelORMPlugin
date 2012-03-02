@@ -43,6 +43,7 @@
   <table name="author">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
     <column name="name" type="varchar" size="255" />
+    <column name="hobbies" type="array" required="false" />
   </table>
 
   <table name="author_article">
