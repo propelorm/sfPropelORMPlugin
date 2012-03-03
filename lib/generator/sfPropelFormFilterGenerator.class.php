@@ -84,14 +84,17 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
       $this->table = $table;
 
       // find the package to store filter forms in the same directory as the model classes
-      $packages = explode('.', constant(constant($table->getClassname().'::PEER').'::CLASS_DEFAULT'));
+      $reflClass = new ReflectionClass($table->getClassname());
+      $packages  = explode(DIRECTORY_SEPARATOR, $reflClass->getFileName());
       array_pop($packages);
       if (false === $pos = array_search($this->params['model_dir_name'], $packages))
       {
-        throw new InvalidArgumentException(sprintf('Unable to find the model dir name (%s) in the package %s.', $this->params['model_dir_name'], constant(constant($table->getClassname().'::PEER').'::CLASS_DEFAULT')));
+        throw new InvalidArgumentException(
+          sprintf('Unable to find the model dir name (%s) in the package %s.', $this->params['model_dir_name'], implode('.', $packages))
+        );
       }
       $packages[$pos] = $this->params['filter_dir_name'];
-      $baseDir = sfConfig::get('sf_root_dir').'/'.implode(DIRECTORY_SEPARATOR, $packages);
+      $baseDir = implode(DIRECTORY_SEPARATOR, $packages);
 
       if (!is_dir($baseDir.'/base'))
       {
