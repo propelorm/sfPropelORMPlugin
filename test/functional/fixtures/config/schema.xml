@@ -144,5 +144,9 @@
       <reference local="article_id" foreign="id" onDelete="setnull" />
     </foreign-key>
   </table>
-
+  
+  <table name="enum_sample">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="enum_values" type="enum" valueSet="one, two, three space" />    
+  </table>
 </database>
