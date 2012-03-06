@@ -74,7 +74,7 @@
       <reference local="id" foreign="id"/>
     </foreign-key>
   </table>
-  
+
   <!-- model and data for testing SfPropelBehaviorI18n (part of sfPropelORMPlugin - symfony_i18n - historical integration ) -->
   <table name="movie" isI18N="true" i18nTable="movie_i18n">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
@@ -144,9 +144,9 @@
       <reference local="article_id" foreign="id" onDelete="setnull" />
     </foreign-key>
   </table>
-  
+
   <table name="enum_sample">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
-    <column name="enum_values" type="enum" valueSet="one, two, three space" />    
+    <column name="enum_values" type="enum" valueSet="one, two, three space" />
   </table>
 </database>
