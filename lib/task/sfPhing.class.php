@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once('phing/Phing.php');
+require_once 'phing/Phing.php';
 
 /**
  * @package    symfony
