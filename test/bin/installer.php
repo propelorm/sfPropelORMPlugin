@@ -16,13 +16,18 @@ chmod(sfConfig::get('sf_data_dir').'/propel.db', 0777);
 
 
 $this->logSection('install', 'install propel 1.6');
+
+chdir(getcwd().'/../'); // we are in the "mockproject", go back to the sfPropelORMPlugin dir
+$fs->execute('git submodule update --init --recursive');
+chdir(sfConfig::get('sf_root_dir')); // and go back to the "mockproject"
+
 sfSymfonyPluginManager::disablePlugin('sfPropelPlugin', sfConfig::get('sf_config_dir'));
 $fs->execute(sprintf('mkdir %s/sfPropelORMPlugin', sfConfig::get('sf_plugins_dir')));
 $fs->execute(sprintf('cd %s ; cp -R `ls | grep -v "mockproject"` %s/sfPropelORMPlugin/',
     realpath(sfConfig::get('sf_root_dir') . '/../'),
     sfConfig::get('sf_plugins_dir')
 ));
-$fs->execute(sprintf('cd %s/sfPropelORMPlugin ; git submodule update --init --recursive ; cd -;', sfConfig::get('sf_plugins_dir')));
+
 sfSymfonyPluginManager::enablePlugin('sfPropelORMPlugin', sfConfig::get('sf_config_dir'));
 
 
