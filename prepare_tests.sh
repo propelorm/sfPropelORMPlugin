@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ -z $SYMFONY_VERSION ] ; then
-    SYMFONY_VERSION="symfony-1.4.16"
+    SYMFONY_VERSION="symfony-1.4.17"
 fi
 
 PROJECT_NAME=mockproject
@@ -9,6 +9,8 @@ PROJECT_NAME=mockproject
 if [ -d "$PROJECT_NAME" ] ; then
     rm -rf "$PROJECT_NAME"
 fi
+
+git submodule update --init
 
 mkdir "$PROJECT_NAME"
 cd "$PROJECT_NAME"
