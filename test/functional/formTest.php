@@ -291,3 +291,20 @@ $b->
     checkElement('select option[selected="selected"]', 'three space')->
   end()
 ;
+
+//Checks that many-to-many relations are generated correctly
+$form = new SellerForm();
+try {
+    $form->getWidget('sale_list');
+    $b->test()->fail('The seller form shoud not has sale_list field because it is not a many to many relation');
+} catch (InvalidArgumentException $e) {
+    $b->test()->pass('The seller form shoud not has sale_list field because it is not a many to many relation');
+}
+
+$form = new BookForm();
+try {
+    $form->getWidget('sale_list');
+    $b->test()->fail('The book form shoud not has sale_list field because it is not a many to many relation');
+} catch (InvalidArgumentException $e) {
+    $b->test()->pass('The book form shoud not has sale_list field because it is not a many to many relation');
+}
