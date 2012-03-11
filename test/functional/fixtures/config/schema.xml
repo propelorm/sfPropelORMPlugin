@@ -46,7 +46,7 @@
     <column name="hobbies" type="array" required="false" />
   </table>
 
-  <table name="author_article">
+  <table name="author_article" isCrossref="true">
     <behavior name="symfony">
       <parameter name="form" value="false"/>
       <parameter name="filter" value="false"/>
@@ -149,5 +149,22 @@
   <table name="enum_sample">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
     <column name="enum_values" type="enum" valueSet="one, two, three space" />
+  </table>
+
+  <!-- model and data for testing many to many -->
+  <table name="seller">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="name" type="varchar" size="255" />
+  </table>
+  <table name="sale">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="book_id" type="integer" primaryKey="true" />
+    <column name="number" type="integer" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="book">
+      <reference local="book_id" foreign="id" />
+    </foreign-key>
   </table>
 </database>
