@@ -77,7 +77,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
         	return xhr;
         }
 
-        function sfWebDebbugDoExplain(url, area)
+        function sfWebDebbugDoExplain(url, args, area)
         {
            var xhr = sfWebDebbugGetXMLHttpRequest();
 
@@ -87,8 +87,8 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
         	  }
            };
 
-           xhr.open("GET", url, true);
-           xhr.send(null)
+           xhr.open("POST", url, true);
+           xhr.send(args)
         }
       </script>
     ';
@@ -116,7 +116,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
     $threshold = $config->getParameter('debugpdo.logging.details.slow.threshold', DebugPDO::DEFAULT_SLOW_THRESHOLD);
 
     $html = array();
-    foreach ($this->webDebug->getLogger()->getLogs() as $i => $log)
+    foreach ($this->webDebug->getLogger()->getLogs() as $j => $log)
     {
       if ('sfPropelLogger' != $log['type'])
       {
@@ -161,10 +161,15 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
 
       if(isset($connection))
       {
-        $explainlink = ', <a onclick="sfWebDebbugDoExplain(\''.sfContext::getInstance()->getRouting()->generate('propel_debug_pannel', array(
-          'connection'    => $connection,
-          'base64_query'  => base64_encode($query),
-        )).'\', \'explain_'.$i.'\')">Explain the query</a>';
+        $explainlink = ', <a onclick="
+        var formData = new FormData();
+        formData.append(\'connection\', \''.$connection.'\');
+        formData.append(\'base64_query\', \''.base64_encode($query).'\');
+
+        sfWebDebbugDoExplain(
+        \''.sfContext::getInstance()->getRouting()->generate('propel_debug_pannel').'\'
+        , formData
+        , \'explain_'.$j.'\')">Explain the query</a>';
       }
 
       if ($query == "SET NAMES 'utf8'")
@@ -180,7 +185,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
         <li class="%s">
           <p class="sfWebDebugDatabaseQuery">%s</p>
           <div class="sfWebDebugDatabaseLogInfo">%s%s%s</div>
-          <div class="sfWebDebugDatabaseExplain" id="explain_'.$i.'"></div>
+          <div class="sfWebDebugDatabaseExplain" id="explain_'.$j.'"></div>
         </li>',
         $slowQuery ? 'sfWebDebugWarning' : '',
         $query,
