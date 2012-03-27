@@ -62,6 +62,11 @@ class sfPropelORMPluginConfiguration extends sfPluginConfiguration
     if (sfConfig::get('sf_web_debug'))
     {
       $this->dispatcher->connect('debug.web.load_panels', array('sfWebDebugPanelPropel', 'listenToAddPanelEvent'));
+
+      $modules = sfConfig::get('sf_enabled_modules', array());
+      $modules[] = 'sfPropelORMExplain';
+
+      sfConfig::set('sf_enabled_modules', $modules);
     }
 
     if (sfConfig::get('sf_test'))
