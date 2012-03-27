@@ -55,6 +55,42 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
         <h3>Propel Version: '.Propel::VERSION.'</h3>
         <ol>'.implode("\n", $this->getSqlLogs()).'</ol>
       </div>
+      <script type="text/javascript">
+        function sfWebDebbugGetXMLHttpRequest() {
+        	var xhr = null;
+
+        	if (window.XMLHttpRequest || window.ActiveXObject) {
+        		if (window.ActiveXObject) {
+        			try {
+        				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+        			} catch(e) {
+        				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        			}
+        		} else {
+        			xhr = new XMLHttpRequest();
+        		}
+        	} else {
+        		alert("Your browser do no support XMLHTTPRequest");
+        		return null;
+        	}
+
+        	return xhr;
+        }
+
+        function sfWebDebbugDoExplain(url, args, area)
+        {
+           var xhr = sfWebDebbugGetXMLHttpRequest();
+
+           xhr.onreadystatechange = function() {
+        	  if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+        		document.getElementById(area).innerHTML = xhr.responseText;
+        	  }
+           };
+
+           xhr.open("POST", url, true);
+           xhr.send(args)
+        }
+      </script>
     ';
   }
 
@@ -80,7 +116,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
     $threshold = $config->getParameter('debugpdo.logging.details.slow.threshold', DebugPDO::DEFAULT_SLOW_THRESHOLD);
 
     $html = array();
-    foreach ($this->webDebug->getLogger()->getLogs() as $log)
+    foreach ($this->webDebug->getLogger()->getLogs() as $j => $log)
     {
       if ('sfPropelLogger' != $log['type'])
       {
@@ -88,6 +124,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
       }
 
       $details = array();
+      $explainlink = '';
       $slowQuery = false;
 
       $parts = explode($outerGlue, $log['message']);
@@ -111,10 +148,30 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
               }
             }
           }
+
+          // Find connection for explain
+          if ('connection' == $match[1])
+          {
+              $connection = $match[2];
+          }
         }
       }
       // all stuff that has not been eaten by the loop should be the query string
       $query = join($outerGlue, $parts);
+
+      if(isset($connection))
+      {
+        $explainlink = ', <a onclick="
+        var formData = new FormData();
+        formData.append(\'connection\', \''.$connection.'\');
+        formData.append(\'base64_query\', \''.base64_encode($query).'\');
+
+        sfWebDebbugDoExplain(
+        \''.sfContext::getInstance()->getRouting()->generate('propel_debug_pannel').'\'
+        , formData
+        , \'explain_'.$j.'\')">Explain the query</a>';
+      }
+
       if ($query == "SET NAMES 'utf8'")
       {
         // This is the initialization query that occurs on every request.
@@ -127,11 +184,13 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
       $html[] = sprintf('
         <li class="%s">
           <p class="sfWebDebugDatabaseQuery">%s</p>
-          <div class="sfWebDebugDatabaseLogInfo">%s%s</div>
+          <div class="sfWebDebugDatabaseLogInfo">%s%s%s</div>
+          <div class="sfWebDebugDatabaseExplain" id="explain_'.$j.'"></div>
         </li>',
         $slowQuery ? 'sfWebDebugWarning' : '',
         $query,
         implode(', ', $details),
+        $explainlink,
         $backtrace
       );
     }

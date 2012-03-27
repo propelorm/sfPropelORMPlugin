@@ -1,0 +1,3 @@
+propel_debug_pannel:
+  url: /propel-debug-pannel
+  param: { module: sfPropelORMExplain, action: index }
