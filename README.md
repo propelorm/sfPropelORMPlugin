@@ -45,6 +45,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     // If you're following the SVN way, uncomment the next two lines
     //sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir').'/lib/vendor/phing');
     //sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir').'/lib/vendor/propel');
+    //sfConfig::set('sf_propel_generator_path', sfConfig::get('sf_root_dir').'/lib/vendor/propel/generator/lib');
 
     $this->enablePlugins('sfPropelORMPlugin');
   }
