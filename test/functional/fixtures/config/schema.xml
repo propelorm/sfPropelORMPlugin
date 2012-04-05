@@ -181,6 +181,61 @@
     </foreign-key>
   </table>
 
+  <table name="extra_seller_without_crossref">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="extra_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="extra">
+      <reference local="extra_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="extra_seller_without_crossref2">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="extra_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="extra">
+      <reference local="extra_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="book_seller_without_crossref">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="book_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="book">
+      <reference local="book_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="seller_seller" isCrossRef="true">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="seller_cross_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="seller">
+      <reference local="seller_cross_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="seller_seller2">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="seller_cross_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="seller">
+      <reference local="seller_cross_id" foreign="id" />
+    </foreign-key>
+  </table>
+
   <table name="extra">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
     <column name="name" type="varchar" size="255" />

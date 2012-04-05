@@ -134,7 +134,7 @@ class sfPropelFormGenerator extends sfGenerator
       //we have a many to many Relation
       if (RelationMap::MANY_TO_MANY === $relation->getType())
       {
-        $foreignTables[$relation->getLocalTable()->getClassname()] = $relation->getLocalTable();
+        $foreignTables[$relation->getLocalTable()->getClassname()] = $relation;
       }
       else if (RelationMap::ONE_TO_MANY === $relation->getType())
       {
@@ -143,8 +143,9 @@ class sfPropelFormGenerator extends sfGenerator
     }
 
     // find middleTable for Many to Many relation
-    foreach ($foreignTables as $tableName => $foreignTable)
+    foreach ($foreignTables as $tableName => $relation)
     {
+      $foreignTable = $relation->getLocalTable();
       foreach ($foreignTable->getRelations() as $foreignRelation)
       {
         $foreignTableClassname = $foreignRelation->getLocalTable()->getClassname();
@@ -157,11 +158,13 @@ class sfPropelFormGenerator extends sfGenerator
           $relatedColumns = $foreignRelation->getLocalColumns();
 
           $middleTable = $foreignRelation->getLocalTable();
-          $middleTables[$middleTable->getClassname()] = $middleTable;
-          if ($middleTable->isCrossRef())
+          if ($middleTable->isCrossRef() && !isset($middleTables[$middleTable->getClassname()]))
           {
+            // Add this middleTable to table list to prevent using it twice
+            $middleTables[$middleTable->getClassname()] = $middleTable;
             $tables[] = array(
               'middleTable'   => $middleTable,
+              'relatedGetter' => $foreignTable->getPhpname() == $relation->getName() ? 'get' . $middleTable->getPhpname() . 's' : 'get' . $relation->getPluralName(),
               'relatedTable'  => $foreignTable,
               'column'        => reset($columns),
               'relatedColumn' => reset($relatedColumns),
@@ -191,9 +194,12 @@ class sfPropelFormGenerator extends sfGenerator
         $foreignTable = $pks[0]->getRelatedTableName() != $this->table->getName() ? $pks[0]->getRelatedTable() : $pks[1]->getRelatedTable();
         $relatedColumn = $pks[0]->getRelatedTableName() != $this->table->getName() ? $pks[0] : $pks[1];
         $columns = $relation->getLocalColumns();
+        // Add this middleTable to table list to prevent using it twice
+        $middleTables[$middleTable->getClassname()] = $middleTable;
 
         $tables[] = array(
           'middleTable'   => $middleTable,
+          'relatedGetter' => $middleTable->getPhpname() == $relation->getName() ? 'get' . $middleTable->getPhpname() . 's' : 'get' . $relation->getPluralName(),
           'relatedTable'  => $foreignTable,
           'column'        => reset($columns),
           'relatedColumn' => $relatedColumn,
