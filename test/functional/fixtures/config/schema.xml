@@ -46,7 +46,7 @@
     <column name="hobbies" type="array" required="false" />
   </table>
 
-  <table name="author_article" isCrossref="true">
+  <table name="author_article">
     <behavior name="symfony">
       <parameter name="form" value="false"/>
       <parameter name="filter" value="false"/>
@@ -151,11 +151,12 @@
     <column name="enum_values" type="enum" valueSet="one, two, three space" />
   </table>
 
-  <!-- model and data for testing many to many -->
+  <!-- model and data for testing many to many without isCrossRef -->
   <table name="seller">
     <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
     <column name="name" type="varchar" size="255" />
   </table>
+
   <table name="sale">
     <column name="seller_id" type="integer" primaryKey="true" />
     <column name="book_id" type="integer" primaryKey="true" />
@@ -166,5 +167,78 @@
     <foreign-key foreignTable="book">
       <reference local="book_id" foreign="id" />
     </foreign-key>
+  </table>
+
+  <table name="extra_seller" isCrossRef="true">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="extra_id" type="integer" primaryKey="true" />
+    <column name="comment" type="varchar" size="255" required="false" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="extra">
+      <reference local="extra_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="extra_seller_without_crossref">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="extra_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="extra">
+      <reference local="extra_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="extra_seller_without_crossref2">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="extra_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="extra">
+      <reference local="extra_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="book_seller_without_crossref">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="book_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="book">
+      <reference local="book_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="seller_seller" isCrossRef="true">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="seller_cross_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="seller">
+      <reference local="seller_cross_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="seller_seller2">
+    <column name="seller_id" type="integer" primaryKey="true" />
+    <column name="seller_cross_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="seller">
+      <reference local="seller_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="seller">
+      <reference local="seller_cross_id" foreign="id" />
+    </foreign-key>
+  </table>
+
+  <table name="extra">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="name" type="varchar" size="255" />
+    <column name="useless" type="varchar" size="255" />
   </table>
 </database>

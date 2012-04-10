@@ -308,3 +308,6 @@ try {
 } catch (InvalidArgumentException $e) {
     $b->test()->pass('The book form shoud not has sale_list field because it is not a many to many relation');
 }
+
+$form = new SellerForm();
+$b->test()->isa_ok($form->getWidget('extra_seller_list'), 'sfWidgetFormPropelChoice', 'The Seller form should have a sfWidgetFormPropelChoice of extras when there is a isCrossRef on a middle table');
