@@ -78,7 +78,7 @@ abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFo
     if (isset($this->widgetSchema['<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list']))
     {
       $values = array();
-      foreach ($this->object->get<?php echo $tables['middleTable']->getPhpName() ?>s() as $obj)
+      foreach ($this->object-><?php echo $tables['relatedGetter'] ?>() as $obj)
       {
         $values[] = $obj->get<?php echo $tables['relatedColumn']->getPhpName() ?>();
       }
