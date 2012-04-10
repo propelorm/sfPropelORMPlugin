@@ -341,7 +341,12 @@ class sfPropelFormGenerator extends sfGenerator
     if (PropelColumnTypes::ENUM == $column->getType())
     {
       $valueSet = $column->getValueSet();
-      $choices = array_merge(array(''=>''), array_combine($valueSet, $valueSet));
+      
+      //add empty only when needed
+      if(!$column->isNotNull())
+        $choices = array_merge(array(''=>''), array_combine($valueSet, $valueSet));
+      else 
+        $choices = array_combine($valueSet, $valueSet);
 
       $options[] = sprintf("'choices' => %s", preg_replace('/[\n\r]+/', '', var_export($choices, true)));
     }
