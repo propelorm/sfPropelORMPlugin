@@ -241,4 +241,21 @@
     <column name="name" type="varchar" size="255" />
     <column name="useless" type="varchar" size="255" />
   </table>
+
+  <table name="many">
+    <column name="id" type="integer" required="true" primaryKey="true" autoincrement="true" />
+    <column name="name" type="varchar" size="255" />
+    <column name="useless" type="varchar" size="255" />
+  </table>
+
+  <table name="too_many" isCrossRef="true">
+     <column name="manyfk_id" type="integer" primaryKey="true" />
+    <column name="manyfk_cross_id" type="integer" primaryKey="true" />
+    <foreign-key foreignTable="many">
+      <reference local="manyfk_id" foreign="id" />
+    </foreign-key>
+    <foreign-key foreignTable="many">
+      <reference local="manyfk_cross_id" foreign="id" />
+    </foreign-key>
+  </table>
 </database>
