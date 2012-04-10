@@ -164,7 +164,7 @@ class sfPropelFormGenerator extends sfGenerator
             $middleTables[$middleTable->getClassname()] = $middleTable;
             $tables[] = array(
               'middleTable'   => $middleTable,
-              'relatedGetter' => $foreignTable->getPhpname() == $relation->getName() ? 'get' . $middleTable->getPhpname() . 's' : 'get' . $relation->getPluralName(),
+              'relatedGetter' => $foreignTable->getPhpname() == $relation->getName() ? 'get' . $middleTable->getPhpname() . 's' : 'get' . $relations[$middleTable->getClassname()]->getPluralName(),
               'relatedTable'  => $foreignTable,
               'column'        => reset($columns),
               'relatedColumn' => reset($relatedColumns),
