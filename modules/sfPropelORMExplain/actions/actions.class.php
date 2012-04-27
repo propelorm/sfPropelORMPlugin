@@ -19,6 +19,7 @@ class sfPropelORMExplainActions extends sfActions
         $this->results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
       } catch (Exception $e) {
         $this->getResponse()->setContent('<div class="error">This query cannot be explained.</div>');
+        return sfView::NONE;
       }
   }
 }
