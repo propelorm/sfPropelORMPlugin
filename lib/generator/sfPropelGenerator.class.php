@@ -183,7 +183,9 @@ class sfPropelGenerator extends sfModelGenerator
     // and all tables related to the related table maps (for m2m relations)
     foreach ($this->tableMap->getRelations() as $relation)
     {
-      $relation->getForeignTable()->getRelations();
+      foreach ($relation->getForeignTable()->getRelations() as $relationN) {
+          $relationN->getLocalTable()->getRelations();
+      }
     }
   }
 
