@@ -224,8 +224,8 @@ class sfPropelData extends sfData
         // save the object for future reference
         if (method_exists($obj, 'getPrimaryKey'))
         {
-          $peer = $class::PEER;
-          $class_key = $peer::OM_CLASS;
+          $peer = constant($class.'::PEER');
+          $class_key = constant($peer.'::OM_CLASS');
           $this->object_references[$class_key.'_'.$key] = $obj;
         }
       }
