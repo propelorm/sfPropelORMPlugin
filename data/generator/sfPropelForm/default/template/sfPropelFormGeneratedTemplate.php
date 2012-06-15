@@ -112,24 +112,29 @@ abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFo
       return;
     }
 
-    if (null === $con)
+    $rel_ids = $this->getValue('<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list');
+
+    // first: get current relations and delete removed ones
+    $rels = $this->getObject()->get<?php echo $tables['middleTable']->getPhpName() ?>s();
+    foreach ($rels as $rel)
     {
-      $con = $this->getConnection();
+      if (!in_array($rel->get<?php echo $tables['relatedColumn']->getPhpName() ?>(), $rel_ids))
+      {
+        $rel->delete();
+      }
     }
 
-    $c = new Criteria();
-    $c->add(<?php echo constant($tables['middleTable']->getClassname().'::PEER') ?>::<?php echo strtoupper($tables['column']->getName()) ?>, $this->object->getPrimaryKey());
-    <?php echo constant($tables['middleTable']->getClassname().'::PEER') ?>::doDelete($c, $con);
-
-    $values = $this->getValue('<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list');
-    if (is_array($values))
+    // second: add new relations
+    if (!empty($rel_ids))
     {
-      foreach ($values as $value)
+      foreach ($rel_ids as $rel_id)
       {
-        $obj = new <?php echo $tables['middleTable']->getClassname() ?>();
-        $obj->set<?php echo $tables['column']->getPhpName() ?>($this->object->getPrimaryKey());
-        $obj->set<?php echo $tables['relatedColumn']->getPhpName() ?>($value);
-        $obj->save();
+        $ref = <?php echo $tables['middleTable']->getPhpName() ?>Query::create()->findPk(array($this->getObject()->getPrimaryKey(), $rel_id));
+        if (empty($ref))
+        {
+          $ref = new <?php echo $tables['middleTable']->getPhpName() ?>();
+          $ref->set<?php echo $this->table->getClassname() ?>Id($this->getObject()->getPrimaryKey())->set<?php echo $tables['relatedTable']->getClassname() ?>Id($rel_id)->save();
+        }
       }
     }
   }
