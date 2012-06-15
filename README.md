@@ -5,7 +5,7 @@ sfPropelORMPlugin
 
 Replaces symfony's core Propel plugin by the latest version of Propel, in branch 1.6.
 
-## Installation
+## Installation
 
 ### The Git way
 
@@ -26,12 +26,12 @@ As both Phing and Propel libraries are bundled with the plugin, you have to init
 
 Install the plugin via the subversion repository:
 
-    svn checkout http://svn.github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
+    svn checkout https://github.com/propelorm/sfPropelORMPlugin/trunk plugins/sfPropelORMPlugin
 
 Install `Phing` and `Propel`:
 
     svn checkout http://phing.mirror.svn.symfony-project.com/tags/2.3.3/classes/phing lib/vendor/phing
-    svn checkout http://svn.github.com/propelorm/Propel.git lib/vendor/propel
+    svn checkout https://github.com/propelorm/Propel/tags/1.6.5 lib/vendor/propel
 
 ### Final step
 
