@@ -3,4 +3,4 @@
 	url = git://github.com/propelorm/Propel.git
 [submodule "lib/vendor/phing"]
 	path = lib/vendor/phing
-	url = git://github.com/Xosofox/phing.git
+    url = git://github.com/phingofficial/phing.git
