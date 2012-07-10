@@ -129,7 +129,7 @@ abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFo
         $obj = new <?php echo $tables['middleTable']->getClassname() ?>();
         $obj->set<?php echo $tables['column']->getPhpName() ?>($this->object->getPrimaryKey());
         $obj->set<?php echo $tables['relatedColumn']->getPhpName() ?>($value);
-        $obj->save();
+        $obj->save($con);
       }
     }
   }
