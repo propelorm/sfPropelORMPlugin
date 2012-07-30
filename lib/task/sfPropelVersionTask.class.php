@@ -15,7 +15,7 @@
  * @subpackage propel
  * @author     Christoph Rosse <christoph@rosse.at>
  */
-class sfPropelStatusTask extends sfPropelBaseTask
+class sfPropelVersionTask extends sfPropelBaseTask
 {
   /**
    * @see sfTask
