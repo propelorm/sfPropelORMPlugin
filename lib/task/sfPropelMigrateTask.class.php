@@ -63,7 +63,7 @@ EOF;
     if (!$nextMigrationTimestamp = $manager->getFirstUpMigrationTimestamp())
     {
       $this->logSection('propel', 'All migrations were already executed - nothing to migrate.');
-      return false;
+      return null;
     }
 
     $timestamps = $manager->getValidMigrationTimestamps();
