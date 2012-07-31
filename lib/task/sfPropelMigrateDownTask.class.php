@@ -64,7 +64,7 @@ EOF;
     if (!$nextMigrationTimestamp = array_pop($previousTimestamps))
     {
       $this->logSection('propel', 'No migration were ever executed on this database - nothing to reverse.');
-      return false;
+      return true;
     }
     $this->logSection('propel', sprintf(
       'Executing migration %s down',
@@ -150,6 +150,8 @@ EOF;
     {
       $this->logSection('propel', 'Reverse migration complete. No more migration available for reverse');
     }
+
+    return true;
   }
 
 }
