@@ -35,7 +35,8 @@ Install `Phing` and `Propel`:
 
 ### Final step
 
-Disable the core Propel plugin and enable the `sfPropelORMPlugin` instead:
+Disable the core Propel plugin and enable the `sfPropelORMPlugin` instead.  Also, change the location for
+the Propel and Phing libs.
 
 ``` php
 // config/ProjectConfiguration.class.php
@@ -44,10 +45,10 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
   public function setup()
   {
-    // If you're following the SVN way, uncomment the next two lines
-    //sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir').'/lib/vendor/phing');
-    //sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir').'/lib/vendor/propel');
-    //sfConfig::set('sf_propel_generator_path', sfConfig::get('sf_root_dir').'/lib/vendor/propel/generator/lib');
+    //setup the location for our phing and propel libs
+    sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir').'/plugins/sfPropelORMPlugin/lib/vendor/phing/');
+	sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir').'/plugins/sfPropelORMPlugin/lib/vendor/propel/');
+    sfConfig::set('sf_propel_generator_path', sfConfig::get('sf_root_dir').'/plugins/sfPropelORMPlugin/lib/vendor/propel/generator/lib/');
 
     $this->enablePlugins('sfPropelORMPlugin');
   }
