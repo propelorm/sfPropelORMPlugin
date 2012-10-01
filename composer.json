@@ -1,5 +1,5 @@
 {
-    "name": "bugbyte/sf-propel-o-r-m-plugin",
+    "name": "propel/sf-propel-o-r-m-plugin",
     "type": "symfony1-plugin",
     "description": "symfony 1.x plugin for Propel.",
     "keywords": ["symfony", "propel", "orm", "active record", "mapping", "database", "persistence"],
