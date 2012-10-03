@@ -103,7 +103,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
     return new $this->routeClass(
       sprintf('%s/:action/action.:sf_format', $this->options['prefix_path']),
       array_merge(array('module' => $this->options['module'], 'sf_format' => 'html'), $this->options['default_params']),
-      array_merge($this->options['requirements'], array('sf_method' => 'post')),
+      array_merge($this->options['requirements'], array('sf_method' => array('get', 'head', 'post'))),
       array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'])
     );
   }
