@@ -469,6 +469,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
       'nested_set' => 'nestedset.NestedSetBehavior',
       'sortable' => 'sortable.SortableBehavior',
       'sluggable' => 'sluggable.SluggableBehavior',
+      'sortable' => 'sortable.SortableBehavior',
       'concrete_inheritance' => 'concrete_inheritance.ConcreteInheritanceBehavior',
       'query_cache' => 'query_cache.QueryCacheBehavior',
       'aggregate_column' => 'aggregate_column.AggregateColumnBehavior',
