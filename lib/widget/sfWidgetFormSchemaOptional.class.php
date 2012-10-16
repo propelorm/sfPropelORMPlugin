@@ -37,11 +37,20 @@ class sfWidgetFormSchemaOptional extends sfWidgetFormSchemaDecoratorEscaped
   protected function getDecorator($name)
   {
     $strippedName = substr($name, strrpos($name, '[') + 1, strrpos($name, ']') - strrpos($name, '[') - 1);
+    
+    $startwith = 0;
+    $positions = $this->getParent()->getPositions();
+    $flipped_positions = array_flip($positions);
+    if(isset($positions[$flipped_positions[$strippedName] - 1]) && (strpos($positions[$flipped_positions[$strippedName] - 1], $strippedName) !== false))
+    {
+      $startwith = str_replace($strippedName, '', $positions[$flipped_positions[$strippedName] - 1]);
+    }
+    
     $decorator = $this->escape($this->decorator);
     $decorator = "
 <script type=\"text/javascript\">
 /* <![CDATA[ */
-var added{$strippedName} = 0;
+var added{$strippedName} = {$startwith};
 function add{$strippedName}Widget()
 {
   added{$strippedName} += 1;
