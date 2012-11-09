@@ -57,7 +57,7 @@
       <reference local="my_group" foreign="id" />
     </foreign-key>
     <column name="my_other_group" type="integer" phpName="MyOtherGroupPhpName" />
-    <foreign-key foreignTable="ab_group" onDelete="setnull" phpName="MyOtherGroupFkPhpName" refPhpName="MyOtherGroupFkRefPhpName">
+    <foreign-key foreignTable="ab_group" onDelete="setnull" phpName="MyOtherGroupFkPhpName" refPhpName="MyOtherGroupRefPhpName">
       <reference local="my_other_group" foreign="id" />
     </foreign-key>
     <column name="created_at" type="timestamp" />
