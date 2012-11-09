@@ -130,7 +130,7 @@ Foreign key columns accept additional parameters:
   * `foreignReference`: The name of the related column if a foreign key is defined via `foreignTable`.
   * `onDelete`: Determines the action to trigger when a record in a related table is deleted. When set to `setnull`, the foreign key column is set to `null`. When set to `cascade`, the record is deleted. If the database engine doesn't support the set behavior, the ORM emulates it.
   * `fkPhpName`: Name of the related object seen from the current object. Propel uses this name to generate filters and accessors (see the 'Relation Names' section below)
-  * `fkRefPhpName`: Name of the current object seen from the related object.
+  * `refPhpName`: Name of the current object seen from the related object.
   * `fkSkipSql`: Set to true for virtual foreign keys, not translated into SQL
 
 ### Empty Column Definition
@@ -389,7 +389,7 @@ Here, Propel creates a `User` relation on the `Book` object, and a `Book` relati
       ->filterByUser($user)
       ->find();
 
-You may want to customize the relation names to qualify the relationship. In the previous example, when related to an `Article`, a `User` would better be called an `Author`. Symmetrically, from the `User` point of view, a `Book` should be named a `Work`. Use the `fkPhpName` and `fkRefPhpName` column attributes to choose custom relation names:
+You may want to customize the relation names to qualify the relationship. In the previous example, when related to an `Article`, a `User` would better be called an `Author`. Symmetrically, from the `User` point of view, a `Book` should be named a `Work`. Use the `fkPhpName` and `refPhpName` column attributes to choose custom relation names:
 
     [yaml]
     propel:
@@ -398,7 +398,7 @@ You may want to customize the relation names to qualify the relationship. In the
         id:          ~
         title:       varchar(150)
         body:        longvarchar
-        user_id:     { fkPhpName: Author, fkRefPhpName: Work, type: integer, foreignTable: user, foreignReference: id, onDelete: cascade }
+        user_id:     { fkPhpName: Author, refPhpName: Work, type: integer, foreignTable: user, foreignReference: id, onDelete: cascade }
 
 Now the generated code looks like this:
 

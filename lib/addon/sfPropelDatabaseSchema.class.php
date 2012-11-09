@@ -804,7 +804,7 @@ class sfPropelDatabaseSchema
     {
       foreach ($column as $key => $value)
       {
-        if (!in_array($key, array('foreignClass', 'foreignTable', 'foreignReference', 'fkPhpName', 'fkRefPhpName', 'fkSkipSql', 'onDelete', 'onUpdate', 'index', 'unique', 'sequence', 'inheritance', 'vendor')))
+        if (!in_array($key, array('foreignClass', 'foreignTable', 'foreignReference', 'fkPhpName', 'refPhpName', 'fkRefPhpName', 'fkSkipSql', 'onDelete', 'onUpdate', 'index', 'unique', 'sequence', 'inheritance', 'vendor')))
         {
           $attributes_string .= " $key=\"".htmlspecialchars($this->getCorrectValueFor($key, $value), ENT_QUOTES, sfConfig::get('sf_charset'))."\"";
         }
@@ -893,9 +893,13 @@ class sfPropelDatabaseSchema
       {
         $attributes_string .= " phpName=\"{$column['fkPhpName']}\"";
       }
-      if (isset($column['fkRefPhpName']))
+      if (isset($column['refPhpName']))
       {
-        $attributes_string .= " refPhpName=\"{$column['fkRefPhpName']}\"";
+        $attributes_string .= " refPhpName=\"{$column['refPhpName']}\"";
+      }
+      elseif (isset($column['fkRefPhpName']))
+      {
+          $attributes_string .= " refPhpName=\"{$column['fkRefPhpName']}\"";
       }
       if (isset($column['fkSkipSql']))
       {
