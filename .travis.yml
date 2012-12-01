@@ -6,6 +6,7 @@ php:
 
 env:
     - SYMFONY_VERSION=symfony-1.4.17
+    - SYMFONY_VERSION=symfony-1.4.20
 
 before_script:
     - ./prepare_tests.sh
