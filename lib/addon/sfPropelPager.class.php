@@ -21,6 +21,7 @@ class sfPropelPager extends sfPager
 {
   protected
     $criteria               = null,
+    $con                    = null,
     $peer_method_name       = 'doSelect',
     $peer_count_method_name = 'doCount';
 
@@ -40,8 +41,9 @@ class sfPropelPager extends sfPager
   /**
    * @see sfPager
    */
-  public function init()
+  public function init($con = null)
   {
+    $this->con = $con;
     $this->results = null;
 
     $hasMaxRecordLimit = ($this->getMaxRecordLimit() !== false);
@@ -54,7 +56,7 @@ class sfPropelPager extends sfPager
       ->clearGroupByColumns()
     ;
 
-    $count = call_user_func(array($this->getClassPeer(), $this->getPeerCountMethod()), $criteriaForCount);
+    $count = call_user_func(array($this->getClassPeer(), $this->getPeerCountMethod()), $criteriaForCount, false, $this->con);
 
     $this->setNbResults($hasMaxRecordLimit ? min($count, $maxRecordLimit) : $count);
 
@@ -104,7 +106,7 @@ class sfPropelPager extends sfPager
       ->setLimit(1)
     ;
 
-    $results = call_user_func(array($this->getClassPeer(), $this->getPeerMethod()), $criteriaForRetrieve);
+    $results = call_user_func(array($this->getClassPeer(), $this->getPeerMethod()), $criteriaForRetrieve, $this->con);
 
     return is_array($results) && isset($results[0]) ? $results[0] : null;
   }
@@ -114,7 +116,7 @@ class sfPropelPager extends sfPager
    */
   public function getResults()
   {
-    return call_user_func(array($this->getClassPeer(), $this->getPeerMethod()), $this->getCriteria());
+    return call_user_func(array($this->getClassPeer(), $this->getPeerMethod()), $this->getCriteria(), $this->con);
   }
 
   /**
