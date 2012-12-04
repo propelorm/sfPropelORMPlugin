@@ -290,3 +290,14 @@ public function executeShow(sfWebRequest $request)
     $this->author = $this->getRoute()->getAuthor();
 }
 ```
+
+A new option has been added to `sfPropelORMRoute`: the `connection` option allows to set a specific Propel connection to use.
+Example:
+
+``` yaml
+author_show:
+  url:     /author/:id
+  class:   Author
+  param:   { module: myModule, action: show }
+  options: { model: Author, type: object, connection: my_connection }
+```

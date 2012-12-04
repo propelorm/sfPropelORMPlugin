@@ -106,7 +106,8 @@ class sfPropelORMRoute extends sfObjectRoute
     }
 
     // check the related object
-    $this->object = $this->getQuery()->findOne();
+    $con = empty($this->options['connection']) ? null : Propel::getConnection($this->options['connection']);
+    $this->object = $this->getQuery()->findOne($con);
 
     if (!$this->object && (!isset($this->options['allow_empty']) || !$this->options['allow_empty']))
     {
