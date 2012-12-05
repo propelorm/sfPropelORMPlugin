@@ -30,6 +30,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
   {
     $options = array_merge(array(
       'query_methods'        => array('list' => null, 'object' => null),
+      'connection'           => null,
     ), $options);
 
     parent::__construct($options);
@@ -84,7 +85,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/%s.:sf_format', $this->options['prefix_path'], $action),
       array_merge(array('module' => $this->options['module'], 'action' => $action, 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => $methods)),
-      array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'])
+      array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -94,7 +95,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:%s/%s.:sf_format', $this->options['prefix_path'], $this->options['column'], $action),
       array_merge(array('module' => $this->options['module'], 'action' => $action, 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => $methods)),
-      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
+      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -104,7 +105,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:action/action.:sf_format', $this->options['prefix_path']),
       array_merge(array('module' => $this->options['module'], 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => array('get', 'head', 'post'))),
-      array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'])
+      array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -114,7 +115,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:%s/:action.:sf_format', $this->options['prefix_path'], $this->options['column']),
       array_merge(array('module' => $this->options['module'], 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
-      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
+      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -124,7 +125,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s.:sf_format', $this->options['prefix_path']),
       array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('list'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
-      array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'])
+      array('model' => $this->options['model'], 'type' => 'list', 'query_methods' => $this->options['query_methods']['list'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -134,7 +135,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:%s.:sf_format', $this->options['prefix_path'], $this->options['column']),
       array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('show'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
-      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
+      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -144,7 +145,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:%s/%s.:sf_format', $this->options['prefix_path'], $this->options['column'], $this->options['segment_names']['edit']),
       array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('edit'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'get')),
-      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
+      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -154,7 +155,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:%s.:sf_format', $this->options['prefix_path'], $this->options['column']),
       array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('update'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'put')),
-      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
+      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'], 'connection' => $this->options['connection'])
     );
   }
 
@@ -164,7 +165,7 @@ class sfPropelORMRouteCollection extends sfObjectRouteCollection
       sprintf('%s/:%s.:sf_format', $this->options['prefix_path'], $this->options['column']),
       array_merge(array('module' => $this->options['module'], 'action' => $this->getActionMethod('delete'), 'sf_format' => 'html'), $this->options['default_params']),
       array_merge($this->options['requirements'], array('sf_method' => 'delete')),
-      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'])
+      array('model' => $this->options['model'], 'type' => 'object', 'query_methods' => $this->options['query_methods']['object'], 'connection' => $this->options['connection'])
     );
   }
 

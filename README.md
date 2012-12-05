@@ -291,13 +291,25 @@ public function executeShow(sfWebRequest $request)
 }
 ```
 
-A new option has been added to `sfPropelORMRoute`: the `connection` option allows to set a specific Propel connection to use.
-Example:
+A new option has been added to both `sfPropelORMRoute` and `sfPropelORMRouteCollection`, the `connection` option allows to set a specific Propel connection to use.
+Examples:
 
 ``` yaml
 author_show:
   url:     /author/:id
-  class:   Author
+  class:   sfPropelORMRoute
   param:   { module: myModule, action: show }
   options: { model: Author, type: object, connection: my_connection }
+```
+
+``` yaml
+author:
+    class: sfPropelORMRouteCollection
+    options:
+    model:                Author
+    module:               author
+    prefix_path:          /author
+    column:               id
+    connection:           my_connection
+    with_wildcard_routes: true
 ```
