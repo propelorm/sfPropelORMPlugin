@@ -43,6 +43,8 @@ class sfFormPropelCollection extends sfForm
       'add_delete'    => false,
       'delete_name'   => 'delete',
       'delete_widget' => null,
+      'add_remove'    => false,
+      'remove_name'    => 'remove',
       'remove_fields' => array(),
     ), $options);
 
@@ -179,6 +181,19 @@ class sfFormPropelCollection extends sfForm
 
     $widgetSchema = $form->getWidgetSchema();
 
+    if ($this->getOption('add_remove'))
+    {
+      $w_options = array();
+      if (!is_null($parentLevel = $this->getOption('remove_parent_level', null)))
+      {
+        $w_options['parent_level'] = $parentLevel;
+      }
+      $w_options['alert_text'] = '';
+      $w_options['hide_parent'] = true;
+      $w_options['remove_parent'] = true;
+      $deleteWidget = new sfWidgetFormDelete($w_options);
+      $widgetSchema[$this->getOption('remove_name')]= $deleteWidget;
+    }
     $decorator = null === $decorator ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $decorator;
 
     $this->widgetSchema[$name] = new sfWidgetFormSchemaOptional($widgetSchema, $decorator, $options);
