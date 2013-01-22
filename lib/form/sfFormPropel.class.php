@@ -549,9 +549,15 @@ abstract class sfFormPropel extends sfFormObject
    *  - title: The title of the collection form once embedded. Defaults to the relation name.
    *  - decorator: The decorator for the sfWidgetFormSchemaDecorator
    *  - add_empty: Whether to allow the user to add new objects to the collection. Defaults to true
+   *  - add_delete_empty: Delete checkbox when create a new object. Defaults to false
    *  - empty_name: Label showed to create a new related item. By default is new + name of the relation
    * Additional options are passed to sfFromPropel::getRelationForm()
    *  - empty_label: The label of the empty form
+   * Additional options are passed to sfFromPropel::getEmptyRelationForm() to change the behavior of the delete widget in a new object
+   *  - delete_alert_text    : corresponds to alert_text
+   *  - delete_hide_parent   : corresponds to hide_parent
+   *  - delete_parent_level  : corresponds to parent_level
+   *
    *
    * @param string $relationName The name of a relation of the current Model, e.g. 'Book'
    * @param array  $options      An array of options
@@ -564,6 +570,7 @@ abstract class sfFormPropel extends sfFormObject
       'title'               => $relationName,
       'decorator'           => null,
       'add_empty'           => true,
+      'add_delete_empty'    => false,
       'max_additions'       => 0,
       'empty_name'          => 'new'.$relationName,
       'empty_label'         => null,
@@ -587,6 +594,14 @@ abstract class sfFormPropel extends sfFormObject
    *  - hide_on_new: If true, returns null for new objects. Defaults to false.
    *  - collection_form_class: class of the collection form to return. Defaults to sfFormPropelCollection.
    *  - criteria: Optional criteria to filter related objects
+   *  - add_delete_empty: If true, when a new empty related form is created it has the option to delete it. Defaults to false.
+   * Optional options for the delete checkbox. This parameters are passed to sfWidgetFormDelete::__construct(). Some of them have
+   * the name changed to avoid possible collition with existing options.
+   *  - delete_name
+   *  - delete_widget
+   *  - delete_alert_text    : corresponds to alert_text
+   *  - delete_hide_parent   : corresponds to hide_parent
+   *  - delete_parent_level  : corresponds to parent_level
    * Additional options are passed to sfFormPropelCollection::__construct()
    *
    * @param string $relationName The name of a relation of the current Model, e.g. 'Book'
@@ -693,6 +708,12 @@ abstract class sfFormPropel extends sfFormObject
     $options = array_merge(array(
       'embedded_form_class' => null,
       'empty_label'         => null,
+      'add_delete_empty'    => false,
+      'delete_name'         => 'delete',
+      'delete_widget'       => null,   
+      'delete_alert_text'   => null,
+      'delete_hide_parent'  => null,
+      'delete_parent_level' => null,
     ), $options);
 
     // compute relation elements
@@ -733,7 +754,28 @@ abstract class sfFormPropel extends sfFormObject
     {
       unset($emptyForm[$field]);
     }
-
+    if ($options['add_delete_empty'])
+    {
+      if (!($deleteWidget = $options['delete_widget']))
+      {
+        $optionsDelete = array();
+        if (!is_null($alertText = $options['delete_alert_text']))
+        {
+          $optionsDelete['alert_text'] = $alertText;
+        }
+        if (!is_null($hideParent = $options['delete_hide_parent']))
+        {
+          $optionsDelete['hide_parent'] = $hideParent;
+        }
+        if (!is_null($parentLevel = $options['delete_parent_level']))
+        {
+          $optionsDelete['parent_level'] = $parentLevel;
+        }
+        $optionsDelete['parent_empty_form'] = true;
+        $deleteWidget = new sfWidgetFormDelete($optionsDelete);
+      }
+      $emptyForm->setDeleteWidget($options['delete_name'], $deleteWidget);
+    }
     return $emptyForm;
   }
 
