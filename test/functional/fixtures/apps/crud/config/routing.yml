@@ -1,7 +1,7 @@
 acme_article:
-  class:        sfPropelRouteCollection
+  class:        sfPropelORMRouteCollection
   type:         collection
-  options:      { model: Article, module: article_backend, prefix_path: articles }
+  options:      { model: Article, module: article_backend, prefix_path: articles, with_wildcard_routes: true }
 
 article:
   class:        sfPropelRouteCollection

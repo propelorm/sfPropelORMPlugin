@@ -16,9 +16,10 @@ if (!include(dirname(__FILE__).'/../../bootstrap/functional.php'))
 }
 
 require_once(dirname(__FILE__).'/crudBrowser.class.php');
+require_once(dirname(__FILE__).'/crudBrowserAdmin15.class.php');
 
-$b = new CrudBrowser();
-$b->browse(array('with-show', 'route-prefix=acme_article'), array(
+$b = new CrudBrowserAdmin15();
+$b->browse(array('with-show', 'route-prefix=acme_article', 'theme=admin15', 'generate-in-cache'), array(
   'urlPrefix' => 'articles',
   'moduleName' => 'article_backend',
 ));
