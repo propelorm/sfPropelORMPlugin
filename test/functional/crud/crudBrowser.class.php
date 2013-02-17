@@ -11,15 +11,25 @@
 class CrudBrowser extends sfTestBrowser
 {
   protected
+    $model = 'Article',
     $urlPrefix = 'article',
+    $moduleName = 'article',
     $singularName = 'Article',
     $pluralName = 'Articles',
     $projectDir = '';
 
-  public function setup($options)
+  public function setup($options, $parameters = array())
   {
     $this->projectDir = dirname(__FILE__).'/../fixtures';
     $this->cleanup();
+
+    foreach (array('model', 'urlPrefix', 'moduleName', 'singularName', 'pluralName', 'projectDir') as $param)
+    {
+      if (isset($parameters[$param]))
+      {
+        $this->$param = $parameters[$param];
+      }
+    }
 
     chdir($this->projectDir);
     $task = new sfPropelGenerateModuleTask(new sfEventDispatcher(), new sfFormatter());
@@ -27,7 +37,7 @@ class CrudBrowser extends sfTestBrowser
     $options[] = 'singular='.$this->singularName;
     $options[] = 'plural='.$this->pluralName;
     $options[] = '--non-verbose-templates';
-    $task->run(array('crud', 'article', 'Article'), $options);
+    $task->run(array('crud', $this->moduleName, $this->model), $options);
 
     require_once($this->projectDir.'/config/ProjectConfiguration.class.php');
     sfContext::createInstance(ProjectConfiguration::getApplicationConfiguration('crud', 'test', true, $this->projectDir));
@@ -42,16 +52,16 @@ class CrudBrowser extends sfTestBrowser
     return $this;
   }
 
-  public function browse($options)
+  public function browse($options, $parameters = array())
   {
-    $options = $this->setup($options);
+    $options = $this->setup($options, $parameters);
 
     // list page
     $this->
       info('list page')->
       get('/'.$this->urlPrefix)->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'index')->
       end()->
       with('response')->begin()->
@@ -89,7 +99,7 @@ class CrudBrowser extends sfTestBrowser
       info('create page')->
       click('New')->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'new')->
         isParameter('id', null)->
       end()->
@@ -129,7 +139,7 @@ class CrudBrowser extends sfTestBrowser
       info('go back to the list')->
       click('Back to list')->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'index')->
       end()->
       with('response')->isStatusCode(200)
@@ -148,7 +158,7 @@ class CrudBrowser extends sfTestBrowser
 
     $this->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'edit')->
         isParameter('id', 3)->
       end()->
@@ -189,7 +199,7 @@ class CrudBrowser extends sfTestBrowser
       info('save / validation')->
       click('Save', array('article' => $values))->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'update')->
       end()->
       checkFormValues(array_merge($values, array(
@@ -222,7 +232,7 @@ class CrudBrowser extends sfTestBrowser
       info('go back to the list')->
       click('Back to list')->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'index')->
       end()->
       with('response')->isStatusCode(200)
@@ -234,7 +244,7 @@ class CrudBrowser extends sfTestBrowser
       get(sprintf('/%s/3/edit', $this->urlPrefix))->
       click('Delete', array(), array('method' => 'delete', '_with_csrf' => true))->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'delete')->
       end()->
       with('response')->begin()->
@@ -242,7 +252,7 @@ class CrudBrowser extends sfTestBrowser
         followRedirect()->
       end()->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'index')->
       end()->
       with('response')->isStatusCode(200)->
@@ -258,7 +268,7 @@ class CrudBrowser extends sfTestBrowser
         info('show page')->
         get(sprintf('/%s/2', $this->urlPrefix))->
         with('request')->begin()->
-          isParameter('module', $this->urlPrefix)->
+          isParameter('module', $this->moduleName)->
           isParameter('action', 'show')->
           isParameter('id', 2)->
         end()->
@@ -293,7 +303,7 @@ class CrudBrowser extends sfTestBrowser
     $this->
       click('Save', array('article' => $values))->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', $creation ? 'create' : 'update')->
       end()->
       with('response')->begin()->
@@ -304,7 +314,7 @@ class CrudBrowser extends sfTestBrowser
         isStatusCode(200)->
       end()->
       with('request')->begin()->
-        isParameter('module', $this->urlPrefix)->
+        isParameter('module', $this->moduleName)->
         isParameter('action', 'edit')->
         isParameter('id', $id)->
       end()->

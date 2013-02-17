@@ -1,3 +1,8 @@
+acme_article:
+  class:        sfPropelRouteCollection
+  type:         collection
+  options:      { model: Article, module: article_backend, prefix_path: articles }
+
 article:
   class:        sfPropelRouteCollection
   type:         collection
