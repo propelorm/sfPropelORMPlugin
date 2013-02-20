@@ -13,12 +13,21 @@ require_once(dirname(__FILE__).'/crudBrowser.class.php');
 class RestBrowser extends CrudBrowser
 {
   protected
-    $urlPrefix = 'articles';
+    $urlPrefix = 'articles',
+    $moduleName = 'articles';
 
-  public function setup($options)
+  public function setup($options, $parameters = array())
   {
     $this->projectDir = dirname(__FILE__).'/../fixtures';
     $this->cleanup();
+
+    foreach (array('model', 'urlPrefix', 'moduleName', 'singularName', 'pluralName', 'projectDir') as $param)
+    {
+      if (isset($parameters[$param]))
+      {
+        $this->$param = $parameters[$param];
+      }
+    }
 
     chdir($this->projectDir);
     $task = new sfPropelGenerateModuleForRouteTask(new sfEventDispatcher(), new sfFormatter());
