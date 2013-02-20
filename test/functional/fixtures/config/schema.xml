@@ -22,6 +22,8 @@
       <unique-column name="title" />
       <unique-column name="category_id" />
     </unique>
+
+    <behavior name="sortable" />
   </table>
 
   <table name="category">

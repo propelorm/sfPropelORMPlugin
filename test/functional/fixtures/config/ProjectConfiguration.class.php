@@ -49,6 +49,14 @@ class ProjectConfiguration extends sfProjectConfiguration
       $task = new sfPropelBuildFormsTask($this->dispatcher, new sfFormatter());
       $task->run(array(), array('application='.$app));
     }
+
+    $files = glob(sfConfig::get('sf_lib_dir').'/filter/base/*.php');
+    if (false === $files || !count($files))
+    {
+      chdir(sfConfig::get('sf_root_dir'));
+      $task = new sfPropelBuildFiltersTask($this->dispatcher, new sfFormatter());
+      $task->run(array(), array('application='.$app));
+    }
   }
 
   public function loadFixtures($fixtures)
