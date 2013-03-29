@@ -160,11 +160,11 @@ class sfPropelORMRoute extends sfObjectRoute
       {
         if(is_array($methodParams))
         {
-          call_user_func_array(array($query, $methodName), $methodParams);
+          $query = call_user_func_array(array($query, $methodName), $methodParams);
         }
         else
         {
-          $query->$methodParams();
+          $query = $query->$methodParams();
         }
       }
     }
