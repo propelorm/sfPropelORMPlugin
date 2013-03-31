@@ -402,7 +402,7 @@ class sfPropelGenerator extends sfModelGenerator
 
   public function translateColumnName($column, $related = false, $to = BasePeer::TYPE_FIELDNAME)
   {
-    $peer = $related ? constant($column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName())->getPhpName().'::PEER') : constant($column->getTable()->getPhpName().'::PEER');
+    $peer = $related ? constant($column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName())->getClassName().'::PEER') : constant($column->getTable()->getClassName().'::PEER');
     $field = $related ? $column->getRelatedName() : $column->getFullyQualifiedName();
 
     return call_user_func(array($peer, 'translateFieldName'), $field, BasePeer::TYPE_COLNAME, $to);
