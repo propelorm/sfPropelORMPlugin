@@ -56,7 +56,7 @@ class sfTesterPropel extends sfTester
       {
         $column = call_user_func(array(constant($model.'::PEER'), 'translateFieldName'), $column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
         $operator = Criteria::EQUAL;
-        if ('!' == $condition[0])
+        if (!empty($condition) && '!' == $condition[0])
         {
           $operator = false !== strpos($condition, '%') ? Criteria::NOT_LIKE : Criteria::NOT_EQUAL;
           $condition = substr($condition, 1);
