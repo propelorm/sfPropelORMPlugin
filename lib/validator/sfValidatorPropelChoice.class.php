@@ -65,11 +65,11 @@ class sfValidatorPropelChoice extends sfValidatorBase
     {
       if(is_array($methodParams))
       {
-        call_user_func_array(array($criteria, $methodName), $methodParams);
+        $criteria = call_user_func_array(array($criteria, $methodName), $methodParams);
       }
       else
       {
-        $criteria->$methodParams();
+        $criteria = $criteria->$methodParams();
       }
     }
 
