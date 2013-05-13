@@ -54,11 +54,11 @@ abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends 
     $criteria->addJoin(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo strtoupper($tables['column']->getName()) ?>, <?php echo constant($this->table->getPhpName().'::PEER') ?>::<?php echo strtoupper($this->getPrimaryKey()->getName()) ?>);
 
     $value = array_pop($values);
-    $criterion = $criteria->getNewCriterion(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo $tables['relatedColumn']->getName() ?>, $value);
+    $criterion = $criteria->getNewCriterion(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo strtoupper($tables['relatedColumn']->getName()) ?>, $value);
 
     foreach ($values as $value)
     {
-      $criterion->addOr($criteria->getNewCriterion(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo $tables['relatedColumn']->getName() ?>, $value));
+      $criterion->addOr($criteria->getNewCriterion(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo strtoupper($tables['relatedColumn']->getName()) ?>, $value));
     }
 
     $criteria->add($criterion);
