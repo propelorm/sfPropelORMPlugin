@@ -85,7 +85,7 @@ class sfWidgetFormPropelChoice extends sfWidgetFormChoice
     {
       $criteria->mergeWith($this->getOption('criteria'));
     }
-    foreach ($this->getOption('query_methods') as $methodName => $methodParams)
+    foreach ((array)$this->getOption('query_methods') as $methodName => $methodParams)
     {
       if(is_array($methodParams))
       {
