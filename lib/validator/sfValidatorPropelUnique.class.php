@@ -92,7 +92,7 @@ class sfValidatorPropelUnique extends sfValidatorSchema
     $fields = $this->getOption('field');
 
     $criteria = PropelQuery::from($this->getOption('model'));
-    foreach ($this->getOption('query_methods') as $methodName => $methodParams)
+    foreach ((array)$this->getOption('query_methods') as $methodName => $methodParams)
     {
       if(is_array($methodParams))
       {

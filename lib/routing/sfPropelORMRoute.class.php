@@ -156,7 +156,7 @@ class sfPropelORMRoute extends sfObjectRoute
     $query = PropelQuery::from($this->options['model']);
     if (isset($this->options['query_methods']))
     {
-      foreach ($this->options['query_methods'] as $methodName => $methodParams)
+      foreach ((array)$this->options['query_methods'] as $methodName => $methodParams)
       {
         if(is_array($methodParams))
         {
