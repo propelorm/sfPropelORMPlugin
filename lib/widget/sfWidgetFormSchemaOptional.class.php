@@ -49,6 +49,8 @@ function add{$strippedName}Widget()
   var spanTag = document.createElement(\"span\");
   spanTag.innerHTML = content.replace(/([_\[]){$strippedName}([_\]])/g, '\$1{$strippedName}' +  + added{$strippedName} + '\$2');
   document.getElementById('add_{$strippedName}').appendChild(spanTag);
+  var scripts = spanTag.getElementsByTagName('script'); 
+  for (var i in scripts) eval(scripts[i].text);
   document.getElementById('add_{$strippedName}').style.display='block';";
     if ($this->getOption('max_additions') > 0) {
         $decorator .= "
