@@ -98,7 +98,10 @@ abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFo
 <?php endforeach; ?>
   }
 
-<?php foreach ($this->getManyToManyTables() as $tables): ?>
+<?php foreach ($this->getManyToManyTables() as $tables):
+    $tablePeerName = $tables['middleTable']->getPeerClassname();
+    $columnPeerName = call_user_func_array(array($tablePeerName, 'translateFieldName'), array($tables['column']->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
+  ?>
   public function save<?php echo $tables['middleTable']->getPhpName() ?>List($con = null)
   {
     if (!$this->isValid())
@@ -118,8 +121,8 @@ abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFo
     }
 
     $c = new Criteria();
-    $c->add(<?php echo constant($tables['middleTable']->getClassname().'::PEER') ?>::<?php echo strtoupper($tables['column']->getName()) ?>, $this->object->getPrimaryKey());
-    <?php echo constant($tables['middleTable']->getClassname().'::PEER') ?>::doDelete($c, $con);
+    $c->add(<?php echo $tablePeerName ?>::<?php echo $columnPeerName ?>, $this->object->getPrimaryKey());
+    <?php echo $tablePeerName ?>::doDelete($c, $con);
 
     $values = $this->getValue('<?php echo $this->underscore($tables['middleTable']->getClassname()) ?>_list');
     if (is_array($values))
