@@ -100,7 +100,7 @@ abstract class Base<?php echo $this->table->getClassname() ?>Form extends BaseFo
 
 <?php foreach ($this->getManyToManyTables() as $tables):
     $tablePeerName = $tables['middleTable']->getPeerClassname();
-    $columnPeerName = call_user_func_array(array($tablePeerName, 'translateFieldName'), array($tables['column']->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
+    $columnPeerName = call_user_func_array(array($tablePeerName, 'translateFieldName'), array($tables['column']->getName(), BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_RAW_COLNAME));
   ?>
   public function save<?php echo $tables['middleTable']->getPhpName() ?>List($con = null)
   {
