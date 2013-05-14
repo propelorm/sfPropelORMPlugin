@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ -z $SYMFONY_VERSION ] ; then
-    SYMFONY_VERSION="symfony-1.4.17"
+    SYMFONY_VERSION="symfony-1.4.20"
 fi
 
 PROJECT_NAME=mockproject
