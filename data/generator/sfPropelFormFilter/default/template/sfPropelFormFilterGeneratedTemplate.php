@@ -38,7 +38,12 @@ abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends 
     parent::setup();
   }
 
-<?php foreach ($this->getManyToManyTables() as $tables): ?>
+<?php foreach ($this->getManyToManyTables() as $tables):
+    $middleTablePeerName = $tables['middleTable']->getPeerClassname();
+    $columnPeerName = call_user_func_array(array($middleTablePeerName, 'translateFieldName'), array($tables['column']->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
+    $relatedColumnPeerName = call_user_func_array(array($middleTablePeerName, 'translateFieldName'), array($tables['relatedColumn']->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
+    $pkPeerName = call_user_func_array(array($this->table->getPeerClassname(), 'translateFieldName'), array($this->getPrimaryKey()->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
+  ?>
   public function add<?php echo $tables['middleTable']->getPhpName() ?>ListColumnCriteria(Criteria $criteria, $field, $values)
   {
     if (!is_array($values))
@@ -51,14 +56,14 @@ abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends 
       return;
     }
 
-    $criteria->addJoin(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo strtoupper($tables['column']->getName()) ?>, <?php echo constant($this->table->getPhpName().'::PEER') ?>::<?php echo strtoupper($this->getPrimaryKey()->getName()) ?>);
+    $criteria->addJoin(<?php echo $middleTablePeerName ?>::<?php echo $columnPeerName ?>, <?php echo $this->table->getPeerClassname() ?>::<?php echo $pkPeerName ?>);
 
     $value = array_pop($values);
-    $criterion = $criteria->getNewCriterion(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo $tables['relatedColumn']->getName() ?>, $value);
+    $criterion = $criteria->getNewCriterion(<?php echo $middleTablePeerName ?>::<?php echo $relatedColumnPeerName ?>, $value);
 
     foreach ($values as $value)
     {
-      $criterion->addOr($criteria->getNewCriterion(<?php echo constant($tables['middleTable']->getPhpName().'::PEER') ?>::<?php echo $tables['relatedColumn']->getName() ?>, $value));
+      $criterion->addOr($criteria->getNewCriterion(<?php echo $middleTablePeerName ?>::<?php echo $relatedColumnPeerName ?>, $value));
     }
 
     $criteria->add($criterion);
