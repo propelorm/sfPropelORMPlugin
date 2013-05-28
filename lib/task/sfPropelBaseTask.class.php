@@ -370,6 +370,12 @@ abstract class sfPropelBaseTask extends sfBaseTask
         'dsn'      => $database->getParameter('dsn'),
         'user'     => $database->getParameter('username'),
         'password' => $database->getParameter('password'),
+        'settings'  => array(
+          'queries' => $database->getParameter('queries'),
+          'charset' => array(
+            'value' => $database->getParameter('encoding'),
+          ),
+        ),
       );
     }
     return $connections;
@@ -383,6 +389,12 @@ abstract class sfPropelBaseTask extends sfBaseTask
       'dsn'      => $database->getParameter('dsn'),
       'user'     => $database->getParameter('username'),
       'password' => $database->getParameter('password'),
+      'settings'  => array(
+        'queries' => $database->getParameter('queries'),
+        'charset' => array(
+          'value' => $database->getParameter('encoding'),
+        ),
+      ),
     );
   }
 
