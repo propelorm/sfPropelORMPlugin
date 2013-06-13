@@ -56,7 +56,7 @@ abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends 
       return;
     }
 
-    $criteria->addJoin(<?php echo $middleTablePeerName ?>::<?php echo $columnPeerName ?>, <?php echo $this->table->getPeerClassname() ?>::<?php echo $pkPeerName ?>);
+    $criteria->addJoin(<?php echo $this->table->getPeerClassname() ?>::<?php echo $pkPeerName ?>, <?php echo $middleTablePeerName ?>::<?php echo $columnPeerName ?>);
 
     $value = array_pop($values);
     $criterion = $criteria->getNewCriterion(<?php echo $middleTablePeerName ?>::<?php echo $relatedColumnPeerName ?>, $value);
