@@ -227,7 +227,7 @@ Now just modify the `filter.display` setting in the `generator.yml` to remove th
       filter:
         display: [full_text]
 
-The amdin generator looks for a `filterByXXX()` method in the query class, where `XXX` is the CamelCase version of the custom filter you add.
+The admin generator looks for a `filterByXXX()` method in the query class, where `XXX` is the CamelCase version of the custom filter you add.
 
 YAML Form Customization
 -----------------------
