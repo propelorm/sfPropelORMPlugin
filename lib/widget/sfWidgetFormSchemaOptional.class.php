@@ -51,7 +51,7 @@ function add{$strippedName}Widget()
   document.getElementById('add_{$strippedName}').appendChild(spanTag);
 
   // FIXME: change this to less evil way
-  var scripts = spanTag.getElementsByTagName('script'); 
+  var scripts = spanTag.getElementsByTagName('script');
   for (var i in scripts) eval(scripts[i].text);
   document.getElementById('add_{$strippedName}').style.display='block';";
     if ($this->getOption('max_additions') > 0) {
