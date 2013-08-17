@@ -341,6 +341,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
       $ret = false;
     }
+    Phing::shutdown(); // restores error_reporting
 
     return $ret;
   }
@@ -422,6 +423,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
   protected function getModels($databaseManager, $verbose = false)
   {
     Phing::startup(); // required to locate behavior classes...
+    Phing::shutdown(); // restores error_reporting
     $schemas = sfFinder::type('file')
       ->name('*schema.xml')
       ->follow_link()
