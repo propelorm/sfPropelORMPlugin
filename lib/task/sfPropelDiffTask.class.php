@@ -103,6 +103,7 @@ EOF;
 
     $this->logSection('propel', 'Loading XML schema files...');
     Phing::startup(); // required to locate behavior classes...
+    Phing::shutdown(); // restores error_reporting
     $this->schemaToXML(self::DO_NOT_CHECK_SCHEMA, 'generated-');
     $this->copyXmlSchemaFromPlugins('generated-');
     $appData = $this->getModels($databaseManager, $options['verbose']);
