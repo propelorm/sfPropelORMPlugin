@@ -38,7 +38,12 @@ class sfWidgetFormDelete extends sfWidgetFormInputCheckbox
 
     if ($this->getOption('hide_parent'))
     {
-      $hideParentCode = 'this' . str_repeat('.parentNode', $this->getOption('parent_level')) . '.style.display="none";';
+      if ($this->getOption('parent_empty_form')) {
+        $hideParentCode = 'this' . str_repeat('.parentNode', $this->getOption('parent_level')-1) . '.innerHTML="";';  
+      } else {
+        $hideParentCode = 'this' . str_repeat('.parentNode', $this->getOption('parent_level')) . '.style.display="none";';
+      }
+      
       if ($this->getOption('alert_text'))
       {
         $this->setAttribute('onclick', sprintf('if(confirm("%s")) { %s } else return false;', $this->translate($this->getOption('alert_text')), $hideParentCode));
@@ -57,5 +62,6 @@ class sfWidgetFormDelete extends sfWidgetFormInputCheckbox
     $this->addOption('alert_text', 'Are you sure you want to delete this item?\nThe deletion will be complete once the form is saved.');
     $this->addOption('hide_parent', true);
     $this->addOption('parent_level', 6);
+    $this->addOption('parent_empty_form', false);
   }
 }
