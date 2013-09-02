@@ -327,6 +327,19 @@ abstract class sfFormFilterPropel extends sfFormFilter
 
   protected function camelize($text)
   {
-    return sfToolkit::pregtr($text, array('#/(.?)#e' => "'::'.strtoupper('\\1')", '/(^|_|-)+(.)/e' => "strtoupper('\\2')"));
+    $text = preg_replace_callback('#/(.?)#', array($this, 'camelizeFirstMatch'), $text);
+    $text = preg_replace_callback('/(^|_|-)+(.)/', array($this, 'camelizeSecondMatch'), $text);
+
+    return $text;
+  }
+
+  protected function camelizeFirstMatch($matches)
+  {
+    return '::'.strtoupper($matches[1]);
+  }
+
+  protected function camelizeSecondMatch($matches)
+  {
+    return strtoupper($matches[2]);
   }
 }
