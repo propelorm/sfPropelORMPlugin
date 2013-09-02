@@ -18,7 +18,7 @@ Symfony is to specify slave servers for each connection in config/databases.yml 
           password:
 
           encoding:   utf8
-          persistent: true
+          persistent: {value: true}
           pooling:    true
 
           slaves:
