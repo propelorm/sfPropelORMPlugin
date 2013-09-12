@@ -28,5 +28,5 @@ all:
       username:   root
       password:   
       encoding:   utf8
-      persistent: true
+      persistent: {value: true}
       pooling:    true
