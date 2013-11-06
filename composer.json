@@ -6,7 +6,7 @@
     "homepage": "http://www.propelorm.org/",
     "require": {
         "composer/installers": "*",
-        "propel/propel1": "1.6.*"
+        "propel/propel1": "~1.6"
     },
     "extra": {
         "branch-alias": {
