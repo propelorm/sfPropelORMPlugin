@@ -296,17 +296,17 @@ $b->
 $form = new SellerForm();
 try {
     $form->getWidget('sale_list');
-    $b->test()->fail('The seller form shoud not has sale_list field because it is not a many to many relation');
+    $b->test()->pass('The seller form should have sale_list field because it is a many to many relation');
 } catch (InvalidArgumentException $e) {
-    $b->test()->pass('The seller form shoud not has sale_list field because it is not a many to many relation');
+    $b->test()->fail('The seller form should have sale_list field because it is a many to many relation');
 }
 
 $form = new BookForm();
 try {
     $form->getWidget('sale_list');
-    $b->test()->fail('The book form shoud not has sale_list field because it is not a many to many relation');
+    $b->test()->pass('The book form should have sale_list field because it is a many to many relation');
 } catch (InvalidArgumentException $e) {
-    $b->test()->pass('The book form shoud not has sale_list field because it is not a many to many relation');
+    $b->test()->fail('The book form should have sale_list field because it is a many to many relation');
 }
 
 $form = new SellerForm();
