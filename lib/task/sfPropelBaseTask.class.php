@@ -346,7 +346,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     return $ret;
   }
 
-  protected function getPhingPropertiesForConnection($databaseManager, $connection)
+  protected function getPhingPropertiesForConnection(sfDatabaseManager $databaseManager, $connection)
   {
     $database = $databaseManager->getDatabase($connection);
 
@@ -360,12 +360,18 @@ abstract class sfPropelBaseTask extends sfBaseTask
     );
   }
 
-  public function getConnections($databaseManager)
+  public function getConnections(sfDatabaseManager $databaseManager)
   {
     $connections = array();
     foreach ($databaseManager->getNames() as $connectionName)
     {
+      /** @var sfDatabase $database */
       $database = $databaseManager->getDatabase($connectionName);
+
+      if (!$database instanceof sfPropelDatabase) {
+        continue;
+      }
+
       $connections[$connectionName] = array(
         'adapter'  => $database->getParameter('phptype'),
         'dsn'      => $database->getParameter('dsn'),
@@ -382,7 +388,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     return $connections;
   }
 
-  public function getConnection($databaseManager, $connection)
+  public function getConnection(sfDatabaseManager $databaseManager, $connection)
   {
     $database = $databaseManager->getDatabase($connection);
     return array(
@@ -399,7 +405,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     );
   }
 
-  protected function getPlatform($databaseManager, $connection)
+  protected function getPlatform(sfDatabaseManager $databaseManager, $connection)
   {
     $params = $this->getConnection($databaseManager, $connection);
     $platformClass = ucfirst($params['adapter']) . 'Platform';
@@ -409,7 +415,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
     return $platform;
   }
 
-  protected function getParser($databaseManager, $connection, $con)
+  protected function getParser(sfDatabaseManager $databaseManager, $connection, $con)
   {
     $params = $this->getConnection($databaseManager, $connection);
     $parserClass = ucfirst($params['adapter']) . 'SchemaParser';
@@ -483,7 +489,6 @@ abstract class sfPropelBaseTask extends sfBaseTask
       'nested_set' => 'nestedset.NestedSetBehavior',
       'sortable' => 'sortable.SortableBehavior',
       'sluggable' => 'sluggable.SluggableBehavior',
-      'sortable' => 'sortable.SortableBehavior',
       'concrete_inheritance' => 'concrete_inheritance.ConcreteInheritanceBehavior',
       'query_cache' => 'query_cache.QueryCacheBehavior',
       'aggregate_column' => 'aggregate_column.AggregateColumnBehavior',

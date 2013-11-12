@@ -9,6 +9,9 @@ $this->logSection('install', 'default to propel');
 $this->logSection('install', 'default to sqlite');
 $this->runTask('configure:database', sprintf("'sqlite:%spropel.db'", sfConfig::get('sf_data_dir') . DIRECTORY_SEPARATOR));
 
+$this->logSection('install', 'secondary database');
+$this->runTask('configure:database', sprintf("--name=non-propel --class=sfPDODatabase 'sqlite:%spropel2.db'", sfConfig::get('sf_data_dir') . DIRECTORY_SEPARATOR));
+
 $this->logSection('install', 'fix sqlite database permissions');
 touch(sfConfig::get('sf_data_dir') . DIRECTORY_SEPARATOR .'propel.db');
 chmod(sfConfig::get('sf_data_dir'), 0777);
