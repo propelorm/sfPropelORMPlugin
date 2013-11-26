@@ -12,113 +12,114 @@ Editing a foreign key columns is often a matter of choosing the related object t
 
 Most of the time, the configuration of this widget and validator is already done in the generated forms and filter forms. Using the previous example model, Propel would generate the following Base form:
 
-    [php]
-    abstract class BaseArticleForm extends BaseFormPropel
-    {
-      public function setup()
-      {
-        // ...
+```php
+abstract class BaseArticleForm extends BaseFormPropel
+{
+  public function setup()
+  {
+    // ...
 
-        $this->setWidgets(array(
-          // ...
-          'author_id' => new sfWidgetFormPropelChoice(array(
-            'model' => 'Author',
-            'add_empty' => true)
-          ),
-        ));
+    $this->setWidgets(array(
+      // ...
+      'author_id' => new sfWidgetFormPropelChoice(array(
+        'model' => 'Author',
+        'add_empty' => true)
+      ),
+    ));
 
-        $this->setValidators(array(
-          // ...
-          'author_id' => new sfValidatorPropelChoice(array(
-            'model' => 'Author',
-            'column' => 'id',
-            'required' => false)
-          ),
-        ));
-      }
-    }
-
+    $this->setValidators(array(
+      // ...
+      'author_id' => new sfValidatorPropelChoice(array(
+        'model' => 'Author',
+        'column' => 'id',
+        'required' => false)
+      ),
+    ));
+  }
+}
+```
 Based on the `model` setting, the plugin generates the list of possible choices for the widget and the validator.
 
 ### Additional Query Methods
 
 You can set the widget to execute additional query methods on the related Model Query object. For instance, if a `Section` model uses the `nested_set` behavior, you probably want to display a section selection widget in hierarchical order. This is easily achived by executing the `SectionQuery::orderByBranch()` query method, and you can register it as follows:
 
-    [php]
-    class ContentForm extends BaseContentForm
-    {
-      public function configure()
-      {
-        $this->widgetSchema['section'] = new sfWidgetFormPropelChoice(array(
-          'model'         => 'Section',
-          'query_methods' => array('orderByBranch')
-          'add_empty'     => true,
-        ));
-      }
-    }
+```php
+class ContentForm extends BaseContentForm
+{
+  public function configure()
+  {
+    $this->widgetSchema['section'] = new sfWidgetFormPropelChoice(array(
+      'model'         => 'Section',
+      'query_methods' => array('orderByBranch')
+      'add_empty'     => true,
+    ));
+  }
+}
+```
 
 Query methods can also accept array of parameters, for example to sort branch in reverse order:
 
-    [php]
-    class ContentForm extends BaseContentForm
-    {
-      public function configure()
-      {
-        $this->widgetSchema['section'] = new sfWidgetFormPropelChoice(array(
-          'model'         => 'Section',
-          'query_methods' => array('orderByBranch' => array(true))
-          'add_empty'     => true,
-        ));
-      }
-    }
-
+```php
+class ContentForm extends BaseContentForm
+{
+  public function configure()
+  {
+    $this->widgetSchema['section'] = new sfWidgetFormPropelChoice(array(
+      'model'         => 'Section',
+      'query_methods' => array('orderByBranch' => array(true))
+      'add_empty'     => true,
+    ));
+  }
+}
+```
 You can also enable the `query_method` option on an existing widget. For instance, to display only the list of active authors, customize the form as follows:
 
-    [php]
-    class ArticleForm extends BaseArticleForm
-    {
-      public function configure()
-      {
-        $this->widgetSchema['author_id']->setOption('query_methods', array('active'));
-      }
-    }
+```php
+class ArticleForm extends BaseArticleForm
+{
+  public function configure()
+  {
+    $this->widgetSchema['author_id']->setOption('query_methods', array('active'));
+  }
+}
 
-    class ArticleQuery extends BaseArticleQuery
-    {
-      public function active()
-      {
-        return $this->filterByIsActive(true);
-      }
-    }
-
+class ArticleQuery extends BaseArticleQuery
+{
+  public function active()
+  {
+    return $this->filterByIsActive(true);
+  }
+}
+```
 Of course, to allow the validation of the user's choice, the `query_methods` option is also available in the `sfValidatorPropelChoice` validator. Always remember to apply the same filters in the validator as in the widget.
 
 So if you display a selection of items using a query method, you can validate this selection, too:
 
-   [php]
-   class ContentForm extends BaseContentForm
-   {
-     public function configure()
-     {
-       $this->widgetSchema['section']->setOption('query_methods', array('published'));
-       $this->validatorSchema['section']->setOption('query_methods', array('published'));
-     }
-   }
-
+```php
+class ContentForm extends BaseContentForm
+{
+ public function configure()
+ {
+   $this->widgetSchema['section']->setOption('query_methods', array('published'));
+   $this->validatorSchema['section']->setOption('query_methods', array('published'));
+ }
+}
+```
 ### Using A Custom Query Object
 
 Alternatively, build the query yourself in the form, and pass it to the widget in the `criteria` option:
 
-    [php]
-    class ArticleForm extends BaseArticleForm
-    {
-      public function configure()
-      {
-        $query = ArticleQuery::create()->filterByIsActive(true);
-        $this->widgetSchema['author_id']->setOption('criteria', $query);
-      }
-    }
-
+```php
+class ArticleForm extends BaseArticleForm
+{
+  public function configure()
+  {
+    $query = ArticleQuery::create()->filterByIsActive(true);
+    $this->widgetSchema['author_id']->setOption('criteria', $query);
+  }
+}
+```
 The `criteria` option is also available in `sfValidatorPropelChoice`.
 
 ### Full Options List
@@ -153,21 +154,21 @@ The `sfValidatorPropelChoice` validator accepts almost the same options:
 
 In a blog application, two articles can not have the same slug; to ensure this constraint, the schema definition features a uniqueness constraint. This constraint on the database level is reflected in the ArticleForm form using the `sfValidatorPropelUnique` validator. This validator can check the uniqueness of any form field. It is helpful among other things to check the uniqueness of an email address of a login for instance. The next listing shows how to use it in the ArticleForm  form.
 
-    [php]
-    class ArticleForm extends BaseArticleForm
-    {
-      public function configure()
-      {
-        // ...
+```php
+class ArticleForm extends BaseArticleForm
+{
+  public function configure()
+  {
+    // ...
 
-        $this->validatorSchema->setPostValidator(
-          new sfValidatorPropelUnique(array(
-            'model' => 'Article',
-            'column' => array('slug')))
-        );
-      }
-    }
-
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorPropelUnique(array(
+        'model' => 'Article',
+        'column' => array('slug')))
+    );
+  }
+}
+```
 The sfValidatorPropelUnique validator is a postValidator running on the whole data after the individual validation of each field. In order to validate the slug uniqueness, the validator must be able to access, not only the slug value, but also the value of the primary key(s). Validation rules are indeed different throughout the creation and the edition since the slug can stay the same during the update of an article.
 
 This validator supports the following options:
@@ -189,44 +190,44 @@ But symfony expects to receive all form fields for binding, including plain fiel
 
 Here is an example for `created_at` and `updated_at` columns, that you may want to display without allowing their edition:
 
-    [php]
-    class ArticleForm extends BaseArticleForm
-    {
-      public function configure()
-      {
-        // ...
-        $this->setWidget('created_at', new sfWidgetFormPlain());
-        $this->setWidget('updated_at', new sfWidgetFormPlain());
-        $this->setValidator('created_at', new sfValidatorPass(array('required' => false)));
-        $this->setValidator('updated_at', new sfValidatorPass(array('required' => false)));
-        $this->mergePostValidator(
-          new sfValidatorSchemaRemove(array('fields' => array('created_at', 'updated_at')))
-        );
-      }
-    }
-
+```php
+class ArticleForm extends BaseArticleForm
+{
+  public function configure()
+  {
+    // ...
+    $this->setWidget('created_at', new sfWidgetFormPlain());
+    $this->setWidget('updated_at', new sfWidgetFormPlain());
+    $this->setValidator('created_at', new sfValidatorPass(array('required' => false)));
+    $this->setValidator('updated_at', new sfValidatorPass(array('required' => false)));
+    $this->mergePostValidator(
+      new sfValidatorSchemaRemove(array('fields' => array('created_at', 'updated_at')))
+    );
+  }
+}
+```
 **Tip**: If you use the admin generator, setting a field with `type: plain` produces the same effect, only in much less code.
 
-    [yaml]
-    edit:
-      fields:
-        created_at: { type: plain }
-        updated_at: { type: plain }
-
+```yaml
+edit:
+  fields:
+    created_at: { type: plain }
+    updated_at: { type: plain }
+```
 `sfFormPropelCollection`
 ------------------------
 
 If you need to build a form based on a collection of objects rather than on a single object, then the `sfFormPropelCollection` class will help you. To create such a form, just pass a PropelObjectcollection instance to its constructor, and you can use the form as a regular Propel object form:
 
-    [php]
-    $collection = new PropelObjectCollection();
-    $collection->setModel('Book');
-    $collection[]= new Book();
-    $collection[]= new Book();
-    $collection[]= new Book();
-    $form = new sfFormPropelCollection($collection);
-    echo $form; // displays a list of 3 BookForms, bound to each element in the collection
-
+```php
+$collection = new PropelObjectCollection();
+$collection->setModel('Book');
+$collection[]= new Book();
+$collection[]= new Book();
+$collection[]= new Book();
+$form = new sfFormPropelCollection($collection);
+echo $form; // displays a list of 3 BookForms, bound to each element in the collection
+```
 Embedding A Relation Form
 -------------------------
 
@@ -234,15 +235,15 @@ Since one-to-many relationships return `PropelCollection` objects, the ability t
 
 `sfPropelForm` provides a method called `embedRelation($relationName)`, which fetches a collection for a given relation, creates a `sfFormPropelCollection` instance based on the collection, and embeds this form into the main form. This allows,for instance, to edit an author together with all its books:
 
-    [php]
-    class ArticleForm extends BaseArticleForm
-    {
-      public function configure()
-      {
-        $this->embedRelation('Book');
-      }
-    }
-
+```php
+class ArticleForm extends BaseArticleForm
+{
+  public function configure()
+  {
+    $this->embedRelation('Book');
+  }
+}
+```
 Now the Article form displays the list of related books for each author, together with controls to add or remove Books for a given Author. No need to add code to the form object, it just works.
 
 **Tip**: `sfPropelForm` also supports `mergeRelation()`, which merges the individual forms from the colleciton form into the parent form. As for embedded forms, merged relation forms support addition and removal of related objects.
