@@ -182,11 +182,9 @@ class sfPropelFormGenerator extends sfGenerator
       //check if $middleTable is a Many 2 Many :
       // exclude already found middle table
       // if there it has 2  PKs
-      // if there id only 2 columns in the table
       // if PKs are also FKs
       if (!isset($middleTables[$middleTable->getClassname()])
          && 2 === count($pks = $middleTable->getPrimaryKeyColumns())
-         && 2 === count($middleTable->getColumns())
          && $pks[0]->isForeignKey()
          && $pks[1]->isForeignKey())
       {
