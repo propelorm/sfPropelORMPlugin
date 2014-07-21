@@ -672,7 +672,7 @@ abstract class sfFormPropel extends sfFormObject
       $options['max_additions'] = $options['max_additions'] - $count;
     }
     $emptyForm = $this->getEmptyRelatedForm($relationName, $options);
-    $emptyForm->widgetSchema->setLabel($options['empty_name']);
+    $emptyForm->widgetSchema->setLabel($options['empty_label']);
     $relationForm->embedOptionalForm($emptyName, $emptyForm, $options['empty_decorator'], $options);
     $this->optionalForms[$prefix . $emptyName] = $emptyForm;
   }
