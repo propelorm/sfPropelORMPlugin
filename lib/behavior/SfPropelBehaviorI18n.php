@@ -112,7 +112,7 @@ public function getCulture()
 /**
  * Sets the culture.
  *
- * @param string $culture The culture to set
+ * @param string \$culture The culture to set
  *
  * @return {$this->getTable()->getPhpName()}
  */
