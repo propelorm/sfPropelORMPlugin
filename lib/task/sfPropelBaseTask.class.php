@@ -119,13 +119,16 @@ abstract class sfPropelBaseTask extends sfBaseTask
         $schemaArray = $dbSchema->convertOldToNewYaml($schemaArray);
       }
 
-      $customSchemaFilename = str_replace(array(
-        str_replace(DIRECTORY_SEPARATOR, '/', sfConfig::get('sf_root_dir')).'/',
-        'plugins/',
-        'config/',
-        '/',
-        'schema.yml'
-      ), array('', '', '', '_', 'schema.custom.yml'), $schema);
+      list($pluginFolder, $schemaPath) = explode('/config/',$schema,2);
+      $pluginFolder = basename($pluginFolder);
+      $schemaPath = $pluginFolder . '/' . $schemaPath;
+
+      $customSchemaFilename = str_replace(
+          array('/', 'schema.yml'),
+          array('_', 'schema.custom.yml'),
+          $schemaPath
+      );
+      
       $customSchemas = sfFinder::type('file')->name($customSchemaFilename)->in($dirs);
 
       foreach ($customSchemas as $customSchema)
