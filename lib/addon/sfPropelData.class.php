@@ -467,7 +467,7 @@ class sfPropelData extends sfData
         {
           $in[] = strtolower($column->getName());
         }
-        $stmt = $this->con->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
+        $stmt = $this->con->query(sprintf('SELECT %s FROM `%s`', implode(',', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
 
         $resultsSets[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -588,7 +588,7 @@ class sfPropelData extends sfData
 
   protected function fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $column, $in = null)
   {
-    $sql = sprintf('SELECT * FROM %s WHERE %s %s',
+    $sql = sprintf('SELECT * FROM `%s` WHERE %s %s',
                    constant(constant($tableName.'::PEER').'::TABLE_NAME'),
                    strtolower($column->getName()),
                    null === $in ? 'IS NULL' : 'IN ('.$in.')');
