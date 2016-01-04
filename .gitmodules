@@ -1,6 +1,6 @@
 [submodule "lib/vendor/propel"]
 	path = lib/vendor/propel
-	url = git://github.com/northway/Propel.git
+	url = git@github.com:omsz/Propel.git
 [submodule "lib/vendor/phing"]
 	path = lib/vendor/phing
-    url = git://github.com/northway/phing.git
+  url = git@github.com:omsz/phing.git
