@@ -4,5 +4,5 @@
 	branch = master
 [submodule "lib/vendor/phing"]
 	path = lib/vendor/phing
-  url = git@github.com:omsz/phing.git
+  	url = git@github.com:omsz/phing.git
 	branch = master
