@@ -89,9 +89,18 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
       array_pop($packages);
       if (false === $pos = array_search($this->params['model_dir_name'], $packages))
       {
-        throw new InvalidArgumentException(
-          sprintf('Unable to find the model dir name (%s) in the package %s.', $this->params['model_dir_name'], implode('.', $packages))
-        );
+          $fileName = sfConfig::get('sf_root_dir') . DIRECTORY_SEPARATOR . 
+            str_replace( '.', DIRECTORY_SEPARATOR, $table->getPackage()) . 
+              DIRECTORY_SEPARATOR . $table->getClassname() . '.class.php';
+          $packages  = explode(DIRECTORY_SEPARATOR, $fileName );
+          array_pop($packages);
+
+        if (false === $pos = array_search($this->params['model_dir_name'], $packages))
+        {
+          throw new InvalidArgumentException(
+            sprintf('Unable to find the model dir name (%s) in the package %s.', $this->params['model_dir_name'], implode('.', $packages))
+          );
+        }
       }
       $packages[$pos] = $this->params['filter_dir_name'];
       $baseDir = implode(DIRECTORY_SEPARATOR, $packages);
