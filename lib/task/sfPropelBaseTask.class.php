@@ -154,9 +154,16 @@ abstract class sfPropelBaseTask extends sfBaseTask
       $localprefix = $prefix;
 
       // change prefix for plugins
-      if (preg_match('#plugins[/\\\\]([^/\\\\]+)[/\\\\]#', $schema, $match))
+      foreach ($this->configuration->getPlugins() as $plugin) 
       {
-        $localprefix = $prefix.$match[1].'-';
+        $plugin_config = $this->configuration->getPluginConfiguration((string) $plugin);
+        $plugin_root_dir = rtrim($plugin_config->getRootDir(), '/') . '/';
+        // if $schema starts with $plugin_root_dir
+        if (substr($schema, 0, strlen($plugin_root_dir)) === $plugin_root_dir)  
+        {
+          $localprefix = $prefix . $plugin_config->getName() . '-';
+          break;
+        }
       }
 
       // save converted xml files in original directories
