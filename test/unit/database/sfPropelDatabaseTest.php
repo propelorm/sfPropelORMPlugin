@@ -14,7 +14,11 @@ $t = new lime_test(1);
 
 class ProjectConfiguration extends sfProjectConfiguration
 {
-  protected $plugins = array('sfPropelPlugin');
+  public function setup()
+  {
+    $this->enablePlugins('sfPropelORMPlugin');
+    sfConfig::set('sf_plugins_dir', sfConfig::get('sf_root_dir').'/../../../');
+  }
 }
 new ProjectConfiguration();
 
@@ -40,6 +44,7 @@ $configuration = array(
             'queries' => array(),
           ),
         ),
+        'slaves' => array(),
       ),
       'default' => 'propel',
     ),

@@ -12,7 +12,7 @@ define('SF_DIR', dirname(__FILE__).'/../../../../lib/vendor/symfony/');
 require_once SF_DIR . 'test/bootstrap/unit.php';
 require_once SF_DIR . 'lib/autoload/sfSimpleAutoload.class.php';
 
-$autoload = sfSimpleAutoload::getInstance(sys_get_temp_dir().DIRECTORY_SEPARATOR.sprintf('sf_autoload_unit_propel_%s.data', md5(__FILE__)));
+$autoload = sfSimpleAutoload::getInstance(sys_get_temp_dir().'/'.sprintf('sf_autoload_unit_propel_%s.data', md5(__FILE__)));
 $autoload->addDirectory(realpath(dirname(__FILE__).'/../../lib'));
 $autoload->addDirectory(realpath(dirname(__FILE__).'/../../lib/vendor/propel'));
 $autoload->addDirectory(realpath(dirname(__FILE__).'/../../lib/vendor/phing/classes'));
