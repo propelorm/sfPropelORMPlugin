@@ -5,7 +5,7 @@ if [ -z $SYMFONY_REPOSITORY ] ; then
 fi
 
 if [ -z $SYMFONY_BRANCH ] ; then
-    SYMFONY_BRANCH="1.4"
+    SYMFONY_BRANCH="propel"
 fi
 
 PROJECT_NAME=mockproject
