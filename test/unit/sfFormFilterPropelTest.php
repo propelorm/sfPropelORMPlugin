@@ -15,13 +15,16 @@ class MockModel extends BaseObject {
 }
 
 class MockPeer {
+  const TM_CLASS = 'MockModelTableMap';
   static public function translateFieldName($name, $fromType, $toType)
   {
     $inflector = new sfInflector();
     return ucfirst($inflector->camelize($name));
   }
 }
-class MockMergedPeer extends MockPeer {}
+class MockMergedPeer extends MockPeer {
+  const TM_CLASS = 'MockMergedTableMap';
+}
 class MockEmbeddedPeer extends MockPeer {}
 class MockModelPeer extends MockPeer {}
 
