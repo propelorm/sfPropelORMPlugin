@@ -403,6 +403,7 @@ class sfPropelData extends sfData
     $this->loadMapBuilders($connectionName);
     $this->con = Propel::getConnection($connectionName);
     $this->dbMap = Propel::getDatabaseMap($connectionName);
+    $this->dbAdapter = $this->dbMap->getDBAdapter();
 
     // get tables
     if ('all' === $tables || null === $tables)
@@ -465,9 +466,9 @@ class sfPropelData extends sfData
         $in = array();
         foreach ($tableMap->getColumns() as $column)
         {
-          $in[] = strtolower($column->getName());
+          $in[] = $this->dbAdapter->quoteIdentifier(strtolower($column->getName()));
         }
-        $stmt = $this->con->query(sprintf('SELECT %s FROM %s', implode(',', $in), constant(constant($tableName.'::PEER').'::TABLE_NAME')));
+        $stmt = $this->con->query(sprintf('SELECT %s FROM %s', implode(',', $in), $this->dbAdapter->quoteIdentifier(constant(constant($tableName.'::PEER').'::TABLE_NAME'))));
 
         $resultsSets[] = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
@@ -589,8 +590,8 @@ class sfPropelData extends sfData
   protected function fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $column, $in = null)
   {
     $sql = sprintf('SELECT * FROM %s WHERE %s %s',
-                   constant(constant($tableName.'::PEER').'::TABLE_NAME'),
-                   strtolower($column->getName()),
+                   $this->dbAdapter->quoteIdentifier(constant(constant($tableName.'::PEER').'::TABLE_NAME')),
+                   $this->dbAdapter->quoteIdentifier(strtolower($column->getName())),
                    null === $in ? 'IS NULL' : 'IN ('.$in.')');
     $stmt = $this->con->prepare($sql);
 
