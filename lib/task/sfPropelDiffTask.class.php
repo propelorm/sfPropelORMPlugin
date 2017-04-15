@@ -81,7 +81,7 @@ EOF;
       }
       $pdo = $databaseManager->getDatabase($name)->getConnection();
       $database = new Database($name);
-      $platform = $this->getPlatform($databaseManager, $name);
+      $platform = $this->getGeneratorConfig()->getConfiguredPlatform($pdo, $name);
       $database->setPlatform($platform);
       $database->setDefaultIdMethod(IDMethod::NATIVE);
       $parser = $this->getParser($databaseManager, $name, $pdo);
