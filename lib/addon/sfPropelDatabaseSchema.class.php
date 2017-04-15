@@ -290,10 +290,7 @@ class sfPropelDatabaseSchema
           $tableName = sfInflector::underscore($className);
         }
 
-        if (sfInflector::camelize($tableName) != $className)
-        {
-          $tableAttributes['phpName'] = $className;
-        }
+        $tableAttributes['phpName'] = $className;
 
         if ($tableAttributes || $classParams)
         {
