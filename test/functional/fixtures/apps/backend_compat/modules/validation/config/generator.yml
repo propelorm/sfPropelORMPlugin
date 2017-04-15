@@ -1,5 +1,5 @@
 generator:
-  class:              sfPropelAdminGenerator
+  class:              sfPropelGenerator
   param:
     model_class:      Article
     theme:            default
