@@ -40,9 +40,9 @@ abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends 
 
 <?php foreach ($this->getManyToManyTables() as $tables):
     $middleTablePeerName = $tables['middleTable']->getPeerClassname();
-    $columnPeerName = call_user_func_array(array($middleTablePeerName, 'translateFieldName'), array($tables['column']->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
-    $relatedColumnPeerName = call_user_func_array(array($middleTablePeerName, 'translateFieldName'), array($tables['relatedColumn']->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
-    $pkPeerName = call_user_func_array(array($this->table->getPeerClassname(), 'translateFieldName'), array($this->getPrimaryKey()->getPhpName(), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_RAW_COLNAME));
+    $columnPeerName = call_user_func_array(array($middleTablePeerName, 'translateFieldName'), array($tables['column']->getName(), BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_RAW_COLNAME));
+    $relatedColumnPeerName = call_user_func_array(array($middleTablePeerName, 'translateFieldName'), array($tables['relatedColumn']->getName(), BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_RAW_COLNAME));
+    $pkPeerName = call_user_func_array(array($this->table->getPeerClassname(), 'translateFieldName'), array($this->getPrimaryKey()->getName(), BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_RAW_COLNAME));
   ?>
   public function add<?php echo $tables['middleTable']->getPhpName() ?>ListColumnCriteria(Criteria $criteria, $field, $values)
   {
