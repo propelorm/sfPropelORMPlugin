@@ -152,14 +152,16 @@ abstract class sfFormPropel extends sfFormObject
         }
         $taintedValuesCopy = $taintedValues[$parent];
         $target = $this->embeddedForms[$parent];
-        while (array_key_exists($name . $i, $taintedValuesCopy))
+        foreach($taintedValuesCopy as $key=>$value)
         {
-          $target->embedForm($name . $i, clone $form);
-          $target->getWidgetSchema()->moveField($name . $i, sfWidgetFormSchema::BEFORE, $name);
-          $i++;
-          // the parent form schema is not updated when updating an embedded form
-          // so we must embed it again
-          $this->embedForm($parent, $target);
+          if((strpos($key, $name) === 0) && ($k = (int)(str_replace($name, '', $key))))
+          {
+            $target->embedForm($name . $k, clone $form);
+            $target->getWidgetSchema()->moveField($name . $k, sfWidgetFormSchema::BEFORE, $name);
+            // the parent form schema is not updated when updating an embedded form
+            // so we must embed it again
+            $this->embedForm($parent, $target);
+          }
         }
       }
     }
@@ -717,7 +719,7 @@ abstract class sfFormPropel extends sfFormObject
     {
       $formClass = $relatedClass . 'Form';
     }
-    $emptyForm = new $formClass($relatedObject);
+    $emptyForm = new $formClass($relatedObject, $options);
     if ($label = $options['empty_label'])
     {
       $emptyForm->getWidgetSchema()->setLabel($label);
