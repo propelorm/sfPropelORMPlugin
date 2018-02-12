@@ -341,7 +341,7 @@ class sfPropelData extends sfData
 
     if(!$dbMap = $this->cache->get($cacheKey))
     {
-      $dbMap = Propel::getDatabaseMap();
+      $dbMap = Propel::getDatabaseMap($connectionName);
       $files = sfFinder::type('file')->name('*TableMap.php')->in(sfProjectConfiguration::getActive()->getModelDirs());
       foreach ($files as $file)
       {
