@@ -52,13 +52,13 @@ class ProjectConfiguration extends sfProjectConfiguration
 
 Clone the plugin from Github:
 
-    git clone git://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
+    git clone https://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
     cd plugins/sfPropelORMPlugin
     git submodule update --init
 
 If you use Git as a VCS for your project, it should be better to add the plugin as a submodule:
 
-    git submodule add git://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
+    git submodule add https://github.com/propelorm/sfPropelORMPlugin.git plugins/sfPropelORMPlugin
     git submodule update --init --recursive
 
 As both Phing and Propel libraries are bundled with the plugin, you have to initialize submodules for the plugin.
